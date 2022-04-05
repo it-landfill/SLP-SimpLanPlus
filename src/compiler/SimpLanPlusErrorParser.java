@@ -45,9 +45,7 @@ public class SimpLanPlusErrorParser extends BaseErrorListener {
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		for (String err: errorList) {
-			out.append(err).append("\n");
-		}
+		for (String err: errorList) out.append(err).append("\n");
 		return out.toString();
 	}
 

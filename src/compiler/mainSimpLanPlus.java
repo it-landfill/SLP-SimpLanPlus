@@ -1,8 +1,5 @@
 package compiler;
 
-import java.io.FileInputStream;
-
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -23,14 +20,16 @@ public class mainSimpLanPlus {
 
 		// New file loading mode
 		CharStream input = CharStreams.fromFileName(fileName);
-
-		SimpLanPlusLexer lexer = new SimpLanPlusLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-		SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
+		// Error Handler
 		SimpLanPlusErrorParser errHandler = new SimpLanPlusErrorParser();
 
+		// Lexer
+		SimpLanPlusLexer lexer = new SimpLanPlusLexer(input);
 		lexer.addErrorListener(errHandler);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		// Parser
+		SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
 		parser.addErrorListener(errHandler);
 
 
