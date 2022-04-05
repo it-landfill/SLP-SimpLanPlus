@@ -28,6 +28,11 @@ public class mainSimpLanPlus {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
 		SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
-		//SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
+		SimpLanPlusErrorParser errHandler = new SimpLanPlusErrorParser();
+
+		lexer.addErrorListener(errHandler);
+		parser.addErrorListener(errHandler);
+
+
 	}
 }
