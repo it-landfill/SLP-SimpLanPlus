@@ -28,7 +28,7 @@ public class BlockNode implements Node {
 		for (Node dec:statementList)
 			statStr.append(dec.toPrint(indent + "  "));
 
-		return indent+"Block\n\t"+declStr+"\t"+statStr;
+		return indent+"\nBlock\n\t"+declStr+"\t"+statStr;
 	}
 
 	@Override

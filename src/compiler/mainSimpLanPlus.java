@@ -1,5 +1,7 @@
 package compiler;
 
+import ast.Node;
+import ast.SimpLanPlusVisitorImpl;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -9,16 +11,15 @@ import parser.SimpLanPlusParser;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-
 		String fileName = "src/TestSimpLanPlus/prova.simplan";
 
-		/*
-		// Deprecated version of file loading
-		FileInputStream is = new FileInputStream(fileName);
-		ANTLRInputStream input = new ANTLRInputStream(is);
+		/**
+		 * Deprecated version of file loading
+		 * FileInputStream is = new FileInputStream(fileName);
+		 * ANTLRInputStream input = new ANTLRInputStream(is);
 		*/
 
-		// New file loading mode
+		// File loading
 		CharStream input = CharStreams.fromFileName(fileName);
 		// Error Handler
 		SimpLanPlusErrorParser errHandler = new SimpLanPlusErrorParser();
@@ -32,6 +33,12 @@ public class mainSimpLanPlus {
 		SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
 		parser.addErrorListener(errHandler);
 
+		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
+		Node ast = visitor.visit(parser.block());
 
+		if (!errHandler.isEmpty()) {
+			System.out.println(errHandler);
+			errHandler.dumpToFile(fileName + ".log");
+		}
 	}
 }
