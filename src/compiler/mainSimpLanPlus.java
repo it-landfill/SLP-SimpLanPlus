@@ -36,9 +36,9 @@ public class mainSimpLanPlus {
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		Node ast = visitor.visit(parser.block());
 
-		if (!errHandler.isEmpty()) {
+		if (errHandler.hasMessages()) {
 			System.out.println(errHandler);
-			errHandler.dumpToFile(fileName + ".log");
+			errHandler.dumpToFile(fileName);
 		}
 	}
 }
