@@ -7,7 +7,6 @@ import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
@@ -130,6 +129,11 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	
-
+	//Args
+	@Override
+	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
+		String ID = ctx.ID().getText();
+		Node type = visit(ctx.type());
+		return new ArgNode(type, ID);
+	}
 }
