@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ArgNode implements Node {
 	private final Node type;
 	private final String argName;
-	private final boolean byReference;
+	private final boolean byReference; //TODO: Gestire questo caso
 
 	public ArgNode(Node type, String argName, boolean byReference) {
 		this.type = type;

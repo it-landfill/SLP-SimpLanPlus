@@ -132,9 +132,11 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	//Args
 	@Override
 	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
-		boolean byReference = ctx.children.get(0).toString().equals("var");
+
+		boolean byReference = ctx.children.get(0).toString().equals("var"); //TODO: Gestire questo caso
 		String ID = ctx.ID().getText();
 		Node type = visit(ctx.type());
+
 		return new ArgNode(type, ID, byReference);
 	}
 }
