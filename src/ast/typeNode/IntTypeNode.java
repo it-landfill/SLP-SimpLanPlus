@@ -6,14 +6,14 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class boolTypeNode implements Node {
+public class IntTypeNode implements Node {
 
-	public boolTypeNode() {
+	public IntTypeNode() {
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "type: boolean";
+		return indent + "type: integer";
 	}
 
 	@Override
