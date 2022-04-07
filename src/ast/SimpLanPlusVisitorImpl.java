@@ -130,6 +130,44 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	
+	//Exoressions
+	@Override
+	public Node visitBaseExp(SimpLanPlusParser.BaseExpContext ctx) {
+		return super.visitBaseExp(ctx);
+	}
 
+	@Override
+	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
+		return super.visitBinExp(ctx);
+	}
+
+	@Override
+	public Node visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
+		return super.visitDerExp(ctx);
+	}
+
+	@Override
+	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
+		return super.visitValExp(ctx);
+	}
+
+	@Override
+	public Node visitNegExp(SimpLanPlusParser.NegExpContext ctx) {
+		return super.visitNegExp(ctx);
+	}
+
+	@Override
+	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
+		return super.visitBoolExp(ctx);
+	}
+
+	@Override
+	public Node visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
+		return super.visitCallExp(ctx);
+	}
+
+	@Override
+	public Node visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
+		return super.visitNotExp(ctx);
+	}
 }
