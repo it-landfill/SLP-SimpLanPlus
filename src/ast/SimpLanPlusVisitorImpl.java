@@ -28,6 +28,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new BlockNode(declarations, statements);
 	}
 
+	// Declarations
 	@Override
 	public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
 		if (ctx.decFun() != null) return visit(ctx.decFun());
@@ -67,6 +68,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new FunNode(retType, ID, args, block);
 	}
 
+	// Statements
 	@Override
 	public Node visitStatement(SimpLanPlusParser.StatementContext ctx) {
 		if (ctx.assignment() != null) return visit(ctx.assignment());
@@ -127,4 +129,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 		return new CallNode(ID);
 	}
+
+	
+
 }
