@@ -1,5 +1,5 @@
+// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/parser/SimpLanPlus.g4 by ANTLR 4.9.2
 package parser;
-
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -20,8 +20,8 @@ public class SimpLanPlusParser extends Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		T__24=25, T__25=26, T__26=27, T__27=28, BOOL=29, ID=30, NUMBER=31, WS=32, 
-		LINECOMMENTS=33, BLOCKCOMMENTS=34;
+		T__24=25, T__25=26, INTEGER=27, BOOLEAN=28, BOOL=29, ID=30, NUMBER=31, 
+		WS=32, LINECOMMENTS=33, BLOCKCOMMENTS=34;
 	public static final int
 		RULE_block = 0, RULE_statement = 1, RULE_declaration = 2, RULE_decFun = 3, 
 		RULE_decVar = 4, RULE_type = 5, RULE_arg = 6, RULE_assignment = 7, RULE_print = 8, 
@@ -36,10 +36,10 @@ public class SimpLanPlusParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'{'", "'}'", "';'", "'void'", "'('", "','", "')'", "'='", "'int'", 
-			"'bool'", "'var'", "'print'", "'return'", "'if'", "'else'", "'-'", "'!'", 
-			"'*'", "'/'", "'+'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'&&'", 
-			"'||'"
+			null, "'{'", "'}'", "';'", "'void'", "'('", "','", "')'", "'='", "'var'", 
+			"'print'", "'return'", "'if'", "'else'", "'-'", "'!'", "'*'", "'/'", 
+			"'+'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'&&'", "'||'", 
+			"'int'", "'bool'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -47,8 +47,8 @@ public class SimpLanPlusParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, "BOOL", "ID", "NUMBER", "WS", "LINECOMMENTS", 
-			"BLOCKCOMMENTS"
+			null, null, null, "INTEGER", "BOOLEAN", "BOOL", "ID", "NUMBER", "WS", 
+			"LINECOMMENTS", "BLOCKCOMMENTS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -146,7 +146,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(30);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__8) | (1L << T__9))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
 				{
 				{
 				setState(27);
@@ -160,7 +160,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(36);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << ID))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(33);
@@ -397,8 +397,8 @@ public class SimpLanPlusParser extends Parser {
 			setState(63);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__8:
-			case T__9:
+			case INTEGER:
+			case BOOLEAN:
 				{
 				setState(61);
 				type();
@@ -420,7 +420,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(75);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << T__9) | (1L << T__10))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
 				{
 				setState(67);
 				arg();
@@ -526,6 +526,8 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
+		public TerminalNode INTEGER() { return getToken(SimpLanPlusParser.INTEGER, 0); }
+		public TerminalNode BOOLEAN() { return getToken(SimpLanPlusParser.BOOLEAN, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -554,7 +556,7 @@ public class SimpLanPlusParser extends Parser {
 			{
 			setState(88);
 			_la = _input.LA(1);
-			if ( !(_la==T__8 || _la==T__9) ) {
+			if ( !(_la==INTEGER || _la==BOOLEAN) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -609,10 +611,10 @@ public class SimpLanPlusParser extends Parser {
 			setState(91);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__10) {
+			if (_la==T__8) {
 				{
 				setState(90);
-				match(T__10);
+				match(T__8);
 				}
 			}
 
@@ -712,7 +714,7 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(100);
-			match(T__11);
+			match(T__9);
 			setState(101);
 			exp(0);
 			}
@@ -759,11 +761,11 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(103);
-			match(T__12);
+			match(T__10);
 			setState(105);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__15) | (1L << T__16) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__13) | (1L << T__14) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
 				{
 				setState(104);
 				exp(0);
@@ -819,7 +821,7 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(107);
-			match(T__13);
+			match(T__11);
 			setState(108);
 			match(T__4);
 			setState(109);
@@ -834,7 +836,7 @@ public class SimpLanPlusParser extends Parser {
 			case 1:
 				{
 				setState(112);
-				match(T__14);
+				match(T__12);
 				setState(113);
 				statement();
 				}
@@ -894,7 +896,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(126);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__15) | (1L << T__16) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__13) | (1L << T__14) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
 				{
 				setState(118);
 				exp(0);
@@ -1135,7 +1137,7 @@ public class SimpLanPlusParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(135);
-				match(T__15);
+				match(T__13);
 				setState(136);
 				exp(12);
 				}
@@ -1146,7 +1148,7 @@ public class SimpLanPlusParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(137);
-				match(T__16);
+				match(T__14);
 				setState(138);
 				exp(11);
 				}
@@ -1210,7 +1212,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(146);
 						((BinExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__17 || _la==T__18) ) {
+						if ( !(_la==T__15 || _la==T__16) ) {
 							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1232,7 +1234,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(149);
 						((BinExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__15 || _la==T__19) ) {
+						if ( !(_la==T__13 || _la==T__17) ) {
 							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1254,7 +1256,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(152);
 						((BinExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23))) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__18) | (1L << T__19) | (1L << T__20) | (1L << T__21))) != 0)) ) {
 							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1276,7 +1278,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(155);
 						((BinExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__24 || _la==T__25) ) {
+						if ( !(_la==T__22 || _la==T__23) ) {
 							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1296,7 +1298,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(157);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(158);
-						((BinExpContext)_localctx).op = match(T__26);
+						((BinExpContext)_localctx).op = match(T__24);
 						setState(159);
 						((BinExpContext)_localctx).right = exp(6);
 						}
@@ -1309,7 +1311,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(160);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
 						setState(161);
-						((BinExpContext)_localctx).op = match(T__27);
+						((BinExpContext)_localctx).op = match(T__25);
 						setState(162);
 						((BinExpContext)_localctx).right = exp(5);
 						}
@@ -1372,32 +1374,32 @@ public class SimpLanPlusParser extends Parser {
 		"\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u0092"+
 		"\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
 		"\3\16\3\16\3\16\3\16\3\16\7\16\u00a6\n\16\f\16\16\16\u00a9\13\16\3\16"+
-		"\2\3\32\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2\13\f\3\2\24\25\4\2"+
-		"\22\22\26\26\3\2\27\32\3\2\33\34\2\u00ba\2\34\3\2\2\2\49\3\2\2\2\6=\3"+
-		"\2\2\2\bA\3\2\2\2\nR\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20b\3\2\2\2\22f\3"+
-		"\2\2\2\24i\3\2\2\2\26m\3\2\2\2\30v\3\2\2\2\32\u0091\3\2\2\2\34 \7\3\2"+
-		"\2\35\37\5\6\4\2\36\35\3\2\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!&\3"+
-		"\2\2\2\" \3\2\2\2#%\5\4\3\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\'"+
-		")\3\2\2\2(&\3\2\2\2)*\7\4\2\2*\3\3\2\2\2+,\5\20\t\2,-\7\5\2\2-:\3\2\2"+
-		"\2./\5\22\n\2/\60\7\5\2\2\60:\3\2\2\2\61\62\5\24\13\2\62\63\7\5\2\2\63"+
-		":\3\2\2\2\64:\5\26\f\2\65\66\5\30\r\2\66\67\7\5\2\2\67:\3\2\2\28:\5\2"+
-		"\2\29+\3\2\2\29.\3\2\2\29\61\3\2\2\29\64\3\2\2\29\65\3\2\2\298\3\2\2\2"+
-		":\5\3\2\2\2;>\5\b\5\2<>\5\n\6\2=;\3\2\2\2=<\3\2\2\2>\7\3\2\2\2?B\5\f\7"+
-		"\2@B\7\6\2\2A?\3\2\2\2A@\3\2\2\2BC\3\2\2\2CD\7 \2\2DM\7\7\2\2EJ\5\16\b"+
-		"\2FG\7\b\2\2GI\5\16\b\2HF\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3\2\2\2KN\3\2"+
-		"\2\2LJ\3\2\2\2ME\3\2\2\2MN\3\2\2\2NO\3\2\2\2OP\7\t\2\2PQ\5\2\2\2Q\t\3"+
-		"\2\2\2RS\5\f\7\2SV\7 \2\2TU\7\n\2\2UW\5\32\16\2VT\3\2\2\2VW\3\2\2\2WX"+
-		"\3\2\2\2XY\7\5\2\2Y\13\3\2\2\2Z[\t\2\2\2[\r\3\2\2\2\\^\7\r\2\2]\\\3\2"+
-		"\2\2]^\3\2\2\2^_\3\2\2\2_`\5\f\7\2`a\7 \2\2a\17\3\2\2\2bc\7 \2\2cd\7\n"+
-		"\2\2de\5\32\16\2e\21\3\2\2\2fg\7\16\2\2gh\5\32\16\2h\23\3\2\2\2ik\7\17"+
-		"\2\2jl\5\32\16\2kj\3\2\2\2kl\3\2\2\2l\25\3\2\2\2mn\7\20\2\2no\7\7\2\2"+
-		"op\5\32\16\2pq\7\t\2\2qt\5\4\3\2rs\7\21\2\2su\5\4\3\2tr\3\2\2\2tu\3\2"+
+		"\2\3\32\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2\35\36\3\2\22\23\4"+
+		"\2\20\20\24\24\3\2\25\30\3\2\31\32\2\u00ba\2\34\3\2\2\2\49\3\2\2\2\6="+
+		"\3\2\2\2\bA\3\2\2\2\nR\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20b\3\2\2\2\22f"+
+		"\3\2\2\2\24i\3\2\2\2\26m\3\2\2\2\30v\3\2\2\2\32\u0091\3\2\2\2\34 \7\3"+
+		"\2\2\35\37\5\6\4\2\36\35\3\2\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!&"+
+		"\3\2\2\2\" \3\2\2\2#%\5\4\3\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2"+
+		"\')\3\2\2\2(&\3\2\2\2)*\7\4\2\2*\3\3\2\2\2+,\5\20\t\2,-\7\5\2\2-:\3\2"+
+		"\2\2./\5\22\n\2/\60\7\5\2\2\60:\3\2\2\2\61\62\5\24\13\2\62\63\7\5\2\2"+
+		"\63:\3\2\2\2\64:\5\26\f\2\65\66\5\30\r\2\66\67\7\5\2\2\67:\3\2\2\28:\5"+
+		"\2\2\29+\3\2\2\29.\3\2\2\29\61\3\2\2\29\64\3\2\2\29\65\3\2\2\298\3\2\2"+
+		"\2:\5\3\2\2\2;>\5\b\5\2<>\5\n\6\2=;\3\2\2\2=<\3\2\2\2>\7\3\2\2\2?B\5\f"+
+		"\7\2@B\7\6\2\2A?\3\2\2\2A@\3\2\2\2BC\3\2\2\2CD\7 \2\2DM\7\7\2\2EJ\5\16"+
+		"\b\2FG\7\b\2\2GI\5\16\b\2HF\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3\2\2\2KN\3"+
+		"\2\2\2LJ\3\2\2\2ME\3\2\2\2MN\3\2\2\2NO\3\2\2\2OP\7\t\2\2PQ\5\2\2\2Q\t"+
+		"\3\2\2\2RS\5\f\7\2SV\7 \2\2TU\7\n\2\2UW\5\32\16\2VT\3\2\2\2VW\3\2\2\2"+
+		"WX\3\2\2\2XY\7\5\2\2Y\13\3\2\2\2Z[\t\2\2\2[\r\3\2\2\2\\^\7\13\2\2]\\\3"+
+		"\2\2\2]^\3\2\2\2^_\3\2\2\2_`\5\f\7\2`a\7 \2\2a\17\3\2\2\2bc\7 \2\2cd\7"+
+		"\n\2\2de\5\32\16\2e\21\3\2\2\2fg\7\f\2\2gh\5\32\16\2h\23\3\2\2\2ik\7\r"+
+		"\2\2jl\5\32\16\2kj\3\2\2\2kl\3\2\2\2l\25\3\2\2\2mn\7\16\2\2no\7\7\2\2"+
+		"op\5\32\16\2pq\7\t\2\2qt\5\4\3\2rs\7\17\2\2su\5\4\3\2tr\3\2\2\2tu\3\2"+
 		"\2\2u\27\3\2\2\2vw\7 \2\2w\u0080\7\7\2\2x}\5\32\16\2yz\7\b\2\2z|\5\32"+
 		"\16\2{y\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\u0081\3\2\2\2\177}\3"+
 		"\2\2\2\u0080x\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0083"+
 		"\7\t\2\2\u0083\31\3\2\2\2\u0084\u0085\b\16\1\2\u0085\u0086\7\7\2\2\u0086"+
 		"\u0087\5\32\16\2\u0087\u0088\7\t\2\2\u0088\u0092\3\2\2\2\u0089\u008a\7"+
-		"\22\2\2\u008a\u0092\5\32\16\16\u008b\u008c\7\23\2\2\u008c\u0092\5\32\16"+
+		"\20\2\2\u008a\u0092\5\32\16\16\u008b\u008c\7\21\2\2\u008c\u0092\5\32\16"+
 		"\r\u008d\u0092\7 \2\2\u008e\u0092\5\30\r\2\u008f\u0092\7\37\2\2\u0090"+
 		"\u0092\7!\2\2\u0091\u0084\3\2\2\2\u0091\u0089\3\2\2\2\u0091\u008b\3\2"+
 		"\2\2\u0091\u008d\3\2\2\2\u0091\u008e\3\2\2\2\u0091\u008f\3\2\2\2\u0091"+
@@ -1405,8 +1407,8 @@ public class SimpLanPlusParser extends Parser {
 		"\3\2\2\u0095\u00a6\5\32\16\f\u0096\u0097\f\n\2\2\u0097\u0098\t\4\2\2\u0098"+
 		"\u00a6\5\32\16\13\u0099\u009a\f\t\2\2\u009a\u009b\t\5\2\2\u009b\u00a6"+
 		"\5\32\16\n\u009c\u009d\f\b\2\2\u009d\u009e\t\6\2\2\u009e\u00a6\5\32\16"+
-		"\t\u009f\u00a0\f\7\2\2\u00a0\u00a1\7\35\2\2\u00a1\u00a6\5\32\16\b\u00a2"+
-		"\u00a3\f\6\2\2\u00a3\u00a4\7\36\2\2\u00a4\u00a6\5\32\16\7\u00a5\u0093"+
+		"\t\u009f\u00a0\f\7\2\2\u00a0\u00a1\7\33\2\2\u00a1\u00a6\5\32\16\b\u00a2"+
+		"\u00a3\f\6\2\2\u00a3\u00a4\7\34\2\2\u00a4\u00a6\5\32\16\7\u00a5\u0093"+
 		"\3\2\2\2\u00a5\u0096\3\2\2\2\u00a5\u0099\3\2\2\2\u00a5\u009c\3\2\2\2\u00a5"+
 		"\u009f\3\2\2\2\u00a5\u00a2\3\2\2\2\u00a6\u00a9\3\2\2\2\u00a7\u00a5\3\2"+
 		"\2\2\u00a7\u00a8\3\2\2\2\u00a8\33\3\2\2\2\u00a9\u00a7\3\2\2\2\22 &9=A"+
