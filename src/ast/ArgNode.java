@@ -8,17 +8,17 @@ import java.util.ArrayList;
 public class ArgNode implements Node {
 	private final Node type;
 	private final String argName;
+	private final boolean byReference;
 
-	public ArgNode(Node type, String argName) {
+	public ArgNode(Node type, String argName, boolean byReference) {
 		this.type = type;
 		this.argName = argName;
+		this.byReference = byReference;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		StringBuilder out = new StringBuilder();
-		out.append(indent).append("arg: ").append(type.toPrint(indent)).append(argName);
-		return out.toString();
+		return indent + "arg: " + type.toPrint(indent) + argName + " by reference: " + byReference;
 	}
 
 	@Override
