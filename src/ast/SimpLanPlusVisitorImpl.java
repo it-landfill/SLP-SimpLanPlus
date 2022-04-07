@@ -2,6 +2,10 @@ package ast;
 
 import ast.declarationNode.FunNode;
 import ast.declarationNode.VarNode;
+import ast.expNode.BaseExpNode;
+import ast.expNode.DerExpNode;
+import ast.expNode.NegExpNode;
+import ast.expNode.NotExpNode;
 import ast.statementNode.*;
 import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
@@ -133,41 +137,41 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	//Exoressions
 	@Override
 	public Node visitBaseExp(SimpLanPlusParser.BaseExpContext ctx) {
-		return super.visitBaseExp(ctx);
+		return new BaseExpNode(visit(ctx.exp()));
 	}
 
 	@Override
 	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
-		return super.visitBinExp(ctx);
+		return super.visitBinExp(ctx); //TODO
 	}
 
 	@Override
 	public Node visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
-		return super.visitDerExp(ctx);
+		return new DerExpNode(ctx.ID().toString());
 	}
 
 	@Override
 	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
-		return super.visitValExp(ctx);
+		return super.visitValExp(ctx); //TODO
 	}
 
 	@Override
 	public Node visitNegExp(SimpLanPlusParser.NegExpContext ctx) {
-		return super.visitNegExp(ctx);
+		return new NegExpNode(visit(ctx.exp()));
 	}
 
 	@Override
 	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
-		return super.visitBoolExp(ctx);
+		return super.visitBoolExp(ctx); //TODO
 	}
 
 	@Override
 	public Node visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
-		return super.visitCallExp(ctx);
+		return super.visitCallExp(ctx); //TODO
 	}
 
 	@Override
 	public Node visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
-		return super.visitNotExp(ctx);
+		return new NotExpNode(visit(ctx.exp()));
 	}
 }
