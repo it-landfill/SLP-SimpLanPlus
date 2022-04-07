@@ -30,7 +30,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	@Override
 	public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
-		if (ctx.decFun() != null) System.out.println("DecFun"); //TODO
+		if (ctx.decFun() != null) return visit(ctx.decFun());
 		if (ctx.decVar() != null) return visit(ctx.decVar());
 
 		//Non dovrei mai arrivare qui
