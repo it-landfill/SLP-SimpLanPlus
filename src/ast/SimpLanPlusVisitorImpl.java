@@ -166,7 +166,8 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	@Override
 	public Node visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
-		return super.visitCallExp(ctx); //TODO
+		//FIXME: Serve veramente la classe CallExpNode o potrei fare direttamente una return visit...
+		return new CallExpNode(visit(ctx.call()));
 	}
 
 	@Override
