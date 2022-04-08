@@ -6,7 +6,12 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public record BaseExpNode(Node exp) implements Node {
+public class BaseExpNode implements Node {
+	private final Node exp;
+
+	public BaseExpNode(Node exp) {
+		this.exp = exp;
+	}
 
 	@Override
 	public String toPrint(String indent) {

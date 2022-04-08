@@ -6,7 +6,13 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public record NotExpNode(Node exp) implements Node {
+public class NotExpNode implements Node {
+
+	private final Node exp;
+
+	public NotExpNode(Node exp) {
+		this.exp = exp;
+	}
 
 	@Override
 	public String toPrint(String indent) {

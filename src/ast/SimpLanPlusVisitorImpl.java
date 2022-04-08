@@ -139,6 +139,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	@Override
 	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
+		//TODO: Sarebbe concettualmente più corretto dividere binExp in due elementi, uno per le operazioni matematiche e uno per quelle logiche. DA DISCUTERE
 		Node left = visit(ctx.left);
 		String op = ctx.op.getText();
 		Node right = visit(ctx.right);
