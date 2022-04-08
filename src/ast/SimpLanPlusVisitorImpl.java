@@ -139,7 +139,10 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	@Override
 	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
-		return super.visitBinExp(ctx); //TODO
+		Node left = visit(ctx.left);
+		String op = ctx.op.getText();
+		Node right = visit(ctx.right);
+		return new BinExpNode(left,right,op);
 	}
 
 	@Override
