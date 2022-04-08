@@ -2,10 +2,7 @@ package ast;
 
 import ast.declarationNode.FunNode;
 import ast.declarationNode.VarNode;
-import ast.expNode.BaseExpNode;
-import ast.expNode.DerExpNode;
-import ast.expNode.NegExpNode;
-import ast.expNode.NotExpNode;
+import ast.expNode.*;
 import ast.statementNode.*;
 import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
@@ -152,7 +149,9 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	@Override
 	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
-		return super.visitValExp(ctx); //TODO
+		String valS = ctx.NUMBER().toString();
+		int val = Integer.parseInt(valS);
+		return new ValExpNode(val);
 	}
 
 	@Override
@@ -162,7 +161,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	@Override
 	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
-		return super.visitBoolExp(ctx); //TODO
+		return new BoolExpNode(ctx.BOOL().toString().equals("true"));
 	}
 
 	@Override
