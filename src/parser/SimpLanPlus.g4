@@ -19,8 +19,8 @@ decFun	    : (type | 'void') ID '(' (arg (',' arg)*)? ')' block ;
 
 decVar      : type ID ('=' exp)? ';' ;
 
-type        : 'int'
-            | 'bool';
+type        : INTEGER
+            | BOOLEAN;
 
 arg         : ('var')? type ID;
 
@@ -48,8 +48,11 @@ exp	    : '(' exp ')'				        #baseExp
 	    | BOOL                                              #boolExp
 	    | NUMBER					                        #valExp;
 
-
 // THIS IS THE LEXER INPUT
+
+//Types
+ INTEGER    : 'int' ;
+ BOOLEAN   : 'bool' ;
 
 //Booleans
 BOOL        : 'true'|'false';

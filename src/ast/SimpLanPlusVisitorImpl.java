@@ -4,11 +4,15 @@ import ast.declarationNode.FunNode;
 import ast.declarationNode.VarNode;
 import ast.expNode.*;
 import ast.statementNode.*;
+import ast.typeNode.BoolTypeNode;
+import ast.typeNode.IntTypeNode;
 import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
 
+// ctx potrebbe (non siamo sicuri) rappresentare un sottoalbero dell'albero con il nodo attuale come radice.
+// Da ragionare con balu o il professore (meglio balu).
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	@Override
@@ -130,7 +134,42 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	//Expressions
+	/**
+	 *
+	 * arg : ('var')? type ID;
+	 *
+	 * TODO: Chiedere al professore cosa intede per "passaggio per variabile".
+	 *       Noi conosciamo il passaggio per "copia" (creazione di una variabile distinta da quella originale) o
+	 *       "riferimento" (utilizzo dell'indirizzo in memoria della variabile)
+	 *
+	 * @return
+	 */
+	@Override
+	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
+
+		boolean byReference = ctx.children.get(0).toString().equals("var");
+		String ID = ctx.ID().getText();
+		Node type = visit(ctx.type());
+
+		return new ArgNode(type, ID, byReference);
+
+	 * Valutazione type rule
+	 * Valutazione della regola "type : INTEGER | BOOLEAN;"
+	 *
+	 * TODO: Ha senso avere due tipi diversi? Il prof li fa, ma potenzialmente basterebbe un typeNode
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorniamo un nodo del tipo presente nel contesto (ctx) in esame
+	 */
+	@Override
+	public Node visitType(SimpLanPlusParser.TypeContext ctx){
+		if (ctx.INTEGER() != null) return new IntTypeNode();
+		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
+		return null;
+
+	}
+    
+    	//Expressions
 
 	/**
 	 * exp : '(' exp ')' #baseExp
@@ -185,5 +224,4 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		int val = Integer.parseInt(valS);
 		return new ValExpNode(val);
 	}
-
 }
