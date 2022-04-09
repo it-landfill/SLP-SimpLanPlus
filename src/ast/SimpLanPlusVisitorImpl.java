@@ -2,6 +2,7 @@ package ast;
 
 import ast.declarationNode.FunNode;
 import ast.declarationNode.VarNode;
+import ast.expNode.*;
 import ast.statementNode.*;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.IntTypeNode;
@@ -166,5 +167,61 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
 		return null;
 
+	}
+    
+    	//Expressions
+
+	/**
+	 * exp : '(' exp ')' #baseExp
+	 *
+	 * @param ctx
+	 * @return
+	 */
+	@Override
+	public Node visitBaseExp(SimpLanPlusParser.BaseExpContext ctx) {
+		return new BaseExpNode(visit(ctx.exp()));
+	}
+
+	@Override
+	public Node visitNegExp(SimpLanPlusParser.NegExpContext ctx) {
+		return new NegExpNode(visit(ctx.exp()));
+	}
+
+	@Override
+	public Node visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
+		return new NotExpNode(visit(ctx.exp()));
+	}
+
+	@Override
+	public Node visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
+		return new DerExpNode(ctx.ID().toString());
+	}
+
+	@Override
+	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
+		// TODO: Sarebbe concettualmente più corretto dividere binExp in due elementi, uno per le operazioni matematiche e uno per quelle logiche. DA DISCUTERE
+		Node left = visit(ctx.left);
+		String op = ctx.op.getText();
+		Node right = visit(ctx.right);
+		return new BinExpNode(left, right, op);
+	}
+
+	@Override
+	public Node visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
+		//FIXME: Serve veramente la classe CallExpNode o potrei fare direttamente una return visit...
+		return new CallExpNode(visit(ctx.call()));
+	}
+
+	@Override
+	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
+		String val = ctx.BOOL().toString();
+		return new BoolExpNode(val.equals("true"));
+	}
+
+	@Override
+	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
+		String valS = ctx.NUMBER().toString();
+		int val = Integer.parseInt(valS);
+		return new ValExpNode(val);
 	}
 }

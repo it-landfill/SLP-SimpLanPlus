@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class BlockNode implements Node {
 
-	private ArrayList<Node> declarationList;
-	private ArrayList<Node> statementList;
+	private final ArrayList<Node> declarationList;
+	private final ArrayList<Node> statementList;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements) {
 		declarationList = declarations;
@@ -22,13 +22,13 @@ public class BlockNode implements Node {
 		StringBuilder declStr = new StringBuilder();
 		StringBuilder statStr = new StringBuilder();
 
-		for (Node dec:declarationList)
+		for (Node dec : declarationList)
 			declStr.append(dec.toPrint(indent + "  "));
 
-		for (Node dec:statementList)
+		for (Node dec : statementList)
 			statStr.append(dec.toPrint(indent + "  "));
 
-		return indent+"\nBlock\n\t"+declStr+"\t"+statStr;
+		return indent + "\nBlock\n\t" + declStr + "\t" + statStr;
 	}
 
 	@Override
