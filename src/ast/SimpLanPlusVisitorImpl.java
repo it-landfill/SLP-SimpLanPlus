@@ -10,6 +10,8 @@ import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
 
+// ctx potrebbe (non siamo sicuri) rappresentare un sottoalbero dell'albero con il nodo attuale come radice.
+// Da ragionare con balu o il professore (meglio balu).
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	@Override
@@ -131,10 +133,17 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	//Types
+	/**
+	 * Valutazione type rule
+	 * Valutazione della regola "type : INTEGER | BOOLEAN;"
+	 *
+	 * TODO: Ha senso avere due tipi diversi? Il prof li fa, ma potenzialmente basterebbe un typeNode
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorniamo un nodo del tipo presente nel contesto (ctx) in esame
+	 */
 	@Override
-	public Node visitType(SimpLanPlusParser.TypeContext ctx) {
-		//TODO: Ha senso avere due tipi diversi? Il prof li fa ma potenzialmente basterebbe un typeNode
+	public Node visitType(SimpLanPlusParser.TypeContext ctx){
 		if (ctx.INTEGER() != null) return new IntTypeNode();
 		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
 		return null;
