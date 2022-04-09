@@ -129,11 +129,20 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	//Args
+	/**
+	 *
+	 * arg : ('var')? type ID;
+	 *
+	 * TODO: Chiedere al professore cosa intede per "passaggio per variabile".
+	 *       Noi conosciamo il passaggio per "copia" (creazione di una variabile distinta da quella originale) o
+	 *       "riferimento" (utilizzo dell'indirizzo in memoria della variabile)
+	 *
+	 * @return
+	 */
 	@Override
 	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
 
-		boolean byReference = ctx.children.get(0).toString().equals("var"); //TODO: Gestire questo caso
+		boolean byReference = ctx.children.get(0).toString().equals("var");
 		String ID = ctx.ID().getText();
 		Node type = visit(ctx.type());
 
