@@ -134,6 +134,24 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	}
 
 	/**
+	 *
+	 * arg : ('var')? type ID;
+	 *
+	 * TODO: Chiedere al professore cosa intede per "passaggio per variabile".
+	 *       Noi conosciamo il passaggio per "copia" (creazione di una variabile distinta da quella originale) o
+	 *       "riferimento" (utilizzo dell'indirizzo in memoria della variabile)
+	 *
+	 * @return
+	 */
+	@Override
+	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
+
+		boolean byReference = ctx.children.get(0).toString().equals("var");
+		String ID = ctx.ID().getText();
+		Node type = visit(ctx.type());
+
+		return new ArgNode(type, ID, byReference);
+
 	 * Valutazione type rule
 	 * Valutazione della regola "type : INTEGER | BOOLEAN;"
 	 *
@@ -147,5 +165,6 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		if (ctx.INTEGER() != null) return new IntTypeNode();
 		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
 		return null;
+
 	}
 }
