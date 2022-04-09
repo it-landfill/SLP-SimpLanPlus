@@ -32,46 +32,6 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new BlockNode(declarations, statements);
 	}
 
-	// Declarations
-	@Override
-	public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
-		if (ctx.decFun() != null) return visit(ctx.decFun());
-		if (ctx.decVar() != null) return visit(ctx.decVar());
-
-		//Non dovrei mai arrivare qui
-		return null;
-	}
-
-	@Override
-	public Node visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
-		Node type = visit(ctx.type());
-		String ID = ctx.ID().getText();
-		if (ctx.exp() != null) {
-			Node exp = visit(ctx.exp());
-			return new VarNode(ID, type, exp);
-		}
-		return new VarNode(ID, type);
-	}
-
-	@Override
-	public Node visitDecFun(SimpLanPlusParser.DecFunContext ctx) {
-		String ID = ctx.ID().getText();
-		Node retType = null;
-		Node block = visit(ctx.block());
-		ArrayList<Node> args = null;
-
-		if (ctx.type() != null) retType = visit(ctx.type());
-
-		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
-			args = new ArrayList<>();
-			for (SimpLanPlusParser.ArgContext arg : ctx.arg()) {
-				args.add(visit(arg));
-			}
-		}
-
-		return new FunNode(retType, ID, args, block);
-	}
-
 	// Statements
 	@Override
 	public Node visitStatement(SimpLanPlusParser.StatementContext ctx) {
@@ -134,23 +94,44 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	/**
-	 * arg : ('var')? type ID;
-	 * <p>
-	 * TODO: Chiedere al professore cosa intede per "passaggio per variabile".
-	 *       Noi conosciamo il passaggio per "copia" (creazione di una variabile distinta da quella originale) o
-	 *       "riferimento" (utilizzo dell'indirizzo in memoria della variabile)
-	 *
-	 * @return
-	 */
+	// Declarations
 	@Override
-	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
+	public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
+		if (ctx.decFun() != null) return visit(ctx.decFun());
+		if (ctx.decVar() != null) return visit(ctx.decVar());
 
-		boolean byReference = ctx.children.get(0).toString().equals("var");
+		//Non dovrei mai arrivare qui
+		return null;
+	}
+
+	@Override
+	public Node visitDecFun(SimpLanPlusParser.DecFunContext ctx) {
 		String ID = ctx.ID().getText();
-		Node type = visit(ctx.type());
+		Node retType = null;
+		Node block = visit(ctx.block());
+		ArrayList<Node> args = null;
 
-		return new ArgNode(type, ID, byReference);
+		if (ctx.type() != null) retType = visit(ctx.type());
+
+		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
+			args = new ArrayList<>();
+			for (SimpLanPlusParser.ArgContext arg : ctx.arg()) {
+				args.add(visit(arg));
+			}
+		}
+
+		return new FunNode(retType, ID, args, block);
+	}
+
+	@Override
+	public Node visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
+		Node type = visit(ctx.type());
+		String ID = ctx.ID().getText();
+		if (ctx.exp() != null) {
+			Node exp = visit(ctx.exp());
+			return new VarNode(ID, type, exp);
+		}
+		return new VarNode(ID, type);
 	}
 
 	/*
@@ -168,6 +149,25 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
 		return null;
 
+	}
+
+	/**
+	 * arg : ('var')? type ID;
+	 * <p>
+	 * TODO: Chiedere al professore cosa intede per "passaggio per variabile".
+	 *       Noi conosciamo il passaggio per "copia" (creazione di una variabile distinta da quella originale) o
+	 *       "riferimento" (utilizzo dell'indirizzo in memoria della variabile)
+	 *
+	 * @return
+	 */
+	@Override
+	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
+
+		boolean byReference = ctx.children.get(0).toString().equals("var");
+		String ID = ctx.ID().getText();
+		Node type = visit(ctx.type());
+
+		return new ArgNode(type, ID, byReference);
 	}
 
 	//Expressions
