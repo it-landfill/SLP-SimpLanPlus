@@ -3,12 +3,15 @@ package ast;
 import ast.declarationNode.FunNode;
 import ast.declarationNode.VarNode;
 import ast.statementNode.*;
+import ast.typeNode.BoolTypeNode;
+import ast.typeNode.IntTypeNode;
 import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
+// ctx potrebbe (non siamo sicuri) rappresentare un sottoalbero dell'albero con il nodo attuale come radice.
+// Da ragionare con balu o il professore (meglio balu).
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	@Override
@@ -17,11 +20,11 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		ArrayList<Node> statements = new ArrayList<>();
 
 
-		for(SimpLanPlusParser.DeclarationContext dc: ctx.declaration()){
+		for (SimpLanPlusParser.DeclarationContext dc : ctx.declaration()) {
 			declarations.add(visit(dc));
 		}
 
-		for(SimpLanPlusParser.StatementContext sc: ctx.statement()){
+		for (SimpLanPlusParser.StatementContext sc : ctx.statement()) {
 			statements.add(visit(sc));
 		}
 
@@ -58,9 +61,9 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 		if (ctx.type() != null) retType = visit(ctx.type());
 
-		if (ctx.arg() != null && !ctx.arg().isEmpty()){
+		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
 			args = new ArrayList<>();
-			for(SimpLanPlusParser.ArgContext arg: ctx.arg()){
+			for (SimpLanPlusParser.ArgContext arg : ctx.arg()) {
 				args.add(visit(arg));
 			}
 		}
@@ -86,7 +89,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	public Node visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
 		String ID = ctx.ID().getText();
 		Node exp = visit(ctx.exp());
-		return new AssignmentNode(ID,exp);
+		return new AssignmentNode(ID, exp);
 	}
 
 	@Override
@@ -108,18 +111,18 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	public Node visitIte(SimpLanPlusParser.IteContext ctx) {
 		Node cond = visit(ctx.exp());
 		Node ifT = visit(ctx.statement().get(0));
-		if(ctx.statement().size()==2) {
+		if (ctx.statement().size() == 2) {
 			Node ifF = visit(ctx.statement().get(1));
-			return new ITENode(cond,ifT,ifF);
+			return new ITENode(cond, ifT, ifF);
 		}
-		return new ITENode(cond,ifT);
+		return new ITENode(cond, ifT);
 	}
 
 	@Override
 	public Node visitCall(SimpLanPlusParser.CallContext ctx) {
 		String ID = ctx.ID().getText();
 
-		if(ctx.exp() != null && !ctx.exp().isEmpty()) {
+		if (ctx.exp() != null && !ctx.exp().isEmpty()) {
 			ArrayList<Node> params = new ArrayList<>();
 			for (SimpLanPlusParser.ExpContext exp : ctx.exp()) {
 				params.add(visit(exp));
@@ -130,6 +133,19 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	
-
+	/**
+	 * Valutazione type rule
+	 * Valutazione della regola "type : INTEGER | BOOLEAN;"
+	 *
+	 * TODO: Ha senso avere due tipi diversi? Il prof li fa, ma potenzialmente basterebbe un typeNode
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorniamo un nodo del tipo presente nel contesto (ctx) in esame
+	 */
+	@Override
+	public Node visitType(SimpLanPlusParser.TypeContext ctx){
+		if (ctx.INTEGER() != null) return new IntTypeNode();
+		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
+		return null;
+	}
 }

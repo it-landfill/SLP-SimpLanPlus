@@ -1,5 +1,5 @@
 {
-    int a;
+    bool a;
     int b = 5;
     a = 8;
     b = a;
