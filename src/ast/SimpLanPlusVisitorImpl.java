@@ -8,7 +8,6 @@ import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
@@ -18,11 +17,11 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		ArrayList<Node> statements = new ArrayList<>();
 
 
-		for(SimpLanPlusParser.DeclarationContext dc: ctx.declaration()){
+		for (SimpLanPlusParser.DeclarationContext dc : ctx.declaration()) {
 			declarations.add(visit(dc));
 		}
 
-		for(SimpLanPlusParser.StatementContext sc: ctx.statement()){
+		for (SimpLanPlusParser.StatementContext sc : ctx.statement()) {
 			statements.add(visit(sc));
 		}
 
@@ -59,9 +58,9 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 		if (ctx.type() != null) retType = visit(ctx.type());
 
-		if (ctx.arg() != null && !ctx.arg().isEmpty()){
+		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
 			args = new ArrayList<>();
-			for(SimpLanPlusParser.ArgContext arg: ctx.arg()){
+			for (SimpLanPlusParser.ArgContext arg : ctx.arg()) {
 				args.add(visit(arg));
 			}
 		}
@@ -87,7 +86,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	public Node visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
 		String ID = ctx.ID().getText();
 		Node exp = visit(ctx.exp());
-		return new AssignmentNode(ID,exp);
+		return new AssignmentNode(ID, exp);
 	}
 
 	@Override
@@ -109,18 +108,18 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	public Node visitIte(SimpLanPlusParser.IteContext ctx) {
 		Node cond = visit(ctx.exp());
 		Node ifT = visit(ctx.statement().get(0));
-		if(ctx.statement().size()==2) {
+		if (ctx.statement().size() == 2) {
 			Node ifF = visit(ctx.statement().get(1));
-			return new ITENode(cond,ifT,ifF);
+			return new ITENode(cond, ifT, ifF);
 		}
-		return new ITENode(cond,ifT);
+		return new ITENode(cond, ifT);
 	}
 
 	@Override
 	public Node visitCall(SimpLanPlusParser.CallContext ctx) {
 		String ID = ctx.ID().getText();
 
-		if(ctx.exp() != null && !ctx.exp().isEmpty()) {
+		if (ctx.exp() != null && !ctx.exp().isEmpty()) {
 			ArrayList<Node> params = new ArrayList<>();
 			for (SimpLanPlusParser.ExpContext exp : ctx.exp()) {
 				params.add(visit(exp));
@@ -131,31 +130,17 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
-	//Exoressions
+	//Expressions
+
+	/**
+	 * exp : '(' exp ')' #baseExp
+	 *
+	 * @param ctx
+	 * @return
+	 */
 	@Override
 	public Node visitBaseExp(SimpLanPlusParser.BaseExpContext ctx) {
 		return new BaseExpNode(visit(ctx.exp()));
-	}
-
-	@Override
-	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
-		//TODO: Sarebbe concettualmente più corretto dividere binExp in due elementi, uno per le operazioni matematiche e uno per quelle logiche. DA DISCUTERE
-		Node left = visit(ctx.left);
-		String op = ctx.op.getText();
-		Node right = visit(ctx.right);
-		return new BinExpNode(left,right,op);
-	}
-
-	@Override
-	public Node visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
-		return new DerExpNode(ctx.ID().toString());
-	}
-
-	@Override
-	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
-		String valS = ctx.NUMBER().toString();
-		int val = Integer.parseInt(valS);
-		return new ValExpNode(val);
 	}
 
 	@Override
@@ -164,8 +149,22 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	}
 
 	@Override
-	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
-		return new BoolExpNode(ctx.BOOL().toString().equals("true"));
+	public Node visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
+		return new NotExpNode(visit(ctx.exp()));
+	}
+
+	@Override
+	public Node visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
+		return new DerExpNode(ctx.ID().toString());
+	}
+
+	@Override
+	public Node visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
+		// TODO: Sarebbe concettualmente più corretto dividere binExp in due elementi, uno per le operazioni matematiche e uno per quelle logiche. DA DISCUTERE
+		Node left = visit(ctx.left);
+		String op = ctx.op.getText();
+		Node right = visit(ctx.right);
+		return new BinExpNode(left, right, op);
 	}
 
 	@Override
@@ -175,7 +174,16 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	}
 
 	@Override
-	public Node visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
-		return new NotExpNode(visit(ctx.exp()));
+	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
+		String val = ctx.BOOL().toString();
+		return new BoolExpNode(val.equals("true"));
 	}
+
+	@Override
+	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
+		String valS = ctx.NUMBER().toString();
+		int val = Integer.parseInt(valS);
+		return new ValExpNode(val);
+	}
+
 }
