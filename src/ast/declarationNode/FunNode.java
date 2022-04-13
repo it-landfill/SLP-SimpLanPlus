@@ -63,6 +63,9 @@ public class FunNode implements Node {
 		if (returnType != null) entry = new STentry(env.nestingLevel, returnType, env.offset);
 		else entry = new STentry(env.nestingLevel, env.offset);
 
+		if (params != null) entry.setnArgs(params.size());
+		else entry.setnArgs(0);
+
 		//TODO: Check nested functions
 
 		// Se da errore la funzione esiste già

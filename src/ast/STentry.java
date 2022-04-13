@@ -2,19 +2,30 @@ package ast;
 
 public class STentry {
 
-	private int nl;     // Nesting Level
+	private final int nl;     // Nesting Level
 	private Node type;  // Tipo della variabile?
 	private int offset; // "sarà utile per l'interprete"
+	private int nArgs;
 
 	public STentry(int n, int os) {
 		nl = n;
 		offset = os;
+		nArgs = -1;
 	}
 
 	public STentry(int n, Node t, int os) {
 		nl = n;
 		type = t;
 		offset = os;
+		nArgs = -1;
+	}
+
+	public int getnArgs() {
+		return nArgs;
+	}
+
+	public void setnArgs(int nArgs) {
+		this.nArgs = nArgs;
 	}
 
 	public void addType(Node t) {
