@@ -1,10 +1,12 @@
 package ast.declarationNode;
 
 import ast.Node;
+import ast.STentry;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FunNode implements Node {
 	private final Node returnType;
@@ -53,6 +55,38 @@ public class FunNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return null;
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
+		STentry entry;
+
+		if (returnType != null) entry = new STentry(env.nestingLevel, returnType, env.offset);
+		else entry = new STentry(env.nestingLevel, env.offset);
+
+		//TODO: Check nested functions
+
+		// Se da errore la funzione esiste già
+		if (hm.put(funcName, entry) != null) errors.add(new SemanticError("Fun id " + funcName + " already declared"));
+
+		env.nestingLevel++;
+		hm = new HashMap<>();
+		env.symTable.add(hm);
+
+		// Controllo gli argomenti
+		if (params != null) {
+			for (Node a : params) {
+				errors.addAll(a.checkSemantics(env));
+			}
+		}
+
+		// Controllo il corpo
+		if (block != null) {
+			errors.addAll(block.checkSemantics(env));
+		}
+
+		env.symTable.remove(env.nestingLevel);
+		env.nestingLevel--;
+
+		return errors;
 	}
 }
