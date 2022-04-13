@@ -43,6 +43,12 @@ public class ITENode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return null;
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		errors.addAll(condition.checkSemantics(env));
+		errors.addAll(ifTrue.checkSemantics(env));
+		if (ifFalse != null) errors.addAll(ifFalse.checkSemantics(env));
+
+		return errors;
 	}
 }
