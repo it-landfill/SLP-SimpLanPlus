@@ -1,8 +1,11 @@
+// Funzione ricorsiva per la stampa della somma dei primi n numeri.
 {
-    bool a;
-    int b = 5;
-    a = 8;
-    b = a;
-    print false;
-    print 5+4;
+    int addNumbers(int n) {
+      if (n != 0) return n + addNumbers(n - 1);
+      else return n;
+    }
+
+  int num = 10;
+  int result = addNumbers(num);
+  print(result);
 }
