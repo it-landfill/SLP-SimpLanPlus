@@ -77,6 +77,6 @@ public class STentry {
 			idEntry = hm.getOrDefault(entryName,null);
 		}
 
-		return nl;
+		return nl+1;
 	}
 }  

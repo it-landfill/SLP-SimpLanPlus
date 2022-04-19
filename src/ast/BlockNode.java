@@ -53,11 +53,11 @@ public class BlockNode implements Node {
 		env.symTable.add(hm);
 
 		if (declarationList != null) {
-			for (Node n: declarationList) errors.addAll(n.checkSemantics(env));
+			for (Node n: declarationList) if (n != null) errors.addAll(n.checkSemantics(env));
 		}
 
 		if (statementList != null) {
-			for (Node n: statementList) errors.addAll(n.checkSemantics(env));
+			for (Node n: statementList) if (n != null)  errors.addAll(n.checkSemantics(env));
 		}
 
 		env.symTable.remove(env.nestingLevel);

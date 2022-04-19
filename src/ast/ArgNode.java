@@ -16,6 +16,18 @@ public class ArgNode implements Node {
 		this.byReference = byReference;
 	}
 
+	public Node getType() {
+		return type;
+	}
+
+	public String getArgName() {
+		return argName;
+	}
+
+	public boolean isByReference() {
+		return byReference;
+	}
+
 	@Override
 	public String toPrint(String indent) {
 		return indent + "arg: " + type.toPrint(indent) + argName + " by reference: " + byReference;
