@@ -57,23 +57,33 @@ public class FunNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
+		//Gestisco il caso delle funzioni nested
+		if (env.baseFun != null) {
+			errors.add(new SemanticError("Functions can not be nested.\tYou are declaring function " + funcName + "inside the body of function " + env.baseFun + ", this is not allowed."));
+			return errors;
+		}
+
 		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
 		STentry entry;
 
+		// Genero la entry per la symbol table
 		if (returnType != null) entry = new STentry(env.nestingLevel, returnType, env.offset);
 		else entry = new STentry(env.nestingLevel, env.offset);
 
+		// Se la funzione ha parametri formali, salvo il numero di questi
 		if (params != null) entry.setnArgs(params.size());
 		else entry.setnArgs(0);
 
-		//TODO: Check nested functions
-
 		// Se da errore la funzione esiste già
-		if (hm.put(funcName, entry) != null) errors.add(new SemanticError("Fun id " + funcName + " already declared"));
+		if (hm.put(funcName, entry) != null) {
+			errors.add(new SemanticError("Fun id " + funcName + " already declared"));
+			return errors;
+		}
 
 		env.nestingLevel++;
 		hm = new HashMap<>();
 		env.symTable.add(hm);
+		env.baseFun = funcName;
 
 		// Controllo gli argomenti
 		if (params != null) {
@@ -87,6 +97,7 @@ public class FunNode implements Node {
 			errors.addAll(block.checkSemantics(env));
 		}
 
+		env.baseFun = null;
 		env.symTable.remove(env.nestingLevel);
 		env.nestingLevel--;
 
