@@ -90,19 +90,19 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBaseExp(SimpLanPlusParser.BaseExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code binExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBinExp(SimpLanPlusParser.BinExpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code derExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDerExp(SimpLanPlusParser.DerExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code logicExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicExp(SimpLanPlusParser.LogicExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code valExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
@@ -131,6 +131,13 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCallExp(SimpLanPlusParser.CallExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code arithmExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArithmExp(SimpLanPlusParser.ArithmExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code notExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.

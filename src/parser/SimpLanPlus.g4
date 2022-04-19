@@ -2,57 +2,87 @@ grammar SimpLanPlus;
 
 // THIS IS THE PARSER INPUT
 
-block	    : '{' declaration* statement* '}';
+block	    : LCPAR declaration* statement* RCPAR;
 
-statement   : assignment ';'
-	    | print ';'
-	    | ret ';'
-	    | ite
-	    | call ';'
-	    | block;
-
+statement   : assignment SEMIC
+            | print SEMIC
+            | ret SEMIC
+            | ite
+            | call SEMIC
+            | block;
 
 declaration : decFun
             | decVar ;
 
-decFun	    : (type | 'void') ID '(' (arg (',' arg)*)? ')' block ;
+decFun	    : (type | VOID) ID LPAR (arg (COMMA arg)*)? RPAR block ;
 
-decVar      : type ID ('=' exp)? ';' ;
+decVar      : type ID (ASSIGN exp)? SEMIC ;
 
 type        : INTEGER
             | BOOLEAN;
 
-arg         : ('var')? type ID;
+arg         : (VAR)? type ID;
 
-assignment  : ID '=' exp ;
+assignment  : ID ASSIGN exp ;
 
-print	    : 'print' exp;
+print	    : PRINT exp;
 
-ret	    : 'return' (exp)?;
+ret	    : RETURN (exp)?;
 
-ite         : 'if' '(' exp ')' statement ('else' statement)?;
+ite         : IF LPAR exp RPAR statement (ELSE statement)?;
 
-call        : ID '(' (exp(',' exp)*)? ')';
+call        : ID LPAR (exp(COMMA exp)*)? RPAR;
 
-exp	    : '(' exp ')'				        #baseExp
-	    | '-' exp					        #negExp
-	    | '!' exp                           #notExp
-	    | ID						        #derExp
-	    | left=exp op=('*' | '/')               right=exp   #binExp
-	    | left=exp op=('+' | '-')               right=exp   #binExp
-	    | left=exp op=('<' | '<=' | '>' | '>=') right=exp   #binExp
-	    | left=exp op=('=='| '!=')              right=exp   #binExp
-	    | left=exp op='&&'                      right=exp   #binExp
-	    | left=exp op='||'                      right=exp   #binExp
+exp	    : LPAR exp RPAR				                        #baseExp
+	    | MINUS exp					                        #negExp
+	    | NOT exp                                           #notExp
+	    | ID						                        #derExp
+	    | left=exp op=(PROD | DIV)              right=exp   #arithmExp
+	    | left=exp op=(PLUS | MINUS)            right=exp   #arithmExp
+	    | left=exp op=(LT | LTE | GT | GTE)     right=exp   #logicExp
+	    | left=exp op=(EQ| NEQ)                 right=exp   #logicExp
+	    | left=exp op=AND                       right=exp   #logicExp
+	    | left=exp op=OR                        right=exp   #logicExp
 	    | call                                              #callExp
 	    | BOOL                                              #boolExp
 	    | NUMBER					                        #valExp;
 
 // THIS IS THE LEXER INPUT
+//Keywords
+VOID: 'void';
+IF: 'if';
+ELSE: 'else';
+VAR: 'var';
+RETURN: 'return';
+PRINT: 'print';
+
+//Characters
+LPAR: '(';
+RPAR: ')';
+LCPAR: '{';
+RCPAR: '}';
+COMMA: ',';
+SEMIC: ';';
+
+//Operators
+ASSIGN: '=';
+NOT: '!';
+PROD: '*';
+DIV: '/';
+PLUS: '+';
+MINUS: '-';
+LT: '<';
+GT: '>';
+LTE: '<=';
+GTE:  '>=';
+EQ: '==';
+NEQ: NOT '=';
+AND: '&&';
+OR: '||';
 
 //Types
- INTEGER    : 'int' ;
- BOOLEAN   : 'bool' ;
+INTEGER    : 'int' ;
+BOOLEAN   : 'bool' ;
 
 //Booleans
 BOOL        : 'true'|'false';
