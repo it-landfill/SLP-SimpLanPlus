@@ -1,9 +1,17 @@
-// Funzione Pari/Dispari
+// Funzione ricorsiva per la valutazione del valore pari/dispari
 {
-    bool a;
-    int b = 5;
-    a = 8;
-    b = a;
-    print false;
-    print 5+4;
+    bool isEven (int value){
+        if( value == 0){
+            return true;
+        } else {
+            if (value == 1){
+                return false;
+            } else {
+                return isEven(value - 2);
+            }
+        }
+    }
+
+    int num = 10;
+    print (isEven(num));
 }
