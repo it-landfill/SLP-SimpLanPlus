@@ -6,12 +6,12 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class BinExpNode implements Node {
+public class ArithmExpNode implements Node {
 	private final Node left;
 	private final Node right;
 	private final String op;
 
-	public BinExpNode(Node left, Node right, String op) {
+	public ArithmExpNode(Node left, Node right, String op) {
 		this.left = left;
 		this.right = right;
 		this.op = op;
@@ -19,7 +19,7 @@ public class BinExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "BinExp: " + left + op + right;
+		return indent + "AritmExp: " + left + op + right;
 	}
 
 	@Override
