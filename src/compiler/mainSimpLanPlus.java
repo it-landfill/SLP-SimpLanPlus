@@ -43,9 +43,10 @@ public class mainSimpLanPlus {
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
 
 		if(err != null && err.size()>0){
-			System.out.println("You had: " +err.size()+" errors:");
+			System.out.println("You had " +err.size()+" errors:");
 			for(SemanticError e : err)
 				System.out.println("\t" + e);
 		}
+
 	}
 }

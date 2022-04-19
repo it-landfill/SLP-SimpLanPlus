@@ -19,6 +19,9 @@ public class Environment {
 	// Non si sa bene la sua utilità.
 	public int offset = 0;
 
+	// Tiene traccia della funzione di cui stiamo analizzando il body
+	public String baseFun = null;
+
 	public HashMap<String, STentry> getCurrentLevelSymTable() {
 		return symTable.get(nestingLevel);
 	}
