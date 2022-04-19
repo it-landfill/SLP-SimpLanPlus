@@ -1,17 +1,18 @@
 // Funzione ricorsiva per la valutazione del valore pari/dispari
 {
+    7
     bool isEven (int value){
         if( value == 0){
-            return true;
+            retun true;                    // Typo del ritorno verrà rilevato
         } else {
-            if (value == 1){
+            if (value === 1){
                 return false;
             } else {
-                return isEven(value - 2);
+                return isEvens(value - 2); // Typo dell'ID non verrà rilevato
             }
         }
     }
 
-    int num = 10;
+    bool num = 10a;          // L'errore di tipo non verrà rilevato
     print (isEven(num));
 }
