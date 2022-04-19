@@ -17,11 +17,11 @@ public class SimpLanPlusParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		T__24=25, T__25=26, INTEGER=27, BOOLEAN=28, BOOL=29, ID=30, NUMBER=31, 
-		WS=32, LINECOMMENTS=33, BLOCKCOMMENTS=34;
+		VOID=1, IF=2, ELSE=3, VAR=4, RETURN=5, PRINT=6, LPAR=7, RPAR=8, LCPAR=9, 
+		RCPAR=10, COMMA=11, SEMIC=12, ASSIGN=13, NOT=14, PROD=15, DIV=16, PLUS=17, 
+		MINUS=18, LT=19, GT=20, LTE=21, GTE=22, EQ=23, NEQ=24, AND=25, OR=26, 
+		INTEGER=27, BOOLEAN=28, BOOL=29, ID=30, NUMBER=31, WS=32, LINECOMMENTS=33, 
+		BLOCKCOMMENTS=34;
 	public static final int
 		RULE_block = 0, RULE_statement = 1, RULE_declaration = 2, RULE_decFun = 3, 
 		RULE_decVar = 4, RULE_type = 5, RULE_arg = 6, RULE_assignment = 7, RULE_print = 8, 
@@ -36,19 +36,19 @@ public class SimpLanPlusParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'{'", "'}'", "';'", "'void'", "'('", "','", "')'", "'='", "'var'", 
-			"'print'", "'return'", "'if'", "'else'", "'-'", "'!'", "'*'", "'/'", 
-			"'+'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'&&'", "'||'", 
-			"'int'", "'bool'"
+			null, "'void'", "'if'", "'else'", "'var'", "'return'", "'print'", "'('", 
+			"')'", "'{'", "'}'", "','", "';'", "'='", "'!'", "'*'", "'/'", "'+'", 
+			"'-'", "'<'", "'>'", "'<='", "'>='", "'=='", null, "'&&'", "'||'", "'int'", 
+			"'bool'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, "INTEGER", "BOOLEAN", "BOOL", "ID", "NUMBER", "WS", 
-			"LINECOMMENTS", "BLOCKCOMMENTS"
+			null, "VOID", "IF", "ELSE", "VAR", "RETURN", "PRINT", "LPAR", "RPAR", 
+			"LCPAR", "RCPAR", "COMMA", "SEMIC", "ASSIGN", "NOT", "PROD", "DIV", "PLUS", 
+			"MINUS", "LT", "GT", "LTE", "GTE", "EQ", "NEQ", "AND", "OR", "INTEGER", 
+			"BOOLEAN", "BOOL", "ID", "NUMBER", "WS", "LINECOMMENTS", "BLOCKCOMMENTS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -103,6 +103,8 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class BlockContext extends ParserRuleContext {
+		public TerminalNode LCPAR() { return getToken(SimpLanPlusParser.LCPAR, 0); }
+		public TerminalNode RCPAR() { return getToken(SimpLanPlusParser.RCPAR, 0); }
 		public List<DeclarationContext> declaration() {
 			return getRuleContexts(DeclarationContext.class);
 		}
@@ -142,11 +144,11 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(26);
-			match(T__0);
+			match(LCPAR);
 			setState(30);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VOID) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
 				{
 				{
 				setState(27);
@@ -160,7 +162,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(36);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << ID))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << RETURN) | (1L << PRINT) | (1L << LCPAR) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(33);
@@ -172,7 +174,7 @@ public class SimpLanPlusParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(39);
-			match(T__1);
+			match(RCPAR);
 			}
 		}
 		catch (RecognitionException re) {
@@ -190,6 +192,7 @@ public class SimpLanPlusParser extends Parser {
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
 		}
+		public TerminalNode SEMIC() { return getToken(SimpLanPlusParser.SEMIC, 0); }
 		public PrintContext print() {
 			return getRuleContext(PrintContext.class,0);
 		}
@@ -237,7 +240,7 @@ public class SimpLanPlusParser extends Parser {
 				setState(41);
 				assignment();
 				setState(42);
-				match(T__2);
+				match(SEMIC);
 				}
 				break;
 			case 2:
@@ -246,7 +249,7 @@ public class SimpLanPlusParser extends Parser {
 				setState(44);
 				print();
 				setState(45);
-				match(T__2);
+				match(SEMIC);
 				}
 				break;
 			case 3:
@@ -255,7 +258,7 @@ public class SimpLanPlusParser extends Parser {
 				setState(47);
 				ret();
 				setState(48);
-				match(T__2);
+				match(SEMIC);
 				}
 				break;
 			case 4:
@@ -271,7 +274,7 @@ public class SimpLanPlusParser extends Parser {
 				setState(51);
 				call();
 				setState(52);
-				match(T__2);
+				match(SEMIC);
 				}
 				break;
 			case 6:
@@ -356,17 +359,24 @@ public class SimpLanPlusParser extends Parser {
 
 	public static class DecFunContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
+		public TerminalNode LPAR() { return getToken(SimpLanPlusParser.LPAR, 0); }
+		public TerminalNode RPAR() { return getToken(SimpLanPlusParser.RPAR, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
 		}
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
+		public TerminalNode VOID() { return getToken(SimpLanPlusParser.VOID, 0); }
 		public List<ArgContext> arg() {
 			return getRuleContexts(ArgContext.class);
 		}
 		public ArgContext arg(int i) {
 			return getRuleContext(ArgContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(SimpLanPlusParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(SimpLanPlusParser.COMMA, i);
 		}
 		public DecFunContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -404,10 +414,10 @@ public class SimpLanPlusParser extends Parser {
 				type();
 				}
 				break;
-			case T__3:
+			case VOID:
 				{
 				setState(62);
-				match(T__3);
+				match(VOID);
 				}
 				break;
 			default:
@@ -416,22 +426,22 @@ public class SimpLanPlusParser extends Parser {
 			setState(65);
 			match(ID);
 			setState(66);
-			match(T__4);
+			match(LPAR);
 			setState(75);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
 				{
 				setState(67);
 				arg();
 				setState(72);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (_la==T__5) {
+				while (_la==COMMA) {
 					{
 					{
 					setState(68);
-					match(T__5);
+					match(COMMA);
 					setState(69);
 					arg();
 					}
@@ -444,7 +454,7 @@ public class SimpLanPlusParser extends Parser {
 			}
 
 			setState(77);
-			match(T__6);
+			match(RPAR);
 			setState(78);
 			block();
 			}
@@ -465,6 +475,8 @@ public class SimpLanPlusParser extends Parser {
 			return getRuleContext(TypeContext.class,0);
 		}
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
+		public TerminalNode SEMIC() { return getToken(SimpLanPlusParser.SEMIC, 0); }
+		public TerminalNode ASSIGN() { return getToken(SimpLanPlusParser.ASSIGN, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -501,17 +513,17 @@ public class SimpLanPlusParser extends Parser {
 			setState(84);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__7) {
+			if (_la==ASSIGN) {
 				{
 				setState(82);
-				match(T__7);
+				match(ASSIGN);
 				setState(83);
 				exp(0);
 				}
 			}
 
 			setState(86);
-			match(T__2);
+			match(SEMIC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -582,6 +594,7 @@ public class SimpLanPlusParser extends Parser {
 			return getRuleContext(TypeContext.class,0);
 		}
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
+		public TerminalNode VAR() { return getToken(SimpLanPlusParser.VAR, 0); }
 		public ArgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -611,10 +624,10 @@ public class SimpLanPlusParser extends Parser {
 			setState(91);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__8) {
+			if (_la==VAR) {
 				{
 				setState(90);
-				match(T__8);
+				match(VAR);
 				}
 			}
 
@@ -637,6 +650,7 @@ public class SimpLanPlusParser extends Parser {
 
 	public static class AssignmentContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
+		public TerminalNode ASSIGN() { return getToken(SimpLanPlusParser.ASSIGN, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -668,7 +682,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(96);
 			match(ID);
 			setState(97);
-			match(T__7);
+			match(ASSIGN);
 			setState(98);
 			exp(0);
 			}
@@ -685,6 +699,7 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class PrintContext extends ParserRuleContext {
+		public TerminalNode PRINT() { return getToken(SimpLanPlusParser.PRINT, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -714,7 +729,7 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(100);
-			match(T__9);
+			match(PRINT);
 			setState(101);
 			exp(0);
 			}
@@ -731,6 +746,7 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class RetContext extends ParserRuleContext {
+		public TerminalNode RETURN() { return getToken(SimpLanPlusParser.RETURN, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -761,11 +777,11 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(103);
-			match(T__10);
+			match(RETURN);
 			setState(105);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__13) | (1L << T__14) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LPAR) | (1L << NOT) | (1L << MINUS) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
 				{
 				setState(104);
 				exp(0);
@@ -786,15 +802,19 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class IteContext extends ParserRuleContext {
+		public TerminalNode IF() { return getToken(SimpLanPlusParser.IF, 0); }
+		public TerminalNode LPAR() { return getToken(SimpLanPlusParser.LPAR, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
+		public TerminalNode RPAR() { return getToken(SimpLanPlusParser.RPAR, 0); }
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
+		public TerminalNode ELSE() { return getToken(SimpLanPlusParser.ELSE, 0); }
 		public IteContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -821,13 +841,13 @@ public class SimpLanPlusParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(107);
-			match(T__11);
+			match(IF);
 			setState(108);
-			match(T__4);
+			match(LPAR);
 			setState(109);
 			exp(0);
 			setState(110);
-			match(T__6);
+			match(RPAR);
 			setState(111);
 			statement();
 			setState(114);
@@ -836,7 +856,7 @@ public class SimpLanPlusParser extends Parser {
 			case 1:
 				{
 				setState(112);
-				match(T__12);
+				match(ELSE);
 				setState(113);
 				statement();
 				}
@@ -857,11 +877,17 @@ public class SimpLanPlusParser extends Parser {
 
 	public static class CallContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
+		public TerminalNode LPAR() { return getToken(SimpLanPlusParser.LPAR, 0); }
+		public TerminalNode RPAR() { return getToken(SimpLanPlusParser.RPAR, 0); }
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
 		}
 		public ExpContext exp(int i) {
 			return getRuleContext(ExpContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(SimpLanPlusParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(SimpLanPlusParser.COMMA, i);
 		}
 		public CallContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -892,22 +918,22 @@ public class SimpLanPlusParser extends Parser {
 			setState(116);
 			match(ID);
 			setState(117);
-			match(T__4);
+			match(LPAR);
 			setState(126);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__13) | (1L << T__14) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LPAR) | (1L << NOT) | (1L << MINUS) | (1L << BOOL) | (1L << ID) | (1L << NUMBER))) != 0)) {
 				{
 				setState(118);
 				exp(0);
 				setState(123);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (_la==T__5) {
+				while (_la==COMMA) {
 					{
 					{
 					setState(119);
-					match(T__5);
+					match(COMMA);
 					setState(120);
 					exp(0);
 					}
@@ -920,7 +946,7 @@ public class SimpLanPlusParser extends Parser {
 			}
 
 			setState(128);
-			match(T__6);
+			match(RPAR);
 			}
 		}
 		catch (RecognitionException re) {
@@ -946,9 +972,11 @@ public class SimpLanPlusParser extends Parser {
 		}
 	}
 	public static class BaseExpContext extends ExpContext {
+		public TerminalNode LPAR() { return getToken(SimpLanPlusParser.LPAR, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
+		public TerminalNode RPAR() { return getToken(SimpLanPlusParser.RPAR, 0); }
 		public BaseExpContext(ExpContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -961,31 +989,6 @@ public class SimpLanPlusParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitBaseExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BinExpContext extends ExpContext {
-		public ExpContext left;
-		public Token op;
-		public ExpContext right;
-		public List<ExpContext> exp() {
-			return getRuleContexts(ExpContext.class);
-		}
-		public ExpContext exp(int i) {
-			return getRuleContext(ExpContext.class,i);
-		}
-		public BinExpContext(ExpContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).enterBinExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).exitBinExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitBinExp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1003,6 +1006,39 @@ public class SimpLanPlusParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitDerExp(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LogicExpContext extends ExpContext {
+		public ExpContext left;
+		public Token op;
+		public ExpContext right;
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public TerminalNode LT() { return getToken(SimpLanPlusParser.LT, 0); }
+		public TerminalNode LTE() { return getToken(SimpLanPlusParser.LTE, 0); }
+		public TerminalNode GT() { return getToken(SimpLanPlusParser.GT, 0); }
+		public TerminalNode GTE() { return getToken(SimpLanPlusParser.GTE, 0); }
+		public TerminalNode EQ() { return getToken(SimpLanPlusParser.EQ, 0); }
+		public TerminalNode NEQ() { return getToken(SimpLanPlusParser.NEQ, 0); }
+		public TerminalNode AND() { return getToken(SimpLanPlusParser.AND, 0); }
+		public TerminalNode OR() { return getToken(SimpLanPlusParser.OR, 0); }
+		public LogicExpContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).enterLogicExp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).exitLogicExp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitLogicExp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1024,6 +1060,7 @@ public class SimpLanPlusParser extends Parser {
 		}
 	}
 	public static class NegExpContext extends ExpContext {
+		public TerminalNode MINUS() { return getToken(SimpLanPlusParser.MINUS, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -1078,7 +1115,37 @@ public class SimpLanPlusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class ArithmExpContext extends ExpContext {
+		public ExpContext left;
+		public Token op;
+		public ExpContext right;
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public TerminalNode PROD() { return getToken(SimpLanPlusParser.PROD, 0); }
+		public TerminalNode DIV() { return getToken(SimpLanPlusParser.DIV, 0); }
+		public TerminalNode PLUS() { return getToken(SimpLanPlusParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(SimpLanPlusParser.MINUS, 0); }
+		public ArithmExpContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).enterArithmExp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).exitArithmExp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitArithmExp(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class NotExpContext extends ExpContext {
+		public TerminalNode NOT() { return getToken(SimpLanPlusParser.NOT, 0); }
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -1124,11 +1191,11 @@ public class SimpLanPlusParser extends Parser {
 				_prevctx = _localctx;
 
 				setState(131);
-				match(T__4);
+				match(LPAR);
 				setState(132);
 				exp(0);
 				setState(133);
-				match(T__6);
+				match(RPAR);
 				}
 				break;
 			case 2:
@@ -1137,7 +1204,7 @@ public class SimpLanPlusParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(135);
-				match(T__13);
+				match(MINUS);
 				setState(136);
 				exp(12);
 				}
@@ -1148,7 +1215,7 @@ public class SimpLanPlusParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(137);
-				match(T__14);
+				match(NOT);
 				setState(138);
 				exp(11);
 				}
@@ -1204,16 +1271,16 @@ public class SimpLanPlusParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 					case 1:
 						{
-						_localctx = new BinExpContext(new ExpContext(_parentctx, _parentState));
-						((BinExpContext)_localctx).left = _prevctx;
+						_localctx = new ArithmExpContext(new ExpContext(_parentctx, _parentState));
+						((ArithmExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(145);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
 						setState(146);
-						((BinExpContext)_localctx).op = _input.LT(1);
+						((ArithmExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__15 || _la==T__16) ) {
-							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !(_la==PROD || _la==DIV) ) {
+							((ArithmExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1221,21 +1288,21 @@ public class SimpLanPlusParser extends Parser {
 							consume();
 						}
 						setState(147);
-						((BinExpContext)_localctx).right = exp(10);
+						((ArithmExpContext)_localctx).right = exp(10);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new BinExpContext(new ExpContext(_parentctx, _parentState));
-						((BinExpContext)_localctx).left = _prevctx;
+						_localctx = new ArithmExpContext(new ExpContext(_parentctx, _parentState));
+						((ArithmExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(148);
 						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
 						setState(149);
-						((BinExpContext)_localctx).op = _input.LT(1);
+						((ArithmExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__13 || _la==T__17) ) {
-							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !(_la==PLUS || _la==MINUS) ) {
+							((ArithmExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1243,21 +1310,21 @@ public class SimpLanPlusParser extends Parser {
 							consume();
 						}
 						setState(150);
-						((BinExpContext)_localctx).right = exp(9);
+						((ArithmExpContext)_localctx).right = exp(9);
 						}
 						break;
 					case 3:
 						{
-						_localctx = new BinExpContext(new ExpContext(_parentctx, _parentState));
-						((BinExpContext)_localctx).left = _prevctx;
+						_localctx = new LogicExpContext(new ExpContext(_parentctx, _parentState));
+						((LogicExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(151);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
 						setState(152);
-						((BinExpContext)_localctx).op = _input.LT(1);
+						((LogicExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__18) | (1L << T__19) | (1L << T__20) | (1L << T__21))) != 0)) ) {
-							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LT) | (1L << GT) | (1L << LTE) | (1L << GTE))) != 0)) ) {
+							((LogicExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1265,21 +1332,21 @@ public class SimpLanPlusParser extends Parser {
 							consume();
 						}
 						setState(153);
-						((BinExpContext)_localctx).right = exp(8);
+						((LogicExpContext)_localctx).right = exp(8);
 						}
 						break;
 					case 4:
 						{
-						_localctx = new BinExpContext(new ExpContext(_parentctx, _parentState));
-						((BinExpContext)_localctx).left = _prevctx;
+						_localctx = new LogicExpContext(new ExpContext(_parentctx, _parentState));
+						((LogicExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(154);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(155);
-						((BinExpContext)_localctx).op = _input.LT(1);
+						((LogicExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__22 || _la==T__23) ) {
-							((BinExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !(_la==EQ || _la==NEQ) ) {
+							((LogicExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1287,33 +1354,33 @@ public class SimpLanPlusParser extends Parser {
 							consume();
 						}
 						setState(156);
-						((BinExpContext)_localctx).right = exp(7);
+						((LogicExpContext)_localctx).right = exp(7);
 						}
 						break;
 					case 5:
 						{
-						_localctx = new BinExpContext(new ExpContext(_parentctx, _parentState));
-						((BinExpContext)_localctx).left = _prevctx;
+						_localctx = new LogicExpContext(new ExpContext(_parentctx, _parentState));
+						((LogicExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(157);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(158);
-						((BinExpContext)_localctx).op = match(T__24);
+						((LogicExpContext)_localctx).op = match(AND);
 						setState(159);
-						((BinExpContext)_localctx).right = exp(6);
+						((LogicExpContext)_localctx).right = exp(6);
 						}
 						break;
 					case 6:
 						{
-						_localctx = new BinExpContext(new ExpContext(_parentctx, _parentState));
-						((BinExpContext)_localctx).left = _prevctx;
+						_localctx = new LogicExpContext(new ExpContext(_parentctx, _parentState));
+						((LogicExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(160);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
 						setState(161);
-						((BinExpContext)_localctx).op = match(T__25);
+						((LogicExpContext)_localctx).op = match(OR);
 						setState(162);
-						((BinExpContext)_localctx).right = exp(5);
+						((LogicExpContext)_localctx).right = exp(5);
 						}
 						break;
 					}
@@ -1374,32 +1441,32 @@ public class SimpLanPlusParser extends Parser {
 		"\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u0092"+
 		"\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
 		"\3\16\3\16\3\16\3\16\3\16\7\16\u00a6\n\16\f\16\16\16\u00a9\13\16\3\16"+
-		"\2\3\32\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2\35\36\3\2\22\23\4"+
-		"\2\20\20\24\24\3\2\25\30\3\2\31\32\2\u00ba\2\34\3\2\2\2\49\3\2\2\2\6="+
-		"\3\2\2\2\bA\3\2\2\2\nR\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20b\3\2\2\2\22f"+
-		"\3\2\2\2\24i\3\2\2\2\26m\3\2\2\2\30v\3\2\2\2\32\u0091\3\2\2\2\34 \7\3"+
-		"\2\2\35\37\5\6\4\2\36\35\3\2\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!&"+
-		"\3\2\2\2\" \3\2\2\2#%\5\4\3\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2"+
-		"\')\3\2\2\2(&\3\2\2\2)*\7\4\2\2*\3\3\2\2\2+,\5\20\t\2,-\7\5\2\2-:\3\2"+
-		"\2\2./\5\22\n\2/\60\7\5\2\2\60:\3\2\2\2\61\62\5\24\13\2\62\63\7\5\2\2"+
-		"\63:\3\2\2\2\64:\5\26\f\2\65\66\5\30\r\2\66\67\7\5\2\2\67:\3\2\2\28:\5"+
-		"\2\2\29+\3\2\2\29.\3\2\2\29\61\3\2\2\29\64\3\2\2\29\65\3\2\2\298\3\2\2"+
-		"\2:\5\3\2\2\2;>\5\b\5\2<>\5\n\6\2=;\3\2\2\2=<\3\2\2\2>\7\3\2\2\2?B\5\f"+
-		"\7\2@B\7\6\2\2A?\3\2\2\2A@\3\2\2\2BC\3\2\2\2CD\7 \2\2DM\7\7\2\2EJ\5\16"+
-		"\b\2FG\7\b\2\2GI\5\16\b\2HF\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3\2\2\2KN\3"+
-		"\2\2\2LJ\3\2\2\2ME\3\2\2\2MN\3\2\2\2NO\3\2\2\2OP\7\t\2\2PQ\5\2\2\2Q\t"+
-		"\3\2\2\2RS\5\f\7\2SV\7 \2\2TU\7\n\2\2UW\5\32\16\2VT\3\2\2\2VW\3\2\2\2"+
-		"WX\3\2\2\2XY\7\5\2\2Y\13\3\2\2\2Z[\t\2\2\2[\r\3\2\2\2\\^\7\13\2\2]\\\3"+
+		"\2\3\32\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2\35\36\3\2\21\22\3"+
+		"\2\23\24\3\2\25\30\3\2\31\32\2\u00ba\2\34\3\2\2\2\49\3\2\2\2\6=\3\2\2"+
+		"\2\bA\3\2\2\2\nR\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20b\3\2\2\2\22f\3\2\2"+
+		"\2\24i\3\2\2\2\26m\3\2\2\2\30v\3\2\2\2\32\u0091\3\2\2\2\34 \7\13\2\2\35"+
+		"\37\5\6\4\2\36\35\3\2\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!&\3\2\2\2"+
+		"\" \3\2\2\2#%\5\4\3\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\')\3\2"+
+		"\2\2(&\3\2\2\2)*\7\f\2\2*\3\3\2\2\2+,\5\20\t\2,-\7\16\2\2-:\3\2\2\2./"+
+		"\5\22\n\2/\60\7\16\2\2\60:\3\2\2\2\61\62\5\24\13\2\62\63\7\16\2\2\63:"+
+		"\3\2\2\2\64:\5\26\f\2\65\66\5\30\r\2\66\67\7\16\2\2\67:\3\2\2\28:\5\2"+
+		"\2\29+\3\2\2\29.\3\2\2\29\61\3\2\2\29\64\3\2\2\29\65\3\2\2\298\3\2\2\2"+
+		":\5\3\2\2\2;>\5\b\5\2<>\5\n\6\2=;\3\2\2\2=<\3\2\2\2>\7\3\2\2\2?B\5\f\7"+
+		"\2@B\7\3\2\2A?\3\2\2\2A@\3\2\2\2BC\3\2\2\2CD\7 \2\2DM\7\t\2\2EJ\5\16\b"+
+		"\2FG\7\r\2\2GI\5\16\b\2HF\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3\2\2\2KN\3\2"+
+		"\2\2LJ\3\2\2\2ME\3\2\2\2MN\3\2\2\2NO\3\2\2\2OP\7\n\2\2PQ\5\2\2\2Q\t\3"+
+		"\2\2\2RS\5\f\7\2SV\7 \2\2TU\7\17\2\2UW\5\32\16\2VT\3\2\2\2VW\3\2\2\2W"+
+		"X\3\2\2\2XY\7\16\2\2Y\13\3\2\2\2Z[\t\2\2\2[\r\3\2\2\2\\^\7\6\2\2]\\\3"+
 		"\2\2\2]^\3\2\2\2^_\3\2\2\2_`\5\f\7\2`a\7 \2\2a\17\3\2\2\2bc\7 \2\2cd\7"+
-		"\n\2\2de\5\32\16\2e\21\3\2\2\2fg\7\f\2\2gh\5\32\16\2h\23\3\2\2\2ik\7\r"+
-		"\2\2jl\5\32\16\2kj\3\2\2\2kl\3\2\2\2l\25\3\2\2\2mn\7\16\2\2no\7\7\2\2"+
-		"op\5\32\16\2pq\7\t\2\2qt\5\4\3\2rs\7\17\2\2su\5\4\3\2tr\3\2\2\2tu\3\2"+
-		"\2\2u\27\3\2\2\2vw\7 \2\2w\u0080\7\7\2\2x}\5\32\16\2yz\7\b\2\2z|\5\32"+
-		"\16\2{y\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\u0081\3\2\2\2\177}\3"+
-		"\2\2\2\u0080x\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0083"+
-		"\7\t\2\2\u0083\31\3\2\2\2\u0084\u0085\b\16\1\2\u0085\u0086\7\7\2\2\u0086"+
-		"\u0087\5\32\16\2\u0087\u0088\7\t\2\2\u0088\u0092\3\2\2\2\u0089\u008a\7"+
-		"\20\2\2\u008a\u0092\5\32\16\16\u008b\u008c\7\21\2\2\u008c\u0092\5\32\16"+
+		"\17\2\2de\5\32\16\2e\21\3\2\2\2fg\7\b\2\2gh\5\32\16\2h\23\3\2\2\2ik\7"+
+		"\7\2\2jl\5\32\16\2kj\3\2\2\2kl\3\2\2\2l\25\3\2\2\2mn\7\4\2\2no\7\t\2\2"+
+		"op\5\32\16\2pq\7\n\2\2qt\5\4\3\2rs\7\5\2\2su\5\4\3\2tr\3\2\2\2tu\3\2\2"+
+		"\2u\27\3\2\2\2vw\7 \2\2w\u0080\7\t\2\2x}\5\32\16\2yz\7\r\2\2z|\5\32\16"+
+		"\2{y\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\u0081\3\2\2\2\177}\3\2"+
+		"\2\2\u0080x\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0083"+
+		"\7\n\2\2\u0083\31\3\2\2\2\u0084\u0085\b\16\1\2\u0085\u0086\7\t\2\2\u0086"+
+		"\u0087\5\32\16\2\u0087\u0088\7\n\2\2\u0088\u0092\3\2\2\2\u0089\u008a\7"+
+		"\24\2\2\u008a\u0092\5\32\16\16\u008b\u008c\7\20\2\2\u008c\u0092\5\32\16"+
 		"\r\u008d\u0092\7 \2\2\u008e\u0092\5\30\r\2\u008f\u0092\7\37\2\2\u0090"+
 		"\u0092\7!\2\2\u0091\u0084\3\2\2\2\u0091\u0089\3\2\2\2\u0091\u008b\3\2"+
 		"\2\2\u0091\u008d\3\2\2\2\u0091\u008e\3\2\2\2\u0091\u008f\3\2\2\2\u0091"+
