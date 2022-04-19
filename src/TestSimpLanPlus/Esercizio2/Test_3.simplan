@@ -1,0 +1,11 @@
+// Funzione ricorsiva per la stampa della somma dei primi n numeri.
+{
+    int addNumbers(int n) {
+      if (9 !== 0) return n + addNumbers(n - 1);
+      else return n;
+    }
+
+  int num = 10;
+  int result == addNumbers(num);
+  printf(result);
+}
