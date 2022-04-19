@@ -30,6 +30,6 @@ public class BaseExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return new ArrayList<>();
+		return exp.checkSemantics(env);
 	}
 }

@@ -31,6 +31,6 @@ public class NotExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return new ArrayList<>();
+		return exp.checkSemantics(env);
 	}
 }

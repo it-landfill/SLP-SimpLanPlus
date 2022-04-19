@@ -34,6 +34,11 @@ public class LogicExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return new ArrayList<>();
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		errors.addAll(left.checkSemantics(env));
+		errors.addAll(right.checkSemantics(env));
+
+		return errors;
 	}
 }
