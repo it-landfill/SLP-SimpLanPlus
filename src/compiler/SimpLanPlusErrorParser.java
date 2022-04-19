@@ -53,17 +53,23 @@ public class SimpLanPlusErrorParser extends BaseErrorListener {
 
 	@Override
 	public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
-		ambiguityWarnings.add("[WARNING] Ambiguity detected between  index " + startIndex + " and index " + stopIndex + " dfa:" + dfa.toString());
+		// FIXME: Capire come funzionano
+		//ambiguityWarnings.add("[WARNING] Ambiguity detected between  index " + startIndex + " and index " + stopIndex + " dfa:" + dfa.toString() + " config: " + configs.toString());
+		super.reportAmbiguity(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs);
 	}
 
 	@Override
 	public void reportAttemptingFullContext(Parser recognizer, DFA dfa, int startIndex, int stopIndex, BitSet conflictingAlts, ATNConfigSet configs) {
-		attemptingFullContextWarnings.add("[WARNING] Full context warning between  index " + startIndex + " and index " + stopIndex + " dfa:" + dfa.toString());
+		// FIXME: Capire come funzionano
+		//attemptingFullContextWarnings.add("[WARNING] Full context warning between  index " + startIndex + " and index " + stopIndex + " dfa:" + dfa.toString() + " config: " + configs.toString());
+		super.reportAttemptingFullContext(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs);
 	}
 
 	@Override
 	public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet configs) {
-		contextSensitivityWarnings.add("[WARNING] Sensitivity warning between  index " + startIndex + " and index " + stopIndex + " dfa:" + dfa.toString());
+		// FIXME: Capire come funzionano
+		//contextSensitivityWarnings.add("[WARNING] Sensitivity warning between  index " + startIndex + " and index " + stopIndex + " dfa:" + dfa.toString() + " config: " + configs.toString());
+		super.reportContextSensitivity(recognizer, dfa, startIndex, stopIndex, prediction, configs);
 	}
 
 	@Override
