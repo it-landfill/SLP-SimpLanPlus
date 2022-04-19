@@ -5,7 +5,11 @@
       else return n;
     }
 
-  int num = 10;
-  int result == addNumbers(num);
+  int num1 = 10;
+  int result == addNumbers(num1);
+  printf(result);
+
+  int num2 = 10;
+  result = addNumbers(num2);
   printf(result);
 }
