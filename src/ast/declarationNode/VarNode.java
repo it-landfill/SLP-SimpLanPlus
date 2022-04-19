@@ -1,10 +1,12 @@
 package ast.declarationNode;
 
 import ast.Node;
+import ast.STentry;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VarNode implements Node {
 	private final String ID;
@@ -43,6 +45,15 @@ public class VarNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return null;
+		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		STentry entry = new STentry(env.nestingLevel,type,env.offset);
+
+		if(hm.put(ID,entry) != null) errors.add(new SemanticError("Var "+ID+" already declared"));
+
+		if (exp != null) errors.addAll(exp.checkSemantics(env));
+
+		return errors;
 	}
 }

@@ -8,16 +8,14 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import parser.SimpLanPlusLexer;
 import parser.SimpLanPlusParser;
+import util.Environment;
+import util.SemanticError;
+
+import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
 		String fileName = "src/TestSimpLanPlus/prova.simplan";
-
-		/**
-		 * Deprecated version of file loading
-		 * FileInputStream is = new FileInputStream(fileName);
-		 * ANTLRInputStream input = new ANTLRInputStream(is);
-		*/
 
 		// File loading
 		CharStream input = CharStreams.fromFileName(fileName);
@@ -40,5 +38,15 @@ public class mainSimpLanPlus {
 			System.out.println(errHandler);
 			errHandler.dumpToFile(fileName);
 		}
+
+		Environment env = new Environment();
+		ArrayList<SemanticError> err = ast.checkSemantics(env);
+
+		if(err != null && err.size()>0){
+			System.out.println("You had " +err.size()+" semantic errors:");
+			for(SemanticError e : err)
+				System.out.println("\t" + e);
+		}
+
 	}
 }

@@ -1,10 +1,12 @@
 package ast.statementNode;
 
 import ast.Node;
+import ast.STentry;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CallNode implements Node {
 	private final String funcName;
@@ -48,6 +50,36 @@ public class CallNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return null;
+		 ArrayList<SemanticError> errors = new ArrayList<>();
+
+		 STentry fun = STentry.findEntry(funcName,env);
+
+		 if (fun == null) {
+			 errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
+		 } else {
+			 // Se il numero di args è -1, la entry è una variabile, non una funzione
+			 if (fun.getnArgs() == -1) {
+				 errors.add(new SemanticError("Fun " + funcName + " is not a function"));
+			 }
+
+			 // Controllo il numero di parametri reali rispetto a quelli formali
+			 if (params != null) {
+				 if (fun.getnArgs() != params.size()) {
+					 errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have " + params.size()));
+				 }
+			 } else {
+				 if (fun.getnArgs() != 0) {
+					 errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have 0"));
+				 }
+			 }
+		 }
+
+		 // Se ci sono parametri controllo gli errori su questi
+		if (params != null) {
+			for (Node n : params) {
+				errors.addAll(n.checkSemantics(env));
+			}
+		}
+		return errors;
 	}
 }

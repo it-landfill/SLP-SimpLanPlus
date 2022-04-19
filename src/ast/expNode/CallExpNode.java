@@ -7,15 +7,15 @@ import util.SemanticError;
 import java.util.ArrayList;
 
 public class CallExpNode implements Node {
-	private final Node call;
+	private final Node funName;
 
 	public CallExpNode(Node call) {
-		this.call = call;
+		this.funName = call;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "callExp: " + call.toPrint(indent);
+		return indent + "callExp: " + funName.toPrint(indent);
 	}
 
 	@Override
@@ -30,6 +30,6 @@ public class CallExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return null;
+		return funName.checkSemantics(env);
 	}
 }
