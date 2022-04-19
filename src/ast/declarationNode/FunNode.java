@@ -1,5 +1,6 @@
 package ast.declarationNode;
 
+import ast.ArgNode;
 import ast.Node;
 import ast.STentry;
 import util.Environment;
@@ -11,10 +12,10 @@ import java.util.HashMap;
 public class FunNode implements Node {
 	private final Node returnType;
 	private final String funcName;
-	private final ArrayList<Node> params;
+	private final ArrayList<ArgNode> params;
 	private final Node block;
 
-	public FunNode(Node returnType, String funName, ArrayList<Node> params, Node block) {
+	public FunNode(Node returnType, String funName, ArrayList<ArgNode> params, Node block) {
 		this.returnType = returnType;
 		this.funcName = funName;
 		this.params = params;
@@ -60,7 +61,6 @@ public class FunNode implements Node {
 		//Gestisco il caso delle funzioni nested
 		if (env.baseFun != null) {
 			errors.add(new SemanticError("Functions can not be nested.\tYou are declaring function " + funcName + "inside the body of function " + env.baseFun + ", this is not allowed."));
-			return errors;
 		}
 
 		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
@@ -77,7 +77,6 @@ public class FunNode implements Node {
 		// Se da errore la funzione esiste già
 		if (hm.put(funcName, entry) != null) {
 			errors.add(new SemanticError("Fun id " + funcName + " already declared"));
-			return errors;
 		}
 
 		env.nestingLevel++;
@@ -87,8 +86,12 @@ public class FunNode implements Node {
 
 		// Controllo gli argomenti
 		if (params != null) {
-			for (Node a : params) {
+			for (ArgNode a : params) {
 				errors.addAll(a.checkSemantics(env));
+				STentry tmp = new STentry(env.nestingLevel,a.getType(),env.offset);
+				if (hm.put(a.getArgName(), tmp) != null) {
+					errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
+				}
 			}
 		}
 

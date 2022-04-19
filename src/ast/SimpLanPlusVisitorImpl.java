@@ -113,14 +113,14 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		String ID = ctx.ID().getText();
 		Node retType = null;
 		Node block = visit(ctx.block());
-		ArrayList<Node> args = null;
+		ArrayList<ArgNode> args = null;
 
 		if (ctx.type() != null) retType = visit(ctx.type());
 
 		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
 			args = new ArrayList<>();
 			for (SimpLanPlusParser.ArgContext arg : ctx.arg()) {
-				args.add(visit(arg));
+				args.add(visitArg(arg));
 			}
 		}
 
@@ -165,7 +165,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	 * @return
 	 */
 	@Override
-	public Node visitArg(SimpLanPlusParser.ArgContext ctx) {
+	public ArgNode visitArg(SimpLanPlusParser.ArgContext ctx) {
 
 		boolean byReference = ctx.children.get(0).toString().equals("var");
 		String ID = ctx.ID().getText();
