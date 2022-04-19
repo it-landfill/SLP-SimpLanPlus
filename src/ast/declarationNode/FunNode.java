@@ -60,7 +60,7 @@ public class FunNode implements Node {
 
 		//Gestisco il caso delle funzioni nested
 		if (env.baseFun != null) {
-			errors.add(new SemanticError("Functions can not be nested.\tYou are declaring function " + funcName + "inside the body of function " + env.baseFun + ", this is not allowed."));
+			errors.add(new SemanticError("Functions can not be nested.\tYou are declaring function " + funcName + " inside the body of function " + env.baseFun + ", this is not allowed."));
 		}
 
 		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
@@ -76,7 +76,7 @@ public class FunNode implements Node {
 
 		// Se da errore la funzione esiste già
 		if (hm.put(funcName, entry) != null) {
-			errors.add(new SemanticError("Fun id " + funcName + " already declared"));
+			errors.add(new SemanticError("Fun " + funcName + " already declared"));
 		}
 
 		env.nestingLevel++;

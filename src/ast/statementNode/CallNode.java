@@ -65,7 +65,7 @@ public class CallNode implements Node {
 			 // Controllo il numero di parametri reali rispetto a quelli formali
 			 if (params != null) {
 				 if (fun.getnArgs() != params.size()) {
-					 errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have" + params.size()));
+					 errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have " + params.size()));
 				 }
 			 } else {
 				 if (fun.getnArgs() != 0) {

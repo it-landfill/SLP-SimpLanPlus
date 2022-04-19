@@ -39,7 +39,7 @@ public class DerExpNode implements Node {
 		STentry idEntry = STentry.findEntry(ID,env);
 
 		if (idEntry == null) {
-			errors.add(new SemanticError("Var  " + ID + " not declared."));
+			errors.add(new SemanticError("Var " + ID + " not declared."));
 		}
 
 		return errors;

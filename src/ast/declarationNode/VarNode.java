@@ -50,7 +50,7 @@ public class VarNode implements Node {
 
 		STentry entry = new STentry(env.nestingLevel,type,env.offset);
 
-		if(hm.put(ID,entry) != null) errors.add(new SemanticError("Var id "+ID+" already declared"));
+		if(hm.put(ID,entry) != null) errors.add(new SemanticError("Var "+ID+" already declared"));
 
 		if (exp != null) errors.addAll(exp.checkSemantics(env));
 
