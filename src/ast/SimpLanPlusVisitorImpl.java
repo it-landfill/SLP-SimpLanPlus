@@ -71,6 +71,10 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	@Override
 	public Node visitIte(SimpLanPlusParser.IteContext ctx) {
 		Node cond = visit(ctx.exp());
+
+		// Se l'operatore è errato, non viene generato l'array di statement
+		if(ctx.statement().size() == 0) return null;
+
 		Node ifT = visit(ctx.statement().get(0));
 		if (ctx.statement().size() == 2) {
 			Node ifF = visit(ctx.statement().get(1));
