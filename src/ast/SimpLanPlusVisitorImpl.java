@@ -39,7 +39,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		if (ctx.print() != null) return visit(ctx.print());
 		if (ctx.ret() != null) return visit(ctx.ret());
 		if (ctx.ite() != null) return visit(ctx.ite());
-		if (ctx.call() != null) System.out.println("Call");
+		if (ctx.call() != null) return visit(ctx.call());
 		if (ctx.block() != null) return visitBlock(ctx.block());
 
 		// Non dovrei mai arrivarci
