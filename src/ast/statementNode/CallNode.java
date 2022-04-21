@@ -52,7 +52,7 @@ public class CallNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		 ArrayList<SemanticError> errors = new ArrayList<>();
 
-		 STentry fun = env.findFirstInSymbolTable(funcName); //TODO: Se i parametri non corrispondono, cerco ai livelli superiori o mi arrendo?
+		 STentry fun = env.symbolTable.findFirstInSymbolTable(funcName); //TODO: Se i parametri non corrispondono, cerco ai livelli superiori o mi arrendo?
 
 		 if (fun == null) {
 			 errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));

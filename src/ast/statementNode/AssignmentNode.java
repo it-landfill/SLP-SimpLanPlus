@@ -34,7 +34,7 @@ public class AssignmentNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-		if (env.findFirstInSymbolTable(ID) == null) {
+		if (env.symbolTable.findFirstInSymbolTable(ID) == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		}
 

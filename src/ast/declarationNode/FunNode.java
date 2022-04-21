@@ -73,7 +73,7 @@ public class FunNode implements Node {
 		else entry.setnArgs(0);
 
 		// Se da errore la funzione esiste già
-		if (env.addToSymbolTable(entry)) {
+		if (env.symbolTable.addToSymbolTable(entry)) {
 			errors.add(new SemanticError("Fun " + funcName + " already declared"));
 		}
 
@@ -85,7 +85,7 @@ public class FunNode implements Node {
 			for (ArgNode a : params) {
 				errors.addAll(a.checkSemantics(env));
 				STentry tmp = new STentry(env.nestingLevel,a.getType(),env.offset, a.getArgName());
-				if (env.addToSymbolTable(tmp)) {
+				if (env.symbolTable.addToSymbolTable(tmp)) {
 					errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
 				}
 			}
@@ -96,7 +96,7 @@ public class FunNode implements Node {
 			errors.addAll(block.checkSemantics(env));
 		}
 
-		env.removeLevelFromSymbolTable(env.nestingLevel);
+		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
 		env.baseFun = null;
 		env.nestingLevel--;
 
