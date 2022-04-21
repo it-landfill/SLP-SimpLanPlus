@@ -38,7 +38,13 @@ public class mainSimpLanPlus {
 		if (errHandler.hasMessages()) {
 			System.out.println(errHandler);
 			errHandler.dumpToFile(fileName);
+
+			System.out.println("[ERROR] There were some errors while parsing the program.");
+			System.out.println("[ERROR] Program parsing failed");
+			return;
 		}
+
+		System.out.println("[INFO] No syntactic error found.\n[INFO] Starting semantic verification.");
 
 		Environment env = new Environment();
 
@@ -49,6 +55,9 @@ public class mainSimpLanPlus {
 			System.out.println("You had " +err.size()+" semantic errors:");
 			for(SemanticError e : err)
 				System.out.println("\t" + e);
+			System.out.println("[ERROR] Program parsing failed");
+		} else {
+			System.out.println("[INFO] No semantic error found.\n[SUCCESS] Program parsing completed");
 		}
 
 	}

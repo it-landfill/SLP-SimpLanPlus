@@ -13,6 +13,11 @@ public class SymbolTableWrapper {
 		symbolTable = new HashMap<>();
 	}
 
+	/**
+	 * Controlla se l'elemento esiste nella symbol table allo stesso livello, altrimenti lo aggiunge.
+	 * @param entry La entry da aggiungere alla Symbol Table
+	 * @return true in caso di errore, false alrimenti
+	 */
 	public boolean addToSymbolTable(STentry entry) {
 		ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(entry.getID(), null);
 
@@ -36,6 +41,11 @@ public class SymbolTableWrapper {
 		return true;
 	}
 
+	/**
+	 * Dato il nome di una entry, ritorna la prima entry (ovvero quella al livello più basso) della symbol table.
+	 * @param ID Il nome della entry da cercare.
+	 * @return null se non trova la chiave nella HashMap, STentry corrispondente altrimenti.
+	 */
 	public STentry findFirstInSymbolTable(String ID) {
 		ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(ID, null);
 
@@ -46,6 +56,10 @@ public class SymbolTableWrapper {
 		return null;
 	}
 
+	/**
+	 * Rimuove tutte le entry ad un determinato livello dalla Symbol Table.
+	 * @param lev Il livello a cui eliminare le entry.
+	 */
 	public void removeLevelFromSymbolTable(int lev) {
 		// Arraylist in cui salvo le chiavi vuote da eliminare
 		ArrayList<String> emptyList = new ArrayList<>();
