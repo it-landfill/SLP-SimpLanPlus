@@ -44,7 +44,7 @@ public class VarNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env) {/*
 		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
@@ -54,6 +54,7 @@ public class VarNode implements Node {
 
 		if (exp != null) errors.addAll(exp.checkSemantics(env));
 
-		return errors;
+		return errors;  TODO: */
+		return null;
 	}
 }

@@ -51,8 +51,8 @@ public class CallNode implements Node {
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		 ArrayList<SemanticError> errors = new ArrayList<>();
-
-		 STentry fun = STentry.findEntry(funcName,env);
+		/*
+		 STentry fun = STentry.findEntry(funcName,env); TODO: check
 
 		 if (fun == null) {
 			 errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
@@ -79,7 +79,7 @@ public class CallNode implements Node {
 			for (Node n : params) {
 				errors.addAll(n.checkSemantics(env));
 			}
-		}
+		}*/
 		return errors;
 	}
 }

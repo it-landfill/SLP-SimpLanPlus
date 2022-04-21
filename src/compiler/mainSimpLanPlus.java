@@ -40,13 +40,15 @@ public class mainSimpLanPlus {
 		}
 
 		Environment env = new Environment();
+
+		/*
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
 
 		if(err != null && err.size()>0){
 			System.out.println("You had " +err.size()+" semantic errors:");
 			for(SemanticError e : err)
 				System.out.println("\t" + e);
-		}
+		}*/
 
 	}
 }

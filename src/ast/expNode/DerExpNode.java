@@ -36,11 +36,11 @@ public class DerExpNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors =   new ArrayList<>();
 
-		STentry idEntry = STentry.findEntry(ID,env);
+		/*STentry idEntry = STentry.findEntry(ID,env);  TODO: check
 
 		if (idEntry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
-		}
+		}*/
 
 		return errors;
 	}

@@ -56,6 +56,7 @@ public class FunNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
+		/*
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
 		//Gestisco il caso delle funzioni nested
@@ -104,6 +105,8 @@ public class FunNode implements Node {
 		env.symTable.remove(env.nestingLevel);
 		env.nestingLevel--;
 
-		return errors;
+		return errors; TODO:
+		 */
+		return null;
 	}
 }
