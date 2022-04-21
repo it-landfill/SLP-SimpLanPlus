@@ -52,6 +52,6 @@ public class STentry {
 	}
 
 	public String toPrint(String s) {
-		return s + "STentry: ID " + ID + "\n" + s + "STentry: nestlev " + nl + "\n" + s + "STentry: type\n" + type.toPrint(s + "  ") + s + "STentry: offset " + offset + "\n";
+		return s + "STentry: ID " + ID + "\n" + s + "STentry: nestlev " + nl + "\n" + s + "STentry: type" + (type == null ? " void " : type.toPrint(s + "  ")) + "\n" + s + "STentry: offset " + offset + "\n";
 	}
 }  
