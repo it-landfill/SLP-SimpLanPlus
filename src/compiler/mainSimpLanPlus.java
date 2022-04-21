@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		String fileName = "src/TestSimpLanPlus/prova.simplan";
+		String fileName = "src/TestSimpLanPlus/Esercizio2/Test_1.simplan";
 
 		// File loading
 		CharStream input = CharStreams.fromFileName(fileName);
@@ -42,14 +42,14 @@ public class mainSimpLanPlus {
 
 		Environment env = new Environment();
 
-		/*
 		ArrayList<SemanticError> err = ast.checkSemantics(env);
+
 
 		if(err != null && err.size()>0){
 			System.out.println("You had " +err.size()+" semantic errors:");
 			for(SemanticError e : err)
 				System.out.println("\t" + e);
-		}*/
+		}
 
 	}
 }

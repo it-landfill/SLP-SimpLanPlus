@@ -32,7 +32,14 @@ public class AssignmentNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-		return exp.checkSemantics(env);
+		if (env.findFirstInSymbolTable(ID) == null) {
+			errors.add(new SemanticError("Var " + ID + " not declared."));
+		}
+
+		errors.addAll(exp.checkSemantics(env));
+
+		return errors;
 	}
 }

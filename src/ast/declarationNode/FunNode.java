@@ -7,7 +7,6 @@ import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FunNode implements Node {
 	private final Node returnType;
@@ -56,41 +55,37 @@ public class FunNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		/*
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
 		//Gestisco il caso delle funzioni nested
-		if (env.baseFun != null) {
+		if (env.baseFun != null) { //TODO: Con la nuova symboltable si può fare diversamente??
 			errors.add(new SemanticError("Functions can not be nested.\tYou are declaring function " + funcName + " inside the body of function " + env.baseFun + ", this is not allowed."));
 		}
 
-		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
 		STentry entry;
 
 		// Genero la entry per la symbol table
-		if (returnType != null) entry = new STentry(env.nestingLevel, returnType, env.offset);
-		else entry = new STentry(env.nestingLevel, env.offset);
+		if (returnType != null) entry = new STentry(env.nestingLevel, returnType, env.offset, funcName);
+		else entry = new STentry(env.nestingLevel, env.offset, funcName);
 
 		// Se la funzione ha parametri formali, salvo il numero di questi
 		if (params != null) entry.setnArgs(params.size());
 		else entry.setnArgs(0);
 
 		// Se da errore la funzione esiste già
-		if (hm.put(funcName, entry) != null) {
+		if (env.addToSymbolTable(entry)) {
 			errors.add(new SemanticError("Fun " + funcName + " already declared"));
 		}
 
 		env.nestingLevel++;
-		hm = new HashMap<>();
-		env.symTable.add(hm);
 		env.baseFun = funcName;
 
 		// Controllo gli argomenti
 		if (params != null) {
 			for (ArgNode a : params) {
 				errors.addAll(a.checkSemantics(env));
-				STentry tmp = new STentry(env.nestingLevel,a.getType(),env.offset);
-				if (hm.put(a.getArgName(), tmp) != null) {
+				STentry tmp = new STentry(env.nestingLevel,a.getType(),env.offset, a.getArgName());
+				if (env.addToSymbolTable(tmp)) {
 					errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
 				}
 			}
@@ -101,12 +96,10 @@ public class FunNode implements Node {
 			errors.addAll(block.checkSemantics(env));
 		}
 
+		env.removeLevelFromSymbolTable(env.nestingLevel);
 		env.baseFun = null;
-		env.symTable.remove(env.nestingLevel);
 		env.nestingLevel--;
 
-		return errors; TODO:
-		 */
-		return null;
+		return errors;
 	}
 }

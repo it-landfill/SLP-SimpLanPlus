@@ -50,7 +50,6 @@ public class BlockNode implements Node {
 		HashMap<String, STentry> hm = new HashMap<>();
 
 		env.nestingLevel++;
-		//env.symTable.add(hm); TODO: check
 
 		if (declarationList != null) {
 			for (Node n: declarationList) if (n != null) errors.addAll(n.checkSemantics(env));
@@ -60,7 +59,6 @@ public class BlockNode implements Node {
 			for (Node n: statementList) if (n != null)  errors.addAll(n.checkSemantics(env));
 		}
 
-		//env.symTable.remove(env.nestingLevel);
 		env.nestingLevel--;
 
 		return errors;

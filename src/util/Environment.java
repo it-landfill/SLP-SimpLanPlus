@@ -24,7 +24,7 @@ public class Environment {
 			entryStack = new ArrayDeque<>();
 			entryStack.push(entry);
 			symbolTable.put(entry.getID(), entryStack);
-			return true;
+			return false;
 		}
 
 		// Se l'elemento in testa dello stack ha un nesting level diverso dal mio, allora non ho collisioni
@@ -32,11 +32,11 @@ public class Environment {
 		if (head != null && entry.getNestinglevel() != head.getNestinglevel()) {
 			// Tutte le condizioni sono verificare, posso aggiungere la entry allo stack senza problemi
 			entryStack.push(entry);
-			return true;
+			return false;
 		}
 
 		// Se arrivo qua in fondo qualcosa è andato storto, probabilmente la variabile esiste già...
-		return false;
+		return true;
 	}
 
 	// Quando rimuovo lo faccio sempre dalla testa, quindi non mi serve il nesting level
@@ -62,6 +62,24 @@ public class Environment {
 		}
 
 		return null;
+	}
+
+	public void removeLevelFromSymbolTable(int lev) {
+		// Arraylist in cui salvo le chiavi vuote da eliminare
+		ArrayList<String> emptyList = new ArrayList<>();
+
+		// Scorro la ST e, per ogni elemento, se la testa ha il livello che cerco la rimuovo.
+		symbolTable.forEach((k,v) -> {
+			if(v != null && !v.isEmpty() && v.peek().getNestinglevel()==lev) {
+				v.pop();
+
+				// Se la lista diventa vuota, aggiungo la chiave alla lista di chiavi da rimuovere
+				if (v.isEmpty()) emptyList.add(k);
+			}
+		});
+
+		// Itero la lista di chiavi da rimuovere e le rimuovo dall'arraylist
+		emptyList.forEach(symbolTable::remove);
 	}
 
 }
