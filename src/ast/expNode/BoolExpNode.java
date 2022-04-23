@@ -1,4 +1,4 @@
-package ast.statementNode;
+package ast.expNode;
 
 import ast.Node;
 import util.Environment;
@@ -6,16 +6,16 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class PrintNode implements Node {
-	private final Node exp;
+public class BoolExpNode implements Node {
+	private final boolean val;
 
-	public PrintNode(Node exp) {
-		this.exp = exp;
+	public BoolExpNode(boolean val) {
+		this.val = val;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "print: " + exp.toPrint(indent);
+		return indent + "val: " + val;
 	}
 
 	@Override
@@ -30,6 +30,7 @@ public class PrintNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return exp.checkSemantics(env);
+		// Essendo un exp base, non ho errori semantici
+		return new ArrayList<>();
 	}
 }

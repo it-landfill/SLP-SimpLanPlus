@@ -1,0 +1,13 @@
+// Funzione ricorsiva per la stampa dell'ennesimo numero di Fibonacci
+{
+    int num;
+    int fibonacciSequence (int value){
+        if (value <= 1){
+            return value;
+        }
+        return fib(value-1) + fib(value-2);
+    }
+
+    int num = 12;
+    print (fibonaciSequence(num));
+}

@@ -1,4 +1,4 @@
-package ast.statementNode;
+package ast.typeNode;
 
 import ast.Node;
 import util.Environment;
@@ -6,16 +6,14 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class PrintNode implements Node {
-	private final Node exp;
+public class BoolTypeNode implements Node {
 
-	public PrintNode(Node exp) {
-		this.exp = exp;
+	public BoolTypeNode() {
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "print: " + exp.toPrint(indent);
+		return indent + "type: boolean";
 	}
 
 	@Override
@@ -30,6 +28,6 @@ public class PrintNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return exp.checkSemantics(env);
+		return new ArrayList<>();
 	}
 }

@@ -1,3 +1,4 @@
+// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/parser/SimpLanPlus.g4 by ANTLR 4.9.2
 package parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -171,18 +172,6 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinExp(SimpLanPlusParser.BinExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBinExp(SimpLanPlusParser.BinExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterDerExp(SimpLanPlusParser.DerExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -190,6 +179,18 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDerExp(SimpLanPlusParser.DerExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLogicExp(SimpLanPlusParser.LogicExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLogicExp(SimpLanPlusParser.LogicExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -238,6 +239,18 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCallExp(SimpLanPlusParser.CallExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArithmExp(SimpLanPlusParser.ArithmExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArithmExp(SimpLanPlusParser.ArithmExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

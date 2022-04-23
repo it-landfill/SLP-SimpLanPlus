@@ -1,4 +1,4 @@
-package ast.statementNode;
+package ast.expNode;
 
 import ast.Node;
 import util.Environment;
@@ -6,19 +6,18 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class AssignmentNode implements Node {
+public class DerExpNode implements Node {
 	private final String ID;
-	private final Node exp;
 
-	public AssignmentNode(String ID, Node exp) {
+	public DerExpNode(String ID) {
 		this.ID = ID;
-		this.exp = exp;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "assignment: " + ID + " " + exp.toPrint(indent);
+		return indent + " DER: " + ID;
 	}
+
 
 	@Override
 	public Node typeCheck() {
@@ -37,8 +36,6 @@ public class AssignmentNode implements Node {
 		if (env.symbolTable.findFirstInSymbolTable(ID) == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		}
-
-		errors.addAll(exp.checkSemantics(env));
 
 		return errors;
 	}

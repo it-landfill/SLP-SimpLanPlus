@@ -1,6 +1,7 @@
 package ast.declarationNode;
 
 import ast.Node;
+import ast.STentry;
 import util.Environment;
 import util.SemanticError;
 
@@ -18,9 +19,7 @@ public class VarNode implements Node {
 	}
 
 	public VarNode(String ID, Node type) {
-		this.ID = ID;
-		this.type = type;
-		this.exp = null;
+		this(ID, type, null);
 	}
 
 	@Override
@@ -43,6 +42,14 @@ public class VarNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return null;
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		STentry entry = new STentry(env.nestingLevel, type, env.offset, ID);
+
+		if (env.symbolTable.addToSymbolTable(entry)) errors.add(new SemanticError("Var " + ID + " already declared"));
+
+		if (exp != null) errors.addAll(exp.checkSemantics(env));
+
+		return errors;
 	}
 }

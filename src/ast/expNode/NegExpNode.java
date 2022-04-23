@@ -1,4 +1,4 @@
-package ast.statementNode;
+package ast.expNode;
 
 import ast.Node;
 import util.Environment;
@@ -6,16 +6,17 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class PrintNode implements Node {
+public class NegExpNode implements Node {
+
 	private final Node exp;
 
-	public PrintNode(Node exp) {
+	public NegExpNode(Node exp) {
 		this.exp = exp;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "print: " + exp.toPrint(indent);
+		return indent + " negative: " + exp.toString();
 	}
 
 	@Override

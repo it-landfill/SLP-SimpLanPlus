@@ -1,5 +1,5 @@
+// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/parser/SimpLanPlus.g4 by ANTLR 4.9.2
 package parser;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -140,18 +140,6 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 */
 	void exitBaseExp(SimpLanPlusParser.BaseExpContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code binExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void enterBinExp(SimpLanPlusParser.BinExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code binExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void exitBinExp(SimpLanPlusParser.BinExpContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code derExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
 	 * @param ctx the parse tree
@@ -163,6 +151,18 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDerExp(SimpLanPlusParser.DerExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code logicExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogicExp(SimpLanPlusParser.LogicExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code logicExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogicExp(SimpLanPlusParser.LogicExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code valExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
@@ -211,6 +211,18 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCallExp(SimpLanPlusParser.CallExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arithmExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterArithmExp(SimpLanPlusParser.ArithmExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arithmExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitArithmExp(SimpLanPlusParser.ArithmExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code notExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
