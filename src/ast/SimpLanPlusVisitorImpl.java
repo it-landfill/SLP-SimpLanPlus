@@ -117,6 +117,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		ArrayList<ArgNode> args = null;
 
 		if (ctx.type() != null) retType = visit(ctx.type());
+		else retType = new VoidTypeNode();
 
 		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
 			args = new ArrayList<>();
@@ -152,7 +153,6 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	public Node visitType(SimpLanPlusParser.TypeContext ctx) {
 		if (ctx.INTEGER() != null) return new IntTypeNode();
 		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
-		if (ctx.VOID() != null) return new VoidTypeNode();
 		return null;
 
 	}

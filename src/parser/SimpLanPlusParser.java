@@ -406,19 +406,22 @@ public class SimpLanPlusParser extends Parser {
 			{
 			setState(63);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
-			case 1:
+			switch (_input.LA(1)) {
+			case INTEGER:
+			case BOOLEAN:
 				{
 				setState(61);
 				type();
 				}
 				break;
-			case 2:
+			case VOID:
 				{
 				setState(62);
 				match(VOID);
 				}
 				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 			setState(65);
 			match(ID);
@@ -427,7 +430,7 @@ public class SimpLanPlusParser extends Parser {
 			setState(75);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << INTEGER) | (1L << BOOLEAN) | (1L << VOID))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << INTEGER) | (1L << BOOLEAN))) != 0)) {
 				{
 				setState(67);
 				arg();
@@ -537,7 +540,6 @@ public class SimpLanPlusParser extends Parser {
 	public static class TypeContext extends ParserRuleContext {
 		public TerminalNode INTEGER() { return getToken(SimpLanPlusParser.INTEGER, 0); }
 		public TerminalNode BOOLEAN() { return getToken(SimpLanPlusParser.BOOLEAN, 0); }
-		public TerminalNode VOID() { return getToken(SimpLanPlusParser.VOID, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -566,7 +568,7 @@ public class SimpLanPlusParser extends Parser {
 			{
 			setState(88);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INTEGER) | (1L << BOOLEAN) | (1L << VOID))) != 0)) ) {
+			if ( !(_la==INTEGER || _la==BOOLEAN) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1439,7 +1441,7 @@ public class SimpLanPlusParser extends Parser {
 		"\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u0092"+
 		"\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
 		"\3\16\3\16\3\16\3\16\3\16\7\16\u00a6\n\16\f\16\16\16\u00a9\13\16\3\16"+
-		"\2\3\32\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2\34\36\3\2\20\21\3"+
+		"\2\3\32\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2\34\35\3\2\20\21\3"+
 		"\2\22\23\3\2\24\27\3\2\30\31\2\u00ba\2\34\3\2\2\2\49\3\2\2\2\6=\3\2\2"+
 		"\2\bA\3\2\2\2\nR\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20b\3\2\2\2\22f\3\2\2"+
 		"\2\24i\3\2\2\2\26m\3\2\2\2\30v\3\2\2\2\32\u0091\3\2\2\2\34 \7\n\2\2\35"+

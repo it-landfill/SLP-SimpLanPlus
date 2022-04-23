@@ -19,8 +19,7 @@ decFun	    : (type | VOID) ID LPAR (arg (COMMA arg)*)? RPAR block ;
 decVar      : type ID (ASSIGN exp)? SEMIC ;
 
 type        : INTEGER
-            | BOOLEAN
-            | VOID;
+            | BOOLEAN;
 
 arg         : (VAR)? type ID;
 
