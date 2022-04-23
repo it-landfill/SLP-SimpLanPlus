@@ -4,7 +4,6 @@ import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BlockNode implements Node {
 
@@ -19,7 +18,6 @@ public class BlockNode implements Node {
 	@Override
 	public String toPrint(String indent) {
 
-		//FIXME: Posso unire queste due variabili in una sola?
 		StringBuilder declStr = new StringBuilder();
 		StringBuilder statStr = new StringBuilder();
 
@@ -29,36 +27,34 @@ public class BlockNode implements Node {
 		for (Node dec : statementList)
 			statStr.append(dec.toPrint(indent + "  "));
 
-		return indent + "\nBlock\n\t" + declStr + "\t" + statStr;
+		return indent + "\nBlock\n\t" + declStr + "\t" + statStr + indent + "End Block";
 	}
 
 	@Override
 	public Node typeCheck() {
-		System.out.println("BlockNode - typeCheck");
 		return null;
 	}
 
 	@Override
 	public String codeGeneration() {
-		System.out.println("BlockNode - codeGeneration");
 		return null;
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
-		HashMap<String, STentry> hm = new HashMap<>();
 
 		env.nestingLevel++;
 
 		if (declarationList != null) {
-			for (Node n: declarationList) if (n != null) errors.addAll(n.checkSemantics(env));
+			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(env));
 		}
 
 		if (statementList != null) {
-			for (Node n: statementList) if (n != null)  errors.addAll(n.checkSemantics(env));
+			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(env));
 		}
 
+		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
 		env.nestingLevel--;
 
 		return errors;
