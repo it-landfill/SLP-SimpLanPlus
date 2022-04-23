@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		String fileName = "src/TestSimpLanPlus/Esercizio2/Test_1.simplan";
+		String fileName = "src/TestSimpLanPlus/Esercizio2/Test_1.slp";
 
 		// File loading.
 		CharStream input = CharStreams.fromFileName(fileName);

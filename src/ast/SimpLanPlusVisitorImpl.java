@@ -6,6 +6,7 @@ import ast.expNode.*;
 import ast.statementNode.*;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.IntTypeNode;
+import ast.typeNode.VoidTypeNode;
 import parser.SimpLanPlusBaseVisitor;
 import parser.SimpLanPlusParser;
 
@@ -151,6 +152,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	public Node visitType(SimpLanPlusParser.TypeContext ctx) {
 		if (ctx.INTEGER() != null) return new IntTypeNode();
 		if (ctx.BOOLEAN() != null) return new BoolTypeNode();
+		if (ctx.VOID() != null) return new VoidTypeNode();
 		return null;
 
 	}
