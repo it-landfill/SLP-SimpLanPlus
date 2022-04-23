@@ -6,15 +6,14 @@ import ast.STentry;
 
 public class Environment {
 
-	// Symbol Table (Secondo esercizio)
+	// Generazione della Symbol Table
 	public SymbolTableWrapper symbolTable;
 
-	// Non si sa bene la sua utilità.
+	// Variabile utilizzata dall'interprete.
 	public int offset;
 	// Tiene traccia della funzione di cui stiamo analizzando il body
 	public String baseFun;
-	//livello ambiente con dichiarazioni piu' esterno è 0 (prima posizione ArrayList) invece che 1 (slides)
-	//il "fronte" della lista di tabelle è symTable.get(nestingLevel)
+	// Livello di nesting dell'enviroment attuale
 	public int nestingLevel;
 
 	public Environment() {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SymbolTableWrapper {
+	// Creazione di una Hash Table (la Symbol Table) avente come chiave una String e un ArrayDeque di STentry
 	private final HashMap<String, ArrayDeque<STentry>> symbolTable;
 
 	public SymbolTableWrapper() {
@@ -16,12 +17,15 @@ public class SymbolTableWrapper {
 	/**
 	 * Controlla se l'elemento esiste nella symbol table allo stesso livello, altrimenti lo aggiunge.
 	 * @param entry La entry da aggiungere alla Symbol Table
-	 * @return true in caso di errore, false alrimenti
+	 * @return true in caso di errore, false altrimenti
 	 */
 	public boolean addToSymbolTable(STentry entry) {
+		// Ricerca dell'entry in input  nell'Hash Map. In caso di ricerca senza successo ritorno null.
 		ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(entry.getID(), null);
 
-		// Se l'elemento non esiste, creo tutto da 0 e non devo preoccuparmi di collisioni.
+		// Se l'elemento non esiste, viene creata una entry nella Hash Map contenente l'entry in input.
+		// In questo caso, non devo preoccuparmi di controllare il nesting level di altre entry con medesimo
+		// identificativo.
 		if (entryStack == null || entryStack.isEmpty()) {
 			entryStack = new ArrayDeque<>();
 			entryStack.push(entry);
@@ -37,7 +41,7 @@ public class SymbolTableWrapper {
 			return false;
 		}
 
-		// Se arrivo qua in fondo qualcosa è andato storto, probabilmente la variabile esiste già...
+		// Se arrivo qua in fondo qualcosa è andato storto, probabilmente la entry esiste già.
 		return true;
 	}
 
@@ -57,14 +61,14 @@ public class SymbolTableWrapper {
 	}
 
 	/**
-	 * Rimuove tutte le entry ad un determinato livello dalla Symbol Table.
+	 * Rimuove tutte le entry da un determinato livello dalla Symbol Table.
 	 * @param lev Il livello a cui eliminare le entry.
 	 */
 	public void removeLevelFromSymbolTable(int lev) {
 		// Arraylist in cui salvo le chiavi vuote da eliminare
 		ArrayList<String> emptyList = new ArrayList<>();
 
-		// Scorro la ST e, per ogni elemento, se la testa ha il livello che cerco la rimuovo.
+		// Scorro la Symbol Table e, per ogni elemento, se la testa ha il livello che cerco la rimuovo.
 		symbolTable.forEach((k,v) -> {
 			if(v != null && !v.isEmpty() && v.peek().getNestinglevel()==lev) {
 				v.pop();
