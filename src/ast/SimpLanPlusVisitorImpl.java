@@ -12,10 +12,20 @@ import parser.SimpLanPlusParser;
 
 import java.util.ArrayList;
 
-// ctx potrebbe (non siamo sicuri) rappresentare un sottoalbero dell'albero con il nodo attuale come radice.
-// Da ragionare con balu o il professore (meglio balu).
+// Per collassare tutti i commenti delle funzioni o espanderli seguire il seguente percorso (IntelliJ IDEA).
+// Code > Folding > Collapse Docs Comments / Expand Docs Comments
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
+
+	/**
+	 * Valutazione "block rule"
+	 * <p>
+	 * Regola "block : '{' declaration* statement* '}';"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto BlockNode contenente due ArrayList Node per le declarations e statements del
+	 * contesto.
+	 */
 	@Override
 	public Node visitBlock(SimpLanPlusParser.BlockContext ctx) {
 		ArrayList<Node> declarations = new ArrayList<>();
@@ -33,7 +43,15 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new BlockNode(declarations, statements);
 	}
 
-	// Statements
+	/**
+	 * Valutazione "statement rule"
+	 * <p>
+	 * Regola "statement : assignment ';' | print ';' | ret ';' | ite | call ';' | block;"
+	 * <p>
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto in base a quanto valutato dall'analisi di ctx.
+	 */
 	@Override
 	public Node visitStatement(SimpLanPlusParser.StatementContext ctx) {
 		if (ctx.assignment() != null) return visit(ctx.assignment());
@@ -47,6 +65,15 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return null;
 	}
 
+	/**
+	 * Valutazione "assignment rule"
+	 * <p>
+	 * Regola "assignment : ID '=' exp ;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto AssignmentNode contenente l'ID di tipo String e l'espressione di tipo Node
+	 * generato dalla visita di quest'ultimo.
+	 */
 	@Override
 	public Node visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
 		String ID = ctx.ID().getText();
@@ -54,12 +81,30 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new AssignmentNode(ID, exp);
 	}
 
+	/**
+	 * Valutazione "print rule"
+	 * <p>
+	 * Regola "print : 'print' exp;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto PrintNode contenente l'espressione di tipo Node generato dalla visita di
+	 * quest'ultimo.
+	 */
 	@Override
 	public Node visitPrint(SimpLanPlusParser.PrintContext ctx) {
 		Node exp = visit(ctx.exp());
 		return new PrintNode(exp);
 	}
 
+	/**
+	 * Valutazione "ret rule"
+	 * <p>
+	 * Regola "ret : 'return' (exp)?;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto ReturnNode il cui contenuto varia in base alla valutazione dell'exp legata al
+	 * ctx in analisi.
+	 */
 	@Override
 	public Node visitRet(SimpLanPlusParser.RetContext ctx) {
 		if (ctx.exp() != null) {
@@ -69,6 +114,15 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new ReturnNode();
 	}
 
+	/**
+	 * Valutazione "ite rule"
+	 * <p>
+	 * Regola "ite : 'if' '(' exp ')' statement ('else' statement)?;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto ITENode il cui contenuto varia in base alla valutazione degli statement presenti
+	 * in ctx.
+	 */
 	@Override
 	public Node visitIte(SimpLanPlusParser.IteContext ctx) {
 		Node cond = visit(ctx.exp());
@@ -84,6 +138,15 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new ITENode(cond, ifT);
 	}
 
+	/**
+	 * Valutazione "call rule"
+	 * <p>
+	 * Regola "call : ID '(' (exp(',' exp)*)? ')';"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto CallNode il cui contenuto varia in base alla valutazione dell'espressione presente
+	 * in ctx.
+	 */
 	@Override
 	public Node visitCall(SimpLanPlusParser.CallContext ctx) {
 		String ID = ctx.ID().getText();
@@ -99,6 +162,14 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new CallNode(ID);
 	}
 
+	/**
+	 * Valutazione "declaration rule"
+	 * <p>
+	 * Regola "declaration : decFun | decVar ;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto in base a quanto valutato dall'analisi di ctx.
+	 */
 	// Declarations
 	@Override
 	public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
@@ -109,6 +180,14 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return null;
 	}
 
+	/**
+	 * Valutazione "decFun rule"
+	 * <p>
+	 * Regola "decFun : (type | 'void') ID '(' (arg (',' arg)*)? ')' block ;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto in base a quanto valutato dall'analisi di ctx.
+	 */
 	@Override
 	public Node visitDecFun(SimpLanPlusParser.DecFunContext ctx) {
 		String ID = ctx.ID().getText();
@@ -129,6 +208,14 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new FunNode(retType, ID, args, block);
 	}
 
+	/**
+	 * Valutazione "decVar rule"
+	 * <p>
+	 * Regola "decVar : type ID ('=' exp)? ';' ;"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto in base a quanto valutato dall'analisi di ctx.
+	 */
 	@Override
 	public Node visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
 		Node type = visit(ctx.type());
@@ -140,14 +227,15 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new VarNode(ID, type);
 	}
 
-	/*
-	 * Valutazione type rule
-	 * Valutazione della regola "type : INTEGER | BOOLEAN;"
-	 *
-	 * TODO: Ha senso avere due tipi diversi? Il prof li fa, ma potenzialmente basterebbe un typeNode
+	/**
+	 * Valutazione "type rule"
+	 * <p>
+	 * Regola "type : INTEGER | BOOLEAN;"
+	 * <p>
+	 * TODO: Ha senso avere due tipi diversi? Il prof li fa, potenzialmente basterebbe un typeNode
 	 *
 	 * @param ctx Contesto di analisi
-	 * @return Ritorniamo un nodo del tipo presente nel contesto (ctx) in esame
+	 * @return Ritorno di un nodo del tipo presente nel contesto (ctx) in esame
 	 */
 	@Override
 	public Node visitType(SimpLanPlusParser.TypeContext ctx) {
@@ -158,52 +246,89 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	}
 
 	/**
-	 * arg : ('var')? type ID;
+	 * Valutazione "arg rule"
 	 * <p>
-	 * TODO: Chiedere al professore cosa intede per "passaggio per variabile".
-	 *       Noi conosciamo il passaggio per "copia" (creazione di una variabile distinta da quella originale) o
-	 *       "riferimento" (utilizzo dell'indirizzo in memoria della variabile)
+	 * Regola "arg : ('var')? type ID;"
+	 * <p>
 	 *
-	 * @return
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo contenente le informazioni di un argomento
 	 */
 	@Override
 	public ArgNode visitArg(SimpLanPlusParser.ArgContext ctx) {
 
-		boolean byReference = ctx.children.get(0).toString().equals("var");
+		boolean byReference = ctx.VAR() != null; // TODO: Controllare se funziona
 		String ID = ctx.ID().getText();
 		Node type = visit(ctx.type());
 
 		return new ArgNode(type, ID, byReference);
 	}
 
-	//Expressions
-
 	/**
-	 * exp : '(' exp ')' #baseExp
+	 * Valutazione "baseExp rule" (Expressions)
+	 * <p>
+	 * Regola "exp : '(' exp ')' #baseExp"
 	 *
-	 * @param ctx
-	 * @return
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo BaseExpNode dato dalla visita dell'espressione del contesto in analisi.
 	 */
 	@Override
 	public Node visitBaseExp(SimpLanPlusParser.BaseExpContext ctx) {
 		return new BaseExpNode(visit(ctx.exp()));
 	}
 
+	/**
+	 * Valutazione "negExp rule" (Expressions)
+	 * <p>
+	 * Regola "exp : '-' exp #negExp"
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo NegExpNode dato dalla visita dell'espressione del contesto in analisi.
+	 */
 	@Override
 	public Node visitNegExp(SimpLanPlusParser.NegExpContext ctx) {
 		return new NegExpNode(visit(ctx.exp()));
 	}
 
+	/**
+	 * Valutazione "notExp rule" (Expressions)
+	 * <p>
+	 * Regola "exp : '!' exp #notExp"
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo NotExpNode dato dalla visita dell'espressione del contesto in analisi.
+	 */
 	@Override
 	public Node visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
 		return new NotExpNode(visit(ctx.exp()));
 	}
 
+	/**
+	 * Valutazione "derExp rule" (Expressions)
+	 * <p>
+	 * Regola "ID #derExp"
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo DerExpNode dato dalla visita dell'espressione del contesto in analisi.
+	 */
 	@Override
 	public Node visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
 		return new DerExpNode(ctx.ID().toString());
 	}
 
+	/**
+	 * Valutazione "logic rule" (Expressions)
+	 * <p>
+	 * Regola "exp :
+	 * | left=exp op=('<' | '<=' | '>' | '>=') right=exp #logicExp
+	 * | left=exp op=('=='| '!=')              right=exp #logicExp
+	 * | left=exp op='&&'                      right=exp #logicExp
+	 * | left=exp op='||'                      right=exp #logicExp"
+	 * <p>
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo LogicExp dato dalla struttura dell'espressione del contesto in analisi.
+	 */
 	@Override
 	public Node visitLogicExp(SimpLanPlusParser.LogicExpContext ctx) {
 		Node left = visit(ctx.left);
@@ -212,6 +337,16 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new LogicExpNode(left, right, op);
 	}
 
+	/**
+	 * Valutazione "Arithm rule" (Expressions)
+	 * <p>
+	 * Regola "exp : left=exp op=('*' | '/')   right=exp #arithmExp
+	 * | left=exp op=('+' | '-')               right=exp #arithmExp
+	 * <p>
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo ArithmExp dato dalla struttura dell'espressione del contesto in analisi.
+	 */
 	@Override
 	public Node visitArithmExp(SimpLanPlusParser.ArithmExpContext ctx) {
 		Node left = visit(ctx.left);
@@ -220,18 +355,43 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new ArithmExpNode(left, right, op);
 	}
 
+	/**
+	 * Valutazione "callExp rule" (Expressions)
+	 * <p>
+	 * Regola "exp : call #callExp"
+	 * <p>
+	 * TODO: Serve veramente la classe CallExpNode o potrei fare direttamente una return visit...
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo CallExpNode dato dalla visita della call del contesto in analisi.
+	 */
 	@Override
 	public Node visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
-		//FIXME: Serve veramente la classe CallExpNode o potrei fare direttamente una return visit...
 		return new CallExpNode(visit(ctx.call()));
 	}
 
+	/**
+	 * Valutazione "boolExp rule" (Expressions)
+	 * <p>
+	 * Regola "exp : BOOL #boolExp"
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo BoolExpNode dato dal valore registrato nel contesto.
+	 */
 	@Override
 	public Node visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
 		String val = ctx.BOOL().toString();
 		return new BoolExpNode(val.equals("true"));
 	}
 
+	/**
+	 * Valutazione "valExp rule" (Expressions)
+	 * <p>
+	 * Regola "exp : NUMBER	#valExp"
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo ValExpNode dato dal valore registrato nel contesto.
+	 */
 	@Override
 	public Node visitValExp(SimpLanPlusParser.ValExpContext ctx) {
 		String valS = ctx.NUMBER().toString();

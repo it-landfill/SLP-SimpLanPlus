@@ -13,14 +13,6 @@ public class STentry {
     //Se si tratta di una funzione rappresenta il numero di argomenti, altrimenti è -1
     private int nArgs;
 
-    // TODO: Da eliminare creando un tipo "void"
-    public STentry(int n, int os, String ID) {
-        nl = n;
-        offset = os;
-        nArgs = -1;
-        this.ID = ID;
-    }
-
     public STentry(int n, Node t, int os, String ID) {
         nl = n;
         type = t;

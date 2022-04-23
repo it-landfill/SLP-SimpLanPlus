@@ -65,8 +65,7 @@ public class FunNode implements Node {
 		STentry entry;
 
 		// Genero la entry per la symbol table
-		if (returnType != null) entry = new STentry(env.nestingLevel, returnType, env.offset, funcName);
-		else entry = new STentry(env.nestingLevel, env.offset, funcName);
+		entry = new STentry(env.nestingLevel, returnType, env.offset, funcName);
 
 		// Se la funzione ha parametri formali, salvo il numero di questi
 		if (params != null) entry.setnArgs(params.size());
