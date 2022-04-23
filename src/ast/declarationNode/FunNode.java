@@ -58,7 +58,7 @@ public class FunNode implements Node {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
 		//Gestisco il caso delle funzioni nested
-		if (env.baseFun != null) { //TODO: Con la nuova symboltable si può fare diversamente??
+		if (env.baseFun != null) { //TODO: Con la nuova SymbolTable si può fare diversamente??
 			errors.add(new SemanticError("Functions can not be nested.\tYou are declaring function " + funcName + " inside the body of function " + env.baseFun + ", this is not allowed."));
 		}
 
@@ -83,7 +83,7 @@ public class FunNode implements Node {
 		if (params != null) {
 			for (ArgNode a : params) {
 				errors.addAll(a.checkSemantics(env));
-				STentry tmp = new STentry(env.nestingLevel,a.getType(),env.offset, a.getArgName());
+				STentry tmp = new STentry(env.nestingLevel, a.getType(), env.offset, a.getArgName());
 				if (env.symbolTable.addToSymbolTable(tmp)) {
 					errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
 				}

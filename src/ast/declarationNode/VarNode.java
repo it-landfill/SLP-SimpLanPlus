@@ -19,9 +19,7 @@ public class VarNode implements Node {
 	}
 
 	public VarNode(String ID, Node type) {
-		this.ID = ID;
-		this.type = type;
-		this.exp = null;
+		this(ID, type, null);
 	}
 
 	@Override
@@ -46,9 +44,9 @@ public class VarNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		STentry entry = new STentry(env.nestingLevel,type,env.offset,ID);
+		STentry entry = new STentry(env.nestingLevel, type, env.offset, ID);
 
-		if(env.symbolTable.addToSymbolTable(entry)) errors.add(new SemanticError("Var "+ID+" already declared"));
+		if (env.symbolTable.addToSymbolTable(entry)) errors.add(new SemanticError("Var " + ID + " already declared"));
 
 		if (exp != null) errors.addAll(exp.checkSemantics(env));
 
