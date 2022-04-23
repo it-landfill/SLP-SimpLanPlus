@@ -1,8 +1,0 @@
-{
-    bool a;
-    int b = 5;
-    a = 8;
-    b = a;
-    print false;
-    print 5+4;
-}

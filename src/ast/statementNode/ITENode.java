@@ -12,9 +12,7 @@ public class ITENode implements Node {
 	private final Node ifFalse;
 
 	public ITENode(Node condition, Node ifTrue) {
-		this.condition = condition;
-		this.ifTrue = ifTrue;
-		this.ifFalse = null;
+		this(condition, ifTrue, null);
 	}
 
 	public ITENode(Node condition, Node ifTrue, Node ifFalse) {
@@ -27,7 +25,7 @@ public class ITENode implements Node {
 	public String toPrint(String indent) {
 		StringBuilder out = new StringBuilder();
 		out.append(indent).append("IF ").append(condition.toPrint(indent)).append(" THEN ").append(ifTrue.toPrint(indent));
-		if(ifFalse != null) out.append(" ELSE ").append(ifFalse.toPrint(indent));
+		if (ifFalse != null) out.append(" ELSE ").append(ifFalse.toPrint(indent));
 		return out.toString();
 	}
 

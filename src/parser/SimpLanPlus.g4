@@ -49,7 +49,6 @@ exp	    : LPAR exp RPAR				                        #baseExp
 
 // THIS IS THE LEXER INPUT
 //Keywords
-VOID: 'void';
 IF: 'if';
 ELSE: 'else';
 VAR: 'var';
@@ -83,6 +82,7 @@ OR: '||';
 //Types
 INTEGER    : 'int' ;
 BOOLEAN   : 'bool' ;
+VOID: 'void';
 
 //Booleans
 BOOL        : 'true'|'false';

@@ -6,7 +6,6 @@ import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CallNode implements Node {
 	private final String funcName;
@@ -28,7 +27,7 @@ public class CallNode implements Node {
 
 		out.append(indent).append("call").append(funcName);
 
-		if (params!=null && !params.isEmpty()) {
+		if (params != null && !params.isEmpty()) {
 			out.append(" params ");
 			for (Node n : params) {
 				out.append(n.toPrint(indent));
@@ -50,36 +49,38 @@ public class CallNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		 ArrayList<SemanticError> errors = new ArrayList<>();
+		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		 STentry fun = STentry.findEntry(funcName,env);
+		STentry fun = env.symbolTable.findFirstInSymbolTable(funcName);
 
-		 if (fun == null) {
-			 errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
-		 } else {
-			 // Se il numero di args è -1, la entry è una variabile, non una funzione
-			 if (fun.getnArgs() == -1) {
-				 errors.add(new SemanticError("Fun " + funcName + " is not a function"));
-			 }
+		if (fun == null) {
+			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
+		} else {
+			// Se il numero di args è -1, la entry è una variabile, non una funzione
+			if (fun.getnArgs() == -1) {
+				errors.add(new SemanticError("Fun " + funcName + " is not a function"));
+				return errors;
+			}
 
-			 // Controllo il numero di parametri reali rispetto a quelli formali
-			 if (params != null) {
-				 if (fun.getnArgs() != params.size()) {
-					 errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have " + params.size()));
-				 }
-			 } else {
-				 if (fun.getnArgs() != 0) {
-					 errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have 0"));
-				 }
-			 }
-		 }
+			// Controllo il numero di parametri attuali rispetto a quelli formali
+			if (params != null) { //TODO: Se i parametri non corrispondono, cerco ai livelli superiori o mi arrendo?
+				if (fun.getnArgs() != params.size()) {
+					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have " + params.size()));
+				}
+			} else {
+				if (fun.getnArgs() != 0) {
+					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + fun.getnArgs() + ". Have 0"));
+				}
+			}
+		}
 
-		 // Se ci sono parametri controllo gli errori su questi
+		// Se ci sono parametri controllo gli errori su questi
 		if (params != null) {
 			for (Node n : params) {
 				errors.addAll(n.checkSemantics(env));
 			}
 		}
+
 		return errors;
 	}
 }

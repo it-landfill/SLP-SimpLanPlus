@@ -1,4 +1,4 @@
-package ast.expNode;
+package ast.typeNode;
 
 import ast.Node;
 import util.Environment;
@@ -6,16 +6,14 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class ValExpNode implements Node {
-	private final int val;
+public class VoidTypeNode implements Node {
 
-	public ValExpNode(int val) {
-		this.val = val;
+	public VoidTypeNode() {
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "val: " + val;
+		return indent + "type: void";
 	}
 
 	@Override
@@ -30,7 +28,6 @@ public class ValExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		// Essendo un exp base, non ho errori semantici
 		return new ArrayList<>();
 	}
 }

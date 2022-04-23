@@ -6,7 +6,6 @@ import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VarNode implements Node {
 	private final String ID;
@@ -20,9 +19,7 @@ public class VarNode implements Node {
 	}
 
 	public VarNode(String ID, Node type) {
-		this.ID = ID;
-		this.type = type;
-		this.exp = null;
+		this(ID, type, null);
 	}
 
 	@Override
@@ -45,12 +42,11 @@ public class VarNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		HashMap<String, STentry> hm = env.getCurrentLevelSymTable();
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		STentry entry = new STentry(env.nestingLevel,type,env.offset);
+		STentry entry = new STentry(env.nestingLevel, type, env.offset, ID);
 
-		if(hm.put(ID,entry) != null) errors.add(new SemanticError("Var "+ID+" already declared"));
+		if (env.symbolTable.addToSymbolTable(entry)) errors.add(new SemanticError("Var " + ID + " already declared"));
 
 		if (exp != null) errors.addAll(exp.checkSemantics(env));
 
