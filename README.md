@@ -4,7 +4,7 @@
 
 # SimpLanPlus
 
-## Progetto per il corso di Compilatori e Interpreti A.A 2022/2023
+## Progetto per il corso di Compilatori e Interpreti A.A 2021/2022
 ## Risorse
 [Jira](https://aleben.atlassian.net/jira/software/projects/PCEI/boards/5)
 
