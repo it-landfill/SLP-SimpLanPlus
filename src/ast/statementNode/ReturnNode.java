@@ -37,9 +37,7 @@ public class ReturnNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-
-		// TELL ME WHY?? #Balu
-		if (exp != null){
+		if (exp != null) {
 			return exp.checkSemantics(env);
 		} else {
 			return new ArrayList<>();
