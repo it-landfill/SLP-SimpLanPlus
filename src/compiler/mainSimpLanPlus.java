@@ -1,7 +1,6 @@
 package compiler;
 
 import ast.Node;
-import ast.STentry;
 import ast.SimpLanPlusVisitorImpl;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -11,6 +10,7 @@ import parser.SimpLanPlusLexer;
 import parser.SimpLanPlusParser;
 import util.Environment;
 import util.SemanticError;
+import util.SimpLanPlusErrorParser;
 
 import java.util.ArrayList;
 
