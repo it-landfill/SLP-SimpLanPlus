@@ -30,6 +30,7 @@ public class ValExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
+		// Essendo un exp base, non ho errori semantici
 		return new ArrayList<>();
 	}
 }

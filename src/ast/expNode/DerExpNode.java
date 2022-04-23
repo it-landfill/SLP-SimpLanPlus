@@ -1,13 +1,10 @@
 package ast.expNode;
 
 import ast.Node;
-import ast.STentry;
-import org.stringtemplate.v4.STErrorListener;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DerExpNode implements Node {
 	private final String ID;
@@ -34,7 +31,7 @@ public class DerExpNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		ArrayList<SemanticError> errors =   new ArrayList<>();
+		ArrayList<SemanticError> errors = new ArrayList<>();
 
 		if (env.symbolTable.findFirstInSymbolTable(ID) == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
