@@ -27,11 +27,11 @@ public class mainSimpLanPlus {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
         parser.addErrorListener(errHandler);
-        // Visitor implementation useful for scrolling abstract syntax tree in depth-first search.
+        // Visitor implementation useful for visiting abstract syntax tree in depth-first search.
         SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
         // The depth-first search for the abstract syntax tree starts from the root node, in the
         // case of the SimpLanPlus grammar.
-        // TODO: Check for final delivery that the root node has remained unchanged.
+        // TODO: Check for final delivery that the root node has remained unchanged in the grammar.
         Node ast = visitor.visit(parser.block());
         // If errors have been identified in the lexical analysis phase, they are printed, a report
         // file is generated, and the program stops.
@@ -46,7 +46,7 @@ public class mainSimpLanPlus {
         // Semantic verification.
         System.out.println("[INFO] Starting semantic verification.");
         Environment env = new Environment();
-        // Generation of an array list that will contain all semantic errors.
+        // Generation of an ArrayList that will contain all semantic errors.
         ArrayList<SemanticError> err = ast.checkSemantics(env);
         // If errors have been identified in the semantic analysis phase, they are printed, a report
         // file is generated, and the program stops.

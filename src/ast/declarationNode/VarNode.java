@@ -14,15 +14,15 @@ import java.util.ArrayList;
  */
 public class VarNode implements Node {
     /**
-     * Variable name identifier.
+     * Variable name.
      */
     private final String ID;
     /**
-     * Variable type identifier.
+     * Variable type.
      */
     private final Node type;
     /**
-     * Identifier of the expression to be assigned to the variable
+     * Expression to be assigned to the variable
      */
     private final Node exp;
 
@@ -62,7 +62,7 @@ public class VarNode implements Node {
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));
-        // Check the espressione.
+        // Semantic check of the expression (if any).
         if (exp != null) errors.addAll(exp.checkSemantics(env));
         return errors;
     }
