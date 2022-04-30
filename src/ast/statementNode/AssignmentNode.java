@@ -1,6 +1,7 @@
 package ast.statementNode;
 
 import ast.Node;
+import ast.STentry;
 import util.Environment;
 import util.SemanticError;
 
@@ -34,8 +35,11 @@ public class AssignmentNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		if (env.symbolTable.findFirstInSymbolTable(ID) == null) {
+		STentry entry = env.symbolTable.findFirstInSymbolTable(ID);
+		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
+		} else if(entry.getnArgs()!=-1) {
+			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
 		}
 
 		errors.addAll(exp.checkSemantics(env));
