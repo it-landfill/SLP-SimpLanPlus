@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class DerExpNode implements Node {
 	private final String ID;
+	//TODO: private STEntry entry - Il prof tiene traccia della STEntry qua dentro e la inizializza in check semantics
 
 	public DerExpNode(String ID) {
 		this.ID = ID;
@@ -36,6 +37,7 @@ public class DerExpNode implements Node {
 		if (env.symbolTable.findFirstInSymbolTable(ID) == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		}
+		// Il prof se trova una entry la salva nella variabile entry.
 
 		return errors;
 	}
