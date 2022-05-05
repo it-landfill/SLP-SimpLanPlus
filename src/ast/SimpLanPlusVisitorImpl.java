@@ -317,27 +317,6 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	}
 
 	/**
-	 * Valutazione "logic rule" (Expressions)
-	 * <p>
-	 * Regola "exp :
-	 * | left=exp op=('<' | '<=' | '>' | '>=') right=exp #logicExp
-	 * | left=exp op=('=='| '!=')              right=exp #logicExp
-	 * | left=exp op='&&'                      right=exp #logicExp
-	 * | left=exp op='||'                      right=exp #logicExp"
-	 * <p>
-	 *
-	 * @param ctx Contesto di analisi
-	 * @return Ritorno di un nodo LogicExp dato dalla struttura dell'espressione del contesto in analisi.
-	 */
-	@Override
-	public Node visitLogicExp(SimpLanPlusParser.LogicExpContext ctx) {
-		Node left = visit(ctx.left);
-		String op = ctx.op.getText();
-		Node right = visit(ctx.right);
-		return new LogicExpNode(left, right, op);
-	}
-
-	/**
 	 * Valutazione "Arithm rule" (Expressions)
 	 * <p>
 	 * Regola "exp : left=exp op=('*' | '/')   right=exp #arithmExp
@@ -355,6 +334,61 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		return new ArithmExpNode(left, right, op);
 	}
 
+	/**
+	 * Valutazione "compare rule" (Expressions)
+	 * <p>
+	 * Regola "exp :
+	 * | left=exp op=('<' | '<=' | '>' | '>=') right=exp #compExp"
+	 * <p>
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo CompExp dato dalla struttura dell'espressione del contesto in analisi.
+	 */
+	@Override
+	public Node visitCompareExp(SimpLanPlusParser.CompareExpContext ctx) {
+		Node left = visit(ctx.left);
+		String op = ctx.op.getText();
+		Node right = visit(ctx.right);
+		return new CompareExpNode(left, right, op);
+	}
+
+	/**
+	 * Valutazione "equal rule" (Expressions)
+	 * <p>
+	 * Regola "exp :
+	 * | left=exp op=('=='| '!=')              right=exp #equalExp"
+	 * <p>
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo EqualExp dato dalla struttura dell'espressione del contesto in analisi.
+	 */
+	@Override
+	public Node visitEqualExp(SimpLanPlusParser.EqualExpContext ctx) {
+		Node left = visit(ctx.left);
+		String op = ctx.op.getText();
+		Node right = visit(ctx.right);
+		return new EqualExpNode(left, right, op);
+	}
+
+	/**
+	 * Valutazione "logic rule" (Expressions)
+	 * <p>
+	 * Regola "exp :
+	 * | left=exp op='&&'                      right=exp #logicExp
+	 * | left=exp op='||'                      right=exp #logicExp"
+	 * <p>
+	 *
+	 * @param ctx Contesto di analisi
+	 * @return Ritorno di un nodo LogicExp dato dalla struttura dell'espressione del contesto in analisi.
+	 */
+	@Override
+	public Node visitLogicExp(SimpLanPlusParser.LogicExpContext ctx) {
+		Node left = visit(ctx.left);
+		String op = ctx.op.getText();
+		Node right = visit(ctx.right);
+		return new LogicExpNode(left, right, op);
+	}
+	
 	/**
 	 * Valutazione "callExp rule" (Expressions)
 	 * <p>

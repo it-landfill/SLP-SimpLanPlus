@@ -140,6 +140,18 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 */
 	void exitBaseExp(SimpLanPlusParser.BaseExpContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code compareExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompareExp(SimpLanPlusParser.CompareExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code compareExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompareExp(SimpLanPlusParser.CompareExpContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code derExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
 	 * @param ctx the parse tree
@@ -235,4 +247,16 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNotExp(SimpLanPlusParser.NotExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code equalExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqualExp(SimpLanPlusParser.EqualExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code equalExp}
+	 * labeled alternative in {@link SimpLanPlusParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqualExp(SimpLanPlusParser.EqualExpContext ctx);
 }

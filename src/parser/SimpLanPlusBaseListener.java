@@ -172,6 +172,18 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCompareExp(SimpLanPlusParser.CompareExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompareExp(SimpLanPlusParser.CompareExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDerExp(SimpLanPlusParser.DerExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -263,6 +275,18 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNotExp(SimpLanPlusParser.NotExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEqualExp(SimpLanPlusParser.EqualExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEqualExp(SimpLanPlusParser.EqualExpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -39,8 +39,8 @@ exp	    : LPAR exp RPAR				                        #baseExp
 	    | ID						                        #derExp
 	    | left=exp op=(PROD | DIV)              right=exp   #arithmExp
 	    | left=exp op=(PLUS | MINUS)            right=exp   #arithmExp
-	    | left=exp op=(LT | LTE | GT | GTE)     right=exp   #logicExp
-	    | left=exp op=(EQ| NEQ)                 right=exp   #logicExp
+	    | left=exp op=(LT | LTE | GT | GTE)     right=exp   #compareExp
+	    | left=exp op=(EQ| NEQ)                 right=exp   #equalExp
 	    | left=exp op=AND                       right=exp   #logicExp
 	    | left=exp op=OR                        right=exp   #logicExp
 	    | call                                              #callExp

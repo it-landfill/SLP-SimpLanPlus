@@ -992,6 +992,35 @@ public class SimpLanPlusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class CompareExpContext extends ExpContext {
+		public ExpContext left;
+		public Token op;
+		public ExpContext right;
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public TerminalNode LT() { return getToken(SimpLanPlusParser.LT, 0); }
+		public TerminalNode LTE() { return getToken(SimpLanPlusParser.LTE, 0); }
+		public TerminalNode GT() { return getToken(SimpLanPlusParser.GT, 0); }
+		public TerminalNode GTE() { return getToken(SimpLanPlusParser.GTE, 0); }
+		public CompareExpContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).enterCompareExp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).exitCompareExp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitCompareExp(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class DerExpContext extends ExpContext {
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
 		public DerExpContext(ExpContext ctx) { copyFrom(ctx); }
@@ -1019,12 +1048,6 @@ public class SimpLanPlusParser extends Parser {
 		public ExpContext exp(int i) {
 			return getRuleContext(ExpContext.class,i);
 		}
-		public TerminalNode LT() { return getToken(SimpLanPlusParser.LT, 0); }
-		public TerminalNode LTE() { return getToken(SimpLanPlusParser.LTE, 0); }
-		public TerminalNode GT() { return getToken(SimpLanPlusParser.GT, 0); }
-		public TerminalNode GTE() { return getToken(SimpLanPlusParser.GTE, 0); }
-		public TerminalNode EQ() { return getToken(SimpLanPlusParser.EQ, 0); }
-		public TerminalNode NEQ() { return getToken(SimpLanPlusParser.NEQ, 0); }
 		public TerminalNode AND() { return getToken(SimpLanPlusParser.AND, 0); }
 		public TerminalNode OR() { return getToken(SimpLanPlusParser.OR, 0); }
 		public LogicExpContext(ExpContext ctx) { copyFrom(ctx); }
@@ -1161,6 +1184,33 @@ public class SimpLanPlusParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitNotExp(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EqualExpContext extends ExpContext {
+		public ExpContext left;
+		public Token op;
+		public ExpContext right;
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public TerminalNode EQ() { return getToken(SimpLanPlusParser.EQ, 0); }
+		public TerminalNode NEQ() { return getToken(SimpLanPlusParser.NEQ, 0); }
+		public EqualExpContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).enterEqualExp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).exitEqualExp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitEqualExp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1315,16 +1365,16 @@ public class SimpLanPlusParser extends Parser {
 						break;
 					case 3:
 						{
-						_localctx = new LogicExpContext(new ExpContext(_parentctx, _parentState));
-						((LogicExpContext)_localctx).left = _prevctx;
+						_localctx = new CompareExpContext(new ExpContext(_parentctx, _parentState));
+						((CompareExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(151);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
 						setState(152);
-						((LogicExpContext)_localctx).op = _input.LT(1);
+						((CompareExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LT) | (1L << GT) | (1L << LTE) | (1L << GTE))) != 0)) ) {
-							((LogicExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((CompareExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1332,21 +1382,21 @@ public class SimpLanPlusParser extends Parser {
 							consume();
 						}
 						setState(153);
-						((LogicExpContext)_localctx).right = exp(8);
+						((CompareExpContext)_localctx).right = exp(8);
 						}
 						break;
 					case 4:
 						{
-						_localctx = new LogicExpContext(new ExpContext(_parentctx, _parentState));
-						((LogicExpContext)_localctx).left = _prevctx;
+						_localctx = new EqualExpContext(new ExpContext(_parentctx, _parentState));
+						((EqualExpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(154);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(155);
-						((LogicExpContext)_localctx).op = _input.LT(1);
+						((EqualExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==EQ || _la==NEQ) ) {
-							((LogicExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((EqualExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1354,7 +1404,7 @@ public class SimpLanPlusParser extends Parser {
 							consume();
 						}
 						setState(156);
-						((LogicExpContext)_localctx).right = exp(7);
+						((EqualExpContext)_localctx).right = exp(7);
 						}
 						break;
 					case 5:
