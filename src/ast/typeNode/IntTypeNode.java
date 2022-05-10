@@ -23,7 +23,7 @@ public class IntTypeNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		return "";
 	}
 
 	@Override
