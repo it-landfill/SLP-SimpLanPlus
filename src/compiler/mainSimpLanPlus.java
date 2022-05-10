@@ -9,7 +9,7 @@ import parser.SimpLanPlusLexer;
 import parser.SimpLanPlusParser;
 import util.Environment;
 import util.SemanticError;
-import util.SimpLanPlusErrorParser;
+import util.SLPErrorParser;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class mainSimpLanPlus {
         // File loading.
         CharStream inputFile = CharStreams.fromFileName(fileName);
         // Generation of the error handler object useful for managing lexical errors.
-        SimpLanPlusErrorParser errHandler = new SimpLanPlusErrorParser();
+        SLPErrorParser errHandler = new SLPErrorParser();
         // Lexical verification.
         System.out.println("[INFO] Starting lexical verification.");
         SimpLanPlusLexer lexer = new SimpLanPlusLexer(inputFile);

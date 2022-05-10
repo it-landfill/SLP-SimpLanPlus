@@ -388,7 +388,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 		Node right = visit(ctx.right);
 		return new LogicExpNode(left, right, op);
 	}
-	
+
 	/**
 	 * Valutazione "callExp rule" (Expressions)
 	 * <p>

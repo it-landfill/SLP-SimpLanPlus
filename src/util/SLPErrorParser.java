@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class SimpLanPlusErrorParser extends BaseErrorListener {
+public class SLPErrorParser extends BaseErrorListener {
     // Variabile utile alla generazione del nome per il file di output.
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss");
 
     // Variabile array list contente gli errori.
     private final ArrayList<String> syntaxErrors;
 
-    public SimpLanPlusErrorParser() {
+    public SLPErrorParser() {
         syntaxErrors = new ArrayList<>();
     }
 
