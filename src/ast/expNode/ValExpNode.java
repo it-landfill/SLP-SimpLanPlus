@@ -25,7 +25,7 @@ public class ValExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		return "push "+val+"\n";
 	}
 
 	@Override

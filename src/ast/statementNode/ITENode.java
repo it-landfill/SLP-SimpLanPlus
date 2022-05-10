@@ -2,6 +2,7 @@ package ast.statementNode;
 
 import ast.Node;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.util.ArrayList;
@@ -36,7 +37,18 @@ public class ITENode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		StringBuilder out = new StringBuilder();
+		String l1 = SLPUtils.newLabel(),l2 = SLPUtils.newLabel();
+
+		out.append(condition.codeGeneration());
+		out.append("push 0\n");
+		out.append("beq").append(l1).append("\n");
+		out.append(ifTrue.codeGeneration());
+		out.append("b ").append(l2).append("\n");
+		out.append(l1).append(":\n");
+		out.append(ifFalse.codeGeneration());
+		out.append(l2).append(":\n");
+		return out.toString();
 	}
 
 	@Override

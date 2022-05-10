@@ -6,6 +6,8 @@ import ast.typeNode.IntTypeNode;
 import ast.typeNode.VoidTypeNode;
 
 public class SLPUtils {
+	private static int labCount;
+
 	public static boolean checkTypes(Node a, Node b) {
 		return a.getClass().equals(b.getClass());
 	}
@@ -21,4 +23,6 @@ public class SLPUtils {
 	public static boolean checkVoidType(Node a, Node b) {
 		return a instanceof VoidTypeNode && b instanceof VoidTypeNode;
 	}
+
+	public static String newLabel() {return "label"+(labCount++);}
 }
