@@ -25,7 +25,7 @@ public class CallExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		return "TODO: CallExp\n"+callFun.codeGeneration();
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class DerExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		return "TODO: DerExp\n";
 	}
 
 	@Override

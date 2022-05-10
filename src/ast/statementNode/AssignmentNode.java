@@ -28,7 +28,7 @@ public class AssignmentNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		return "TODO: Assignment";
 	}
 
 	@Override

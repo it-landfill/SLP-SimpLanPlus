@@ -44,7 +44,7 @@ public class CallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		return "TODO: Call";
 	}
 
 	@Override

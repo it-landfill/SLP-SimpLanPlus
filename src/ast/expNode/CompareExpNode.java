@@ -29,7 +29,17 @@ public class CompareExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		StringBuilder out = new StringBuilder();
+		out.append(left.codeGeneration());
+		out.append(right.codeGeneration());
+		switch (op) {
+			case ">" -> out.append("gt");
+			case ">=" -> out.append("gte");
+			case "<" -> out.append("lt");
+			case "<=" -> out.append("lte");
+		}
+		out.append("\n");
+		return out.toString();
 	}
 
 	@Override

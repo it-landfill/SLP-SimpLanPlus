@@ -29,7 +29,15 @@ public class EqualExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		StringBuilder out = new StringBuilder();
+		out.append(left.codeGeneration());
+		out.append(right.codeGeneration());
+		switch (op) {
+			case "==" -> out.append("eq");
+			case "!=" -> out.append("neq");
+		}
+		out.append("\n");
+		return out.toString();
 	}
 
 	@Override

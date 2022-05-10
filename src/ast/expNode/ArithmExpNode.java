@@ -30,7 +30,7 @@ public class ArithmExpNode implements Node {
 	@Override
 	public String codeGeneration() {
 		String str = left.codeGeneration()+right.codeGeneration();
-		switch (str) {
+		switch (op) {
 			case "+" -> str += "add\n";
 			case "-" -> str += "sub\n";
 			case "*" -> str += "mul\n";

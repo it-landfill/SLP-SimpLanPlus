@@ -24,8 +24,8 @@ public class BlockNode implements Node {
 		for (Node dec : declarationList)
 			declStr.append(dec.toPrint(indent + "  "));
 
-		for (Node dec : statementList)
-			statStr.append(dec.toPrint(indent + "  "));
+		for (Node sta : statementList)
+			statStr.append(sta.toPrint(indent + "  "));
 
 		return indent + "\nBlock\n\t" + declStr + "\t" + statStr + indent + "End Block";
 	}
@@ -37,7 +37,16 @@ public class BlockNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		StringBuilder declCde = new StringBuilder();
+		StringBuilder statCde = new StringBuilder();
+
+		for (Node dec : declarationList)
+			declCde.append(dec.codeGeneration());
+
+		for (Node sta : statementList)
+			statCde.append(sta.codeGeneration());
+
+		return declCde.toString()+statCde.toString();
 	}
 
 	@Override

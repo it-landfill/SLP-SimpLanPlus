@@ -68,7 +68,7 @@ public class FunNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return null;
+        return "TODO: Fun\n"+block.codeGeneration();
     }
 
     @Override

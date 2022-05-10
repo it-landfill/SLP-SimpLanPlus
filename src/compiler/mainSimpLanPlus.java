@@ -11,6 +11,8 @@ import util.Environment;
 import util.SemanticError;
 import util.SLPErrorParser;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class mainSimpLanPlus {
@@ -60,5 +62,14 @@ public class mainSimpLanPlus {
         System.out.println("[INFO] No semantic error found.");
 
         System.out.println("[SUCCESS] Program parsing completed");
+
+
+
+        // CODE GENERATION  prova.SimpLan.asm
+        String code=ast.codeGeneration();
+        BufferedWriter out = new BufferedWriter(new FileWriter(fileName+".asm"));
+        out.write(code);
+        out.close();
+        System.out.println("[SUCCESS] Code generated! Assembling and running generated code.");
     }
 }

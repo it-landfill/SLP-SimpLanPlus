@@ -26,7 +26,10 @@ public class NotExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return null;
+		StringBuilder out = new StringBuilder();
+		out.append(exp.codeGeneration());
+		out.append("not\n");
+		return out.toString();
 	}
 
 	@Override
