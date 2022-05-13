@@ -78,6 +78,16 @@ public class ExecuteVM {
 						v2 = pop();
 						push((v2 >= v1)?1:0);
 					}
+					case SVMParser.EQ -> {
+						v1 = pop();
+						v2 = pop();
+						push((v2 == v1)?1:0);
+					}
+					case SVMParser.NEQ -> {
+						v1 = pop();
+						v2 = pop();
+						push((v2 != v1)?1:0);
+					}
 					case SVMParser.PRINT -> System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
 					case SVMParser.HALT -> {
 						//to print the result

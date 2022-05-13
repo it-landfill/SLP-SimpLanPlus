@@ -25,6 +25,8 @@ instruction:
 	  | LTE
 	  | GT
 	  | GTE
+	  | EQ
+	  | NEQ
 	  | PRINT
 	  | HALT
 	  ) ;
@@ -45,6 +47,8 @@ LT        : 'lt' ; // Lower than
 LTE       : 'lte' ; // Lower than or equal
 GT        : 'gt' ; // Greater than
 GTE       : 'gte' ; // Greater than or equal
+EQ        : 'eq' ; // Equal
+NEQ       : 'neq' ; // Not Equal
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;

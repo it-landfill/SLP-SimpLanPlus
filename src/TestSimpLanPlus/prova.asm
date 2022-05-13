@@ -1,17 +1,17 @@
 push 5
 push 6
-lt
+eq
 print
 push 5
-push 6
-lte
-print
 push 5
-push 6
-gt
+eq
 print
-push 6
-push 6
-gte
+push 1
+push 1
+eq
+print
+push 1
+push 1
+neq
 print
 halt

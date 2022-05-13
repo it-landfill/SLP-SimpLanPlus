@@ -52,6 +52,12 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 			case SVMLexer.GTE:
 				code[i++] = SVMParser.GTE;
 				break;
+			case SVMLexer.EQ:
+				code[i++] = SVMParser.EQ;
+				break;
+			case SVMLexer.NEQ:
+				code[i++] = SVMParser.NEQ;
+				break;
 			case SVMLexer.PRINT:
 				code[i++] = SVMParser.PRINT;
 				break;
