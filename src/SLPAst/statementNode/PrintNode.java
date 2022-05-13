@@ -1,21 +1,21 @@
-package ast.expNode;
+package SLPAst.statementNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class BaseExpNode implements Node {
+public class PrintNode implements Node {
 	private final Node exp;
 
-	public BaseExpNode(Node exp) {
+	public PrintNode(Node exp) {
 		this.exp = exp;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + " exp: " + exp.toString();
+		return indent + "print: " + exp.toPrint(indent);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class BaseExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return exp.codeGeneration();
+		return exp.codeGeneration()+"print\n";
 	}
 
 	@Override

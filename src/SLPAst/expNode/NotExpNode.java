@@ -1,21 +1,22 @@
-package ast.expNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class ValExpNode implements Node {
-	private final int val;
+public class NotExpNode implements Node {
 
-	public ValExpNode(int val) {
-		this.val = val;
+	private final Node exp;
+
+	public NotExpNode(Node exp) {
+		this.exp = exp;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "val: " + val;
+		return indent + " not: " + exp.toString();
 	}
 
 	@Override
@@ -25,12 +26,12 @@ public class ValExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "push "+val+"\n";
+		return exp.codeGeneration() +
+				"TODO: not\n";
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		// Essendo un exp base, non ho errori semantici
-		return new ArrayList<>();
+		return exp.checkSemantics(env);
 	}
 }

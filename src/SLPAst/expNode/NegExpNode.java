@@ -1,19 +1,22 @@
-package ast.typeNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class VoidTypeNode implements Node {
+public class NegExpNode implements Node {
 
-	public VoidTypeNode() {
+	private final Node exp;
+
+	public NegExpNode(Node exp) {
+		this.exp = exp;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "type: void";
+		return indent + " negative: " + exp.toString();
 	}
 
 	@Override
@@ -23,11 +26,13 @@ public class VoidTypeNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		return exp.codeGeneration() +
+				"push -1\n" +
+				"mul\n";
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return new ArrayList<>();
+		return exp.checkSemantics(env);
 	}
 }

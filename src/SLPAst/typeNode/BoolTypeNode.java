@@ -1,21 +1,19 @@
-package ast.expNode;
+package SLPAst.typeNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class BoolExpNode implements Node {
-	private final boolean val;
+public class BoolTypeNode implements Node {
 
-	public BoolExpNode(boolean val) {
-		this.val = val;
+	public BoolTypeNode() {
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "val: " + val;
+		return indent + "type: boolean";
 	}
 
 	@Override
@@ -25,12 +23,11 @@ public class BoolExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "push "+(val?1:0)+"\n";
+		return "";
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		// Essendo un exp base, non ho errori semantici
 		return new ArrayList<>();
 	}
 }

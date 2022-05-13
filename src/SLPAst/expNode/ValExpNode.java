@@ -1,21 +1,21 @@
-package ast.expNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class CallExpNode implements Node {
-	private final Node callFun;
+public class ValExpNode implements Node {
+	private final int val;
 
-	public CallExpNode(Node call) {
-		this.callFun = call;
+	public ValExpNode(int val) {
+		this.val = val;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "callExp: " + callFun.toPrint(indent);
+		return indent + "val: " + val;
 	}
 
 	@Override
@@ -25,11 +25,12 @@ public class CallExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return callFun.codeGeneration()+"TODO: CallExp\n";
+		return "push "+val+"\n";
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return callFun.checkSemantics(env);
+		// Essendo un exp base, non ho errori semantici
+		return new ArrayList<>();
 	}
 }

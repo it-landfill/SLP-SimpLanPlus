@@ -1,6 +1,6 @@
-package ast.statementNode;
+package SLPAst.statementNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 

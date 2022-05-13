@@ -1,6 +1,6 @@
-package ast.typeNode;
+package SLPAst.typeNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 

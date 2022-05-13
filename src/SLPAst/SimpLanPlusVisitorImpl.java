@@ -1,12 +1,12 @@
-package ast;
+package SLPAst;
 
-import ast.declarationNode.FunNode;
-import ast.declarationNode.VarNode;
-import ast.expNode.*;
-import ast.statementNode.*;
-import ast.typeNode.BoolTypeNode;
-import ast.typeNode.IntTypeNode;
-import ast.typeNode.VoidTypeNode;
+import SLPAst.declarationNode.FunNode;
+import SLPAst.declarationNode.VarNode;
+import SLPAst.expNode.*;
+import SLPAst.statementNode.*;
+import SLPAst.typeNode.BoolTypeNode;
+import SLPAst.typeNode.IntTypeNode;
+import SLPAst.typeNode.VoidTypeNode;
 import SLPParser.SimpLanPlusBaseVisitor;
 import SLPParser.SimpLanPlusParser;
 

@@ -1,8 +1,8 @@
-package ast.declarationNode;
+package SLPAst.declarationNode;
 
-import ast.ArgNode;
-import ast.Node;
-import ast.STentry;
+import SLPAst.ArgNode;
+import SLPAst.Node;
+import SLPAst.STentry;
 import util.Environment;
 import util.SemanticError;
 

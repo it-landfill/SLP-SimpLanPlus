@@ -1,22 +1,21 @@
-package ast.expNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class NegExpNode implements Node {
+public class CallExpNode implements Node {
+	private final Node callFun;
 
-	private final Node exp;
-
-	public NegExpNode(Node exp) {
-		this.exp = exp;
+	public CallExpNode(Node call) {
+		this.callFun = call;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + " negative: " + exp.toString();
+		return indent + "callExp: " + callFun.toPrint(indent);
 	}
 
 	@Override
@@ -26,13 +25,11 @@ public class NegExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return exp.codeGeneration() +
-				"push -1\n" +
-				"mul\n";
+		return callFun.codeGeneration()+"TODO: CallExp\n";
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return exp.checkSemantics(env);
+		return callFun.checkSemantics(env);
 	}
 }

@@ -1,22 +1,21 @@
-package ast.expNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class NotExpNode implements Node {
-
+public class BaseExpNode implements Node {
 	private final Node exp;
 
-	public NotExpNode(Node exp) {
+	public BaseExpNode(Node exp) {
 		this.exp = exp;
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + " not: " + exp.toString();
+		return indent + " exp: " + exp.toString();
 	}
 
 	@Override
@@ -26,8 +25,7 @@ public class NotExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return exp.codeGeneration() +
-				"TODO: not\n";
+		return exp.codeGeneration();
 	}
 
 	@Override

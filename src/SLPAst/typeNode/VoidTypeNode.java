@@ -1,21 +1,19 @@
-package ast.statementNode;
+package SLPAst.typeNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class PrintNode implements Node {
-	private final Node exp;
+public class VoidTypeNode implements Node {
 
-	public PrintNode(Node exp) {
-		this.exp = exp;
+	public VoidTypeNode() {
 	}
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "print: " + exp.toPrint(indent);
+		return indent + "type: void";
 	}
 
 	@Override
@@ -25,11 +23,11 @@ public class PrintNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return exp.codeGeneration()+"print\n";
+		return "";
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return exp.checkSemantics(env);
+		return new ArrayList<>();
 	}
 }

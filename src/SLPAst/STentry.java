@@ -1,4 +1,4 @@
-package ast;
+package SLPAst;
 
 public class STentry {
 

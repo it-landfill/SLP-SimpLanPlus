@@ -1,4 +1,4 @@
-package ast;
+package SLPAst;
 
 import util.Environment;
 import util.SemanticError;

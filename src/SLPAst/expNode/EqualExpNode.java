@@ -1,17 +1,17 @@
-package ast.expNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class LogicExpNode implements Node {
+public class EqualExpNode implements Node {
 	private final Node left;
 	private final Node right;
 	private final String op;
 
-	public LogicExpNode(Node left, Node right, String op) {
+	public EqualExpNode(Node left, Node right, String op) {
 		this.left = left;
 		this.right = right;
 		this.op = op;
@@ -19,7 +19,7 @@ public class LogicExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "LogicExp: " + left + op + right;
+		return indent + "EqualExp: " + left + op + right;
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class LogicExpNode implements Node {
 		out.append(left.codeGeneration());
 		out.append(right.codeGeneration());
 		switch (op) {
-			case "and" -> out.append("and");
-			case "or" -> out.append("or");
+			case "==" -> out.append("eq");
+			case "!=" -> out.append("neq");
 		}
 		out.append("\n");
 		return out.toString();

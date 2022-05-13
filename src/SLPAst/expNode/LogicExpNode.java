@@ -1,17 +1,17 @@
-package ast.expNode;
+package SLPAst.expNode;
 
-import ast.Node;
+import SLPAst.Node;
 import util.Environment;
 import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class CompareExpNode implements Node {
+public class LogicExpNode implements Node {
 	private final Node left;
 	private final Node right;
 	private final String op;
 
-	public CompareExpNode(Node left, Node right, String op) {
+	public LogicExpNode(Node left, Node right, String op) {
 		this.left = left;
 		this.right = right;
 		this.op = op;
@@ -19,7 +19,7 @@ public class CompareExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "CompareExp: " + left + op + right;
+		return indent + "LogicExp: " + left + op + right;
 	}
 
 	@Override
@@ -33,10 +33,8 @@ public class CompareExpNode implements Node {
 		out.append(left.codeGeneration());
 		out.append(right.codeGeneration());
 		switch (op) {
-			case ">" -> out.append("gt");
-			case ">=" -> out.append("gte");
-			case "<" -> out.append("lt");
-			case "<=" -> out.append("lte");
+			case "and" -> out.append("and");
+			case "or" -> out.append("or");
 		}
 		out.append("\n");
 		return out.toString();
