@@ -44,7 +44,13 @@ public class CallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "TODO: Call";
+		StringBuilder out = new StringBuilder();
+		if(params != null) {
+			for (Node n : params) {
+				out.append(n.codeGeneration());
+			}
+		}
+		return out.toString() + "TODO: Call";
 	}
 
 	@Override
