@@ -7,8 +7,8 @@ import ast.statementNode.*;
 import ast.typeNode.BoolTypeNode;
 import ast.typeNode.IntTypeNode;
 import ast.typeNode.VoidTypeNode;
-import parser.SimpLanPlusBaseVisitor;
-import parser.SimpLanPlusParser;
+import SLPParser.SimpLanPlusBaseVisitor;
+import SLPParser.SimpLanPlusParser;
 
 import java.util.ArrayList;
 
