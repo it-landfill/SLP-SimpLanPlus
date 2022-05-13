@@ -3,15 +3,11 @@ push 1
 and
 print
 push 1
-push 0
-and
+not
 print
 push 1
 push 0
-or
-print
-push 0
-push 0
-or
+not
+and
 print
 halt

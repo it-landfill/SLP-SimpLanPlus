@@ -28,7 +28,7 @@ public class NegExpNode implements Node {
 	public String codeGeneration() {
 		return exp.codeGeneration() +
 				"push -1\n" +
-				"mul\n";
+				"mult\n";
 	}
 
 	@Override

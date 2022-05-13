@@ -1,6 +1,5 @@
 {
-    print true&&true;
-    print true&&false;
-    print true || false;
-    print false || false;
+    print true && true;
+    print !true;
+    print true && !false;
 }

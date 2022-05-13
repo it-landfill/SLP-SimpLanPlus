@@ -29,6 +29,7 @@ instruction:
 	  | NEQ
 	  | AND
 	  | OR
+	  | NOT
 	  | PRINT
 	  | HALT
 	  ) ;
@@ -53,6 +54,7 @@ EQ        : 'eq' ; // Equal
 NEQ       : 'neq' ; // Not Equal
 AND       : 'and' ;
 OR        : 'or' ;
+NOT     : 'not' ;
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;
