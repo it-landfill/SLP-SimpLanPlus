@@ -33,8 +33,8 @@ public class LogicExpNode implements Node {
 		out.append(left.codeGeneration());
 		out.append(right.codeGeneration());
 		switch (op) {
-			case "and" -> out.append("and");
-			case "or" -> out.append("or");
+			case "&&" -> out.append("and");
+			case "||" -> out.append("or");
 		}
 		out.append("\n");
 		return out.toString();

@@ -27,6 +27,8 @@ instruction:
 	  | GTE
 	  | EQ
 	  | NEQ
+	  | AND
+	  | OR
 	  | PRINT
 	  | HALT
 	  ) ;
@@ -49,6 +51,8 @@ GT        : 'gt' ; // Greater than
 GTE       : 'gte' ; // Greater than or equal
 EQ        : 'eq' ; // Equal
 NEQ       : 'neq' ; // Not Equal
+AND       : 'and' ;
+OR        : 'or' ;
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;

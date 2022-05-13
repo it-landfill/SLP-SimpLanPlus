@@ -1,17 +1,17 @@
-push 5
-push 6
-eq
-print
-push 5
-push 5
-eq
+push 1
+push 1
+and
 print
 push 1
-push 1
-eq
+push 0
+and
 print
 push 1
-push 1
-neq
+push 0
+or
+print
+push 0
+push 0
+or
 print
 halt

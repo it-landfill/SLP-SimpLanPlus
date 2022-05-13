@@ -21,7 +21,8 @@ public class SVMParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		PUSH=1, POP=2, ADD=3, SUB=4, MULT=5, DIV=6, PRINT=7, HALT=8, LT=9, LTE=10, 
-		GT=11, GTE=12, EQ=13, NEQ=14, COL=15, NUMBER=16, WHITESP=17, ERR=18;
+		GT=11, GTE=12, EQ=13, NEQ=14, AND=15, OR=16, COL=17, NUMBER=18, WHITESP=19, 
+		ERR=20;
 	public static final int
 		RULE_assembly = 0, RULE_instruction = 1;
 	private static String[] makeRuleNames() {
@@ -34,14 +35,16 @@ public class SVMParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'push'", "'pop'", "'add'", "'sub'", "'mult'", "'div'", "'print'", 
-			"'halt'", "'lt'", "'lte'", "'gt'", "'gte'", "'eq'", "'neq'", "':'"
+			"'halt'", "'lt'", "'lte'", "'gt'", "'gte'", "'eq'", "'neq'", "'and'", 
+			"'or'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, "PUSH", "POP", "ADD", "SUB", "MULT", "DIV", "PRINT", "HALT", "LT", 
-			"LTE", "GT", "GTE", "EQ", "NEQ", "COL", "NUMBER", "WHITESP", "ERR"
+			"LTE", "GT", "GTE", "EQ", "NEQ", "AND", "OR", "COL", "NUMBER", "WHITESP", 
+			"ERR"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -131,7 +134,7 @@ public class SVMParser extends Parser {
 			setState(7);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << PRINT) | (1L << HALT) | (1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE) | (1L << EQ) | (1L << NEQ))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << PRINT) | (1L << HALT) | (1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE) | (1L << EQ) | (1L << NEQ) | (1L << AND) | (1L << OR))) != 0)) {
 				{
 				{
 				setState(4);
@@ -169,6 +172,8 @@ public class SVMParser extends Parser {
 		public TerminalNode GTE() { return getToken(SVMParser.GTE, 0); }
 		public TerminalNode EQ() { return getToken(SVMParser.EQ, 0); }
 		public TerminalNode NEQ() { return getToken(SVMParser.NEQ, 0); }
+		public TerminalNode AND() { return getToken(SVMParser.AND, 0); }
+		public TerminalNode OR() { return getToken(SVMParser.OR, 0); }
 		public TerminalNode PRINT() { return getToken(SVMParser.PRINT, 0); }
 		public TerminalNode HALT() { return getToken(SVMParser.HALT, 0); }
 		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
@@ -197,7 +202,7 @@ public class SVMParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(25);
+			setState(27);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PUSH:
@@ -274,15 +279,27 @@ public class SVMParser extends Parser {
 				match(NEQ);
 				}
 				break;
-			case PRINT:
+			case AND:
 				{
 				setState(23);
+				match(AND);
+				}
+				break;
+			case OR:
+				{
+				setState(24);
+				match(OR);
+				}
+				break;
+			case PRINT:
+				{
+				setState(25);
 				match(PRINT);
 				}
 				break;
 			case HALT:
 				{
-				setState(24);
+				setState(26);
 				match(HALT);
 				}
 				break;
@@ -303,17 +320,18 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24\36\4\2\t\2\4\3"+
-		"\t\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\34\n\3\3\3\2\2\4\2\4\2\2\2)\2\t\3\2\2\2"+
-		"\4\33\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2"+
-		"\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7\3\2\2\r\34\7\22\2\2\16\34\7\4\2\2"+
-		"\17\34\7\5\2\2\20\34\7\6\2\2\21\34\7\7\2\2\22\34\7\b\2\2\23\34\7\13\2"+
-		"\2\24\34\7\f\2\2\25\34\7\r\2\2\26\34\7\16\2\2\27\34\7\17\2\2\30\34\7\20"+
-		"\2\2\31\34\7\t\2\2\32\34\7\n\2\2\33\f\3\2\2\2\33\16\3\2\2\2\33\17\3\2"+
-		"\2\2\33\20\3\2\2\2\33\21\3\2\2\2\33\22\3\2\2\2\33\23\3\2\2\2\33\24\3\2"+
-		"\2\2\33\25\3\2\2\2\33\26\3\2\2\2\33\27\3\2\2\2\33\30\3\2\2\2\33\31\3\2"+
-		"\2\2\33\32\3\2\2\2\34\5\3\2\2\2\4\t\33";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26 \4\2\t\2\4\3\t"+
+		"\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\36\n\3\3\3\2\2\4\2\4\2\2\2-\2\t\3"+
+		"\2\2\2\4\35\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t"+
+		"\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7\3\2\2\r\36\7\24\2\2\16\36\7"+
+		"\4\2\2\17\36\7\5\2\2\20\36\7\6\2\2\21\36\7\7\2\2\22\36\7\b\2\2\23\36\7"+
+		"\13\2\2\24\36\7\f\2\2\25\36\7\r\2\2\26\36\7\16\2\2\27\36\7\17\2\2\30\36"+
+		"\7\20\2\2\31\36\7\21\2\2\32\36\7\22\2\2\33\36\7\t\2\2\34\36\7\n\2\2\35"+
+		"\f\3\2\2\2\35\16\3\2\2\2\35\17\3\2\2\2\35\20\3\2\2\2\35\21\3\2\2\2\35"+
+		"\22\3\2\2\2\35\23\3\2\2\2\35\24\3\2\2\2\35\25\3\2\2\2\35\26\3\2\2\2\35"+
+		"\27\3\2\2\2\35\30\3\2\2\2\35\31\3\2\2\2\35\32\3\2\2\2\35\33\3\2\2\2\35"+
+		"\34\3\2\2\2\36\5\3\2\2\2\4\t\35";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
