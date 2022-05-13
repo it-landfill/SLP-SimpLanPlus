@@ -43,6 +43,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 			case SVMLexer.PRINT:
 				code[i++] = SVMParser.PRINT;
 				break;
+			case SVMLexer.HALT:
+				code[i++] = SVMParser.HALT;
+				break;
 			default:
 				break;	// Invalid instruction
 		}

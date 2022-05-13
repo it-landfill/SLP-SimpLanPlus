@@ -46,7 +46,7 @@ public class BlockNode implements Node {
 		for (Node sta : statementList)
 			statCde.append(sta.codeGeneration());
 
-		return declCde.toString()+statCde.toString();
+		return declCde.toString()+statCde.toString()+"halt\n";
 	}
 
 	@Override

@@ -1,11 +1,16 @@
-// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/SVMParser/SVM.g4 by ANTLR 4.9.2
+// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/SVM_parser/SVM.g4 by ANTLR 4.9.2
 package SVM_parser;
+
+import java.util.HashMap;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SVMParser extends Parser {
@@ -15,8 +20,8 @@ public class SVMParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		PUSH=1, POP=2, ADD=3, SUB=4, MULT=5, DIV=6, PRINT=7, COL=8, NUMBER=9, 
-		WHITESP=10, ERR=11;
+		PUSH=1, POP=2, ADD=3, SUB=4, MULT=5, DIV=6, PRINT=7, HALT=8, COL=9, NUMBER=10, 
+		WHITESP=11, ERR=12;
 	public static final int
 		RULE_assembly = 0, RULE_instruction = 1;
 	private static String[] makeRuleNames() {
@@ -29,14 +34,14 @@ public class SVMParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'push'", "'pop'", "'add'", "'sub'", "'mult'", "'div'", "'print'", 
-			"':'"
+			"'halt'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "PUSH", "POP", "ADD", "SUB", "MULT", "DIV", "PRINT", "COL", "NUMBER", 
-			"WHITESP", "ERR"
+			null, "PUSH", "POP", "ADD", "SUB", "MULT", "DIV", "PRINT", "HALT", "COL", 
+			"NUMBER", "WHITESP", "ERR"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -126,7 +131,7 @@ public class SVMParser extends Parser {
 			setState(7);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << PRINT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PUSH) | (1L << POP) | (1L << ADD) | (1L << SUB) | (1L << MULT) | (1L << DIV) | (1L << PRINT) | (1L << HALT))) != 0)) {
 				{
 				{
 				setState(4);
@@ -159,6 +164,7 @@ public class SVMParser extends Parser {
 		public TerminalNode MULT() { return getToken(SVMParser.MULT, 0); }
 		public TerminalNode DIV() { return getToken(SVMParser.DIV, 0); }
 		public TerminalNode PRINT() { return getToken(SVMParser.PRINT, 0); }
+		public TerminalNode HALT() { return getToken(SVMParser.HALT, 0); }
 		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
 		public InstructionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -185,7 +191,7 @@ public class SVMParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(18);
+			setState(19);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PUSH:
@@ -232,6 +238,12 @@ public class SVMParser extends Parser {
 				match(PRINT);
 				}
 				break;
+			case HALT:
+				{
+				setState(18);
+				match(HALT);
+				}
+				break;
 			default:
 				throw new NoViableAltException(this);
 			}
@@ -249,14 +261,14 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\r\27\4\2\t\2\4\3"+
-		"\t\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5"+
-		"\3\25\n\3\3\3\2\2\4\2\4\2\2\2\33\2\t\3\2\2\2\4\24\3\2\2\2\6\b\5\4\3\2"+
-		"\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t\3\2"+
-		"\2\2\f\r\7\3\2\2\r\25\7\13\2\2\16\25\7\4\2\2\17\25\7\5\2\2\20\25\7\6\2"+
-		"\2\21\25\7\7\2\2\22\25\7\b\2\2\23\25\7\t\2\2\24\f\3\2\2\2\24\16\3\2\2"+
-		"\2\24\17\3\2\2\2\24\20\3\2\2\2\24\21\3\2\2\2\24\22\3\2\2\2\24\23\3\2\2"+
-		"\2\25\5\3\2\2\2\4\t\24";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16\30\4\2\t\2\4\3"+
+		"\t\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\5\3\26\n\3\3\3\2\2\4\2\4\2\2\2\35\2\t\3\2\2\2\4\25\3\2\2\2\6\b\5\4"+
+		"\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t"+
+		"\3\2\2\2\f\r\7\3\2\2\r\26\7\f\2\2\16\26\7\4\2\2\17\26\7\5\2\2\20\26\7"+
+		"\6\2\2\21\26\7\7\2\2\22\26\7\b\2\2\23\26\7\t\2\2\24\26\7\n\2\2\25\f\3"+
+		"\2\2\2\25\16\3\2\2\2\25\17\3\2\2\2\25\20\3\2\2\2\25\21\3\2\2\2\25\22\3"+
+		"\2\2\2\25\23\3\2\2\2\25\24\3\2\2\2\26\5\3\2\2\2\4\t\25";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

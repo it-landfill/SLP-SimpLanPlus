@@ -59,6 +59,11 @@ public class ExecuteVM {
 						push(v2 - v1);
 					}
 					case SVMParser.PRINT -> System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
+					case SVMParser.HALT -> {
+						//to print the result
+						System.out.println("\nResult: " + memory[sp] + "\n");
+						return;
+					}
 				}
 			}
 		}

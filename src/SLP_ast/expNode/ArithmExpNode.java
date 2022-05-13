@@ -19,7 +19,7 @@ public class ArithmExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "AritmExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent);
+		return indent + "AritmExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent)+"\n";
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class ArithmExpNode implements Node {
 		switch (op) {
 			case "+" -> str += "add\n";
 			case "-" -> str += "sub\n";
-			case "*" -> str += "mul\n";
+			case "*" -> str += "mult\n";
 			case "/" -> str += "div\n";
 		}
 		return str;

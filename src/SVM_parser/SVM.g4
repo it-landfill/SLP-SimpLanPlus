@@ -22,6 +22,7 @@ instruction:
 	  | MULT
 	  | DIV
 	  | PRINT
+	  | HALT
 	  ) ;
 
 /*------------------------------------------------------------------
@@ -35,6 +36,7 @@ SUB	 : 'sub' ;	// add two values from the stack
 MULT	 : 'mult' ;  	// add two values from the stack
 DIV	 : 'div' ;	// add two values from the stack
 PRINT	 : 'print' ;	// print top of stack
+HALT	 : 'halt' ;	// stop execution
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;
