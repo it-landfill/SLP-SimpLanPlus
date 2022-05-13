@@ -1,14 +1,15 @@
 package compiler;
 
-import SVMParser.SVMLexer;
-import SVMParser.SVMParser;
-import SLPAst.Node;
-import SLPAst.SimpLanPlusVisitorImpl;
+import SVM_ast.SVMVisitorImpl;
+import SVM_parser.SVMLexer;
+import SVM_parser.SVMParser;
+import SLP_ast.Node;
+import SLP_ast.SimpLanPlusVisitorImpl;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import SLPParser.SimpLanPlusLexer;
-import SLPParser.SimpLanPlusParser;
+import SLP_parser.SimpLanPlusLexer;
+import SLP_parser.SimpLanPlusParser;
 import util.Environment;
 import util.SemanticError;
 import util.SLPErrorParser;
@@ -88,7 +89,7 @@ public class mainSimpLanPlus {
         CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
         SVMParser svmParser = new SVMParser(svmTokens);
         svmParser.addErrorListener(svmErrHandler);
-        //SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
+        SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
 
         // The depth-first search for the abstract syntax tree starts from the root node, in the
         // case of the SimpLanPlus grammar.

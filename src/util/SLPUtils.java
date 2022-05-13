@@ -1,9 +1,9 @@
 package util;
 
-import SLPAst.Node;
-import SLPAst.typeNode.BoolTypeNode;
-import SLPAst.typeNode.IntTypeNode;
-import SLPAst.typeNode.VoidTypeNode;
+import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.IntTypeNode;
+import SLP_ast.typeNode.VoidTypeNode;
 
 public class SLPUtils {
 	private static int labCount;
