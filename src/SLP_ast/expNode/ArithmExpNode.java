@@ -19,7 +19,7 @@ public class ArithmExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "AritmExp: " + left + op + right;
+		return indent + "AritmExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent);
 	}
 
 	@Override

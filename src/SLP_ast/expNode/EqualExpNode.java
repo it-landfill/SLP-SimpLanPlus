@@ -19,7 +19,7 @@ public class EqualExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "EqualExp: " + left + op + right;
+		return indent + "EqualExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent);
 	}
 
 	@Override

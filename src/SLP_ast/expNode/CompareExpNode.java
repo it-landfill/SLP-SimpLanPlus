@@ -19,7 +19,7 @@ public class CompareExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "CompareExp: " + left + op + right;
+		return indent + "CompareExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent);
 	}
 
 	@Override
