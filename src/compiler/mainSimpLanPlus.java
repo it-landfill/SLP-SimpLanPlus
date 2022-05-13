@@ -5,6 +5,7 @@ import SVM_parser.SVMLexer;
 import SVM_parser.SVMParser;
 import SLP_ast.Node;
 import SLP_ast.SimpLanPlusVisitorImpl;
+import interpreter.ExecuteVM;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -67,7 +68,10 @@ public class mainSimpLanPlus {
 
         System.out.println("[SUCCESS] Program parsing completed");
 
+        System.out.println("Visualizing AST...");
+        System.out.println(ast.toPrint(""));
 
+        //TODO: Type Check
 
         // CODE GENERATION
         String code=ast.codeGeneration();
@@ -79,29 +83,23 @@ public class mainSimpLanPlus {
         // CODE PARSING
         // File loading.
         CharStream svmInputFile = CharStreams.fromFileName(fileName+".asm");
-        // Generation of the error handler object useful for managing lexical errors.
-        SLPErrorParser svmErrHandler = new SLPErrorParser();
+
         // Lexical verification.
         System.out.println("[INFO] Starting lexical verification.");
-
         SVMLexer svmLexer = new SVMLexer(svmInputFile);
-        svmLexer.addErrorListener(svmErrHandler);
         CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
         SVMParser svmParser = new SVMParser(svmTokens);
-        svmParser.addErrorListener(svmErrHandler);
+
         SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
-
         // The depth-first search for the abstract syntax tree starts from the root node, in the
-        // case of the SimpLanPlus grammar.
-        // TODO: Check for final delivery that the root node has remained unchanged in the grammar.
+        // case of the SVM grammar.
         svmVisitor.visit(svmParser.assembly());
-        // If errors have been identified in the lexical analysis phase, they are printed, a report
-        // file is generated, and the program stops.
-        if (errHandler.hasMessages()) {
-            System.out.println("[ERROR] There were some errors while parsing the program.");
-            System.out.println(errHandler);
-            System.out.println("[ERROR] Program parsing failed");
-        }
 
+        System.out.println("You had: "+svmLexer.lexicalErrors+" lexical errors and "+svmParser.getNumberOfSyntaxErrors()+" syntax errors.");
+        if (svmLexer.lexicalErrors>0 || svmParser.getNumberOfSyntaxErrors()>0) System.exit(1);
+
+        System.out.println("Starting Virtual Machine...");
+        ExecuteVM vm = new ExecuteVM(svmVisitor.code);
+        vm.evaluate();
     }
 }
