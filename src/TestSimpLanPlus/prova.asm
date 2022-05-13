@@ -1,17 +1,17 @@
 push 5
 push 6
-add
+lt
 print
 push 5
 push 6
-sub
+lte
 print
 push 5
 push 6
-mult
+gt
 print
-push 5
 push 6
-div
+push 6
+gte
 print
 halt

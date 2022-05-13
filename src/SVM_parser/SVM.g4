@@ -21,6 +21,10 @@ instruction:
 	  | SUB
 	  | MULT
 	  | DIV
+	  | LT
+	  | LTE
+	  | GT
+	  | GTE
 	  | PRINT
 	  | HALT
 	  ) ;
@@ -37,6 +41,10 @@ MULT	 : 'mult' ;  	// add two values from the stack
 DIV	 : 'div' ;	// add two values from the stack
 PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
+LT        : 'lt' ; // Lower than
+LTE       : 'lte' ; // Lower than or equal
+GT        : 'gt' ; // Greater than
+GTE       : 'gte' ; // Greater than or equal
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;

@@ -40,6 +40,18 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 			case SVMLexer.DIV:
 				code[i++] = SVMParser.DIV;
 				break;
+			case SVMLexer.LT:
+				code[i++] = SVMParser.LT;
+				break;
+			case SVMLexer.LTE:
+				code[i++] = SVMParser.LTE;
+				break;
+			case SVMLexer.GT:
+				code[i++] = SVMParser.GT;
+				break;
+			case SVMLexer.GTE:
+				code[i++] = SVMParser.GTE;
+				break;
 			case SVMLexer.PRINT:
 				code[i++] = SVMParser.PRINT;
 				break;
