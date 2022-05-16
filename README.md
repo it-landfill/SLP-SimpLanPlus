@@ -7,7 +7,7 @@ Benetton Alessandro [0001038887]
 
 Crespan Lorenzo [0001038888]
 
-Zhiguang Li [0001029938]
+Li Zhiguang [0001029938]
 
 ## Progetto per il corso di Compilatori e Interpreti A.A 2021/2022
 ## Risorse
