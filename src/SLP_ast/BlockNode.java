@@ -35,6 +35,7 @@ public class BlockNode implements Node {
 		return null;
 	}
 
+	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
 	@Override
 	public String codeGeneration() {
 		StringBuilder declCde = new StringBuilder();

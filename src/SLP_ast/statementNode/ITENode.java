@@ -42,7 +42,7 @@ public class ITENode implements Node {
 
 		out.append(condition.codeGeneration());
 		out.append("push 0\n");
-		out.append("beq").append(l1).append("\n");
+		out.append("beq ").append(l1).append("\n");
 		out.append(ifTrue.codeGeneration());
 		out.append("b ").append(l2).append("\n");
 		out.append(l1).append(":\n");
