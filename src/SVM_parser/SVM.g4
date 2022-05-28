@@ -78,11 +78,12 @@ NOT     : 'not' ;
 LW      : 'lw';
 SW      : 'sw';
 
-REG : '$'('a0'|'t''0'..'9'|'ra'|'sp'|'fp');
-MEM :   NUMBER '(' REG ')';
+fragment DIGIT  : '0'..'9';
+REG : '$'('a0'|'t'DIGIT|'ra'|'sp'|'fp');
+MEM :   DIGIT+ '(' REG ')';
 
 COL	 : ':' ;
-NUMBER	 : '0' | ('-')?(('1'..'9')('0'..'9')*) ;
+NUMBER	 : '0' | ('-')?(('1'..'9')DIGIT*) ;
 
 WHITESP  : ( '\t' | ' ' | '\r' | '\n' )+   -> skip;
 
