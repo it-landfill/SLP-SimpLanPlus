@@ -31,6 +31,7 @@ instruction : push
             | or
             | not
             | print
+            | li
             | halt;
 
 
@@ -51,6 +52,7 @@ and     : AND dest=REG reg1=REG reg2=REG;
 or      : OR dest=REG reg1=REG reg2=REG;
 not     : NOT dest=REG reg=REG;
 print   : PRINT reg=REG;
+li      : LI dest=REG n=NUMBER;
 halt    : HALT;
 
 /*------------------------------------------------------------------
@@ -75,11 +77,12 @@ NEQ       : 'neq' ; // Not Equal
 AND       : 'and' ;
 OR        : 'or' ;
 NOT     : 'not' ;
+LI      : 'li';
 LW      : 'lw';
 SW      : 'sw';
 
 fragment DIGIT  : '0'..'9';
-REG : '$'('a0'|'t'DIGIT|'ra'|'sp'|'fp');
+REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
 MEM :   DIGIT+ '(' REG ')';
 
 COL	 : ':' ;

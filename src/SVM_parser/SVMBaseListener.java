@@ -247,6 +247,18 @@ public class SVMBaseListener implements SVMListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLi(SVMParser.LiContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLi(SVMParser.LiContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHalt(SVMParser.HaltContext ctx) { }
 	/**
 	 * {@inheritDoc}
