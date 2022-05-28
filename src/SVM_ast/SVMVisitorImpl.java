@@ -1,7 +1,6 @@
 package SVM_ast;
 
 import SVM_parser.SVMBaseVisitor;
-import SVM_parser.SVMLexer;
 import SVM_parser.SVMParser;
 import interpreter.ExecuteVM;
 
@@ -17,63 +16,156 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitInstruction(SVMParser.InstructionContext ctx) {
-		switch (ctx.getStart().getType()) {
-			case SVMLexer.PUSH:
-				if(ctx.n != null) {
-					code[i++] = SVMParser.PUSH;
-					code[i++] = Integer.parseInt(ctx.n.getText());
-				}
-				break;
-			case SVMLexer.POP:
-				code[i++] = SVMParser.POP;
-				break;
-			case SVMLexer.ADD:
-				code[i++] = SVMParser.ADD;
-				break;
-			case SVMLexer.SUB:
-				code[i++] = SVMParser.SUB;
-				break;
-			case SVMLexer.MULT:
-				code[i++] = SVMParser.MULT;
-				break;
-			case SVMLexer.DIV:
-				code[i++] = SVMParser.DIV;
-				break;
-			case SVMLexer.LT:
-				code[i++] = SVMParser.LT;
-				break;
-			case SVMLexer.LTE:
-				code[i++] = SVMParser.LTE;
-				break;
-			case SVMLexer.GT:
-				code[i++] = SVMParser.GT;
-				break;
-			case SVMLexer.GTE:
-				code[i++] = SVMParser.GTE;
-				break;
-			case SVMLexer.EQ:
-			case SVMLexer.AND:
-				code[i++] = SVMParser.EQ;
-				break;
-			case SVMLexer.NEQ:
-				code[i++] = SVMParser.NEQ;
-				break;
-			case SVMLexer.OR:
-				code[i++] = SVMParser.OR;
-				break;
-				case SVMLexer.NOT:
-				code[i++] = SVMParser.NOT;
-				break;
-			case SVMLexer.PRINT:
-				code[i++] = SVMParser.PRINT;
-				break;
-			case SVMLexer.HALT:
-				code[i++] = SVMParser.HALT;
-				break;
-			default:
-				break;	// Invalid instruction
-		}
+	public Void visitPush(SVMParser.PushContext ctx) {
+		code[i++] = SVMParser.PUSH;
+		code[i++] = Integer.parseInt(ctx.reg.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitPop(SVMParser.PopContext ctx) {
+		code[i++] = SVMParser.POP;
+		code[i++] = Integer.parseInt(ctx.reg.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitTop(SVMParser.TopContext ctx) {
+		code[i++] = SVMParser.TOP;
+		code[i++] = Integer.parseInt(ctx.reg.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitAdd(SVMParser.AddContext ctx) {
+		code[i++] = SVMParser.ADD;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitSub(SVMParser.SubContext ctx) {
+		code[i++] = SVMParser.SUB;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitMult(SVMParser.MultContext ctx) {
+		code[i++] = SVMParser.MULT;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitDiv(SVMParser.DivContext ctx) {
+		code[i++] = SVMParser.DIV;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitLt(SVMParser.LtContext ctx) {
+		code[i++] = SVMParser.LT;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitLte(SVMParser.LteContext ctx) {
+		code[i++] = SVMParser.LTE;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitGt(SVMParser.GtContext ctx) {
+		code[i++] = SVMParser.GT;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitGte(SVMParser.GteContext ctx) {
+		code[i++] = SVMParser.GTE;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitEq(SVMParser.EqContext ctx) {
+		code[i++] = SVMParser.EQ;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitNeq(SVMParser.NeqContext ctx) {
+		// Calcolo una EQ e la nego
+		code[i++] = SVMParser.EQ;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		code[i++] = SVMParser.NOT;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitAnd(SVMParser.AndContext ctx) {
+		code[i++] = SVMParser.AND;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitOr(SVMParser.OrContext ctx) {
+		code[i++] = SVMParser.OR;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg1.getText());
+		code[i++] = Integer.parseInt(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitNot(SVMParser.NotContext ctx) {
+		code[i++] = SVMParser.NOT;
+		code[i++] = Integer.parseInt(ctx.dest.getText());
+		code[i++] = Integer.parseInt(ctx.reg.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitPrint(SVMParser.PrintContext ctx) {
+		code[i++] = SVMParser.PRINT;
+		code[i++] = Integer.parseInt(ctx.reg.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitHalt(SVMParser.HaltContext ctx) {
+		code[i++] = SVMParser.HALT;
 		return null;
 	}
 }

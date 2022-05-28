@@ -83,11 +83,6 @@ public class ExecuteVM {
 						v2 = pop();
 						push((v2 == v1)?1:0);
 					}
-					case SVMParser.NEQ -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 != v1)?1:0);
-					}
 					case SVMParser.OR -> {
 						v1 = pop();
 						v2 = pop();
