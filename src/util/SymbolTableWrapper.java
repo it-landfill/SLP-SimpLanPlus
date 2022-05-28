@@ -1,6 +1,6 @@
 package util;
 
-import ast.STentry;
+import SLP_ast.STentry;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

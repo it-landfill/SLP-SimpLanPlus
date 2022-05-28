@@ -1,11 +1,5 @@
 {
-    int a(int b){
-
-    }
-    if(true){
-        int a(){
-
-        }
-        a(5);
-    }
+    print true && true;
+    print !true;
+    print true && !false;
 }
