@@ -1,6 +1,7 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.STentry;
 import util.Environment;
 import util.SemanticError;
 
@@ -8,7 +9,8 @@ import java.util.ArrayList;
 
 public class DerExpNode implements Node {
 	private final String ID;
-	//TODO: private STEntry entry - Il prof tiene traccia della STEntry qua dentro e la inizializza in check semantics
+	private STentry entry;
+	private int nestingLevel;
 
 	public DerExpNode(String ID) {
 		this.ID = ID;
@@ -34,10 +36,11 @@ public class DerExpNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		if (env.symbolTable.findFirstInSymbolTable(ID) == null) {
+		entry = env.symbolTable.findFirstInSymbolTable(ID);
+		nestingLevel = env.nestingLevel;
+		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		}
-		// Il prof se trova una entry la salva nella variabile entry.
 
 		return errors;
 	}

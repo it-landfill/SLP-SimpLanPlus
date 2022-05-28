@@ -24,5 +24,7 @@ public class SLPUtils {
 		return a instanceof VoidTypeNode && b instanceof VoidTypeNode;
 	}
 
-	public static String newLabel() {return "label"+(labCount++);}
+	public static String newLabel(String baseLabel) {return (baseLabel.equals("")?"label":baseLabel)+"_"+(labCount++);}
+
+	public static String newLabel() {return newLabel("");}
 }
