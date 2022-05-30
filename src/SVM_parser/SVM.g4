@@ -1,6 +1,6 @@
 grammar SVM;
 
-// Sintassi allineata al più possibile con sintassi NASM assembly (http://www.nasm.us)
+// Sintassi allineata al più possibile con sintassi MIPS assembly
 
 @header {
 import java.util.HashMap;
@@ -20,9 +20,10 @@ instruction : push
             | pop
             | top
             | li
+            | mov
             | add
             | sub
-            | mul
+            | mult
             | div
             | lt
             | lte
@@ -46,7 +47,7 @@ mov     : MOV dest=REG src=REG;
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
 sub     : SUB dest=REG reg1=REG reg2=REG;
-mul    : MUL dest=REG reg1=REG reg2=REG;
+mult    : MULT dest=REG reg1=REG reg2=REG;
 div     : DIV dest=REG reg1=REG reg2=REG;
 lt      : LT dest=REG reg1=REG reg2=REG;
 lte     : LTE dest=REG reg1=REG reg2=REG;
@@ -82,7 +83,7 @@ SW      : 'sw';
 // EXP
 ADD	 : 'add' ;  	// add two values from the stack
 SUB	 : 'sub' ;	// add two values from the stack
-MUL	 : 'mul' ;  	// add two values from the stack
+MULT	 : 'mult' ;  	// add two values from the stack
 DIV	 : 'div' ;	// add two values from the stack
 LT        : 'lt' ; // Lower than
 LTE       : 'lte' ; // Lower than or equal
@@ -102,7 +103,7 @@ PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
 
 fragment DIGIT  : '0'..'9';
-REG : ('t'DIGIT|'ra'|'sp'|'fp');
+REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
 MEM :   DIGIT+ '(' REG ')';
 
 COL	 : ':' ;

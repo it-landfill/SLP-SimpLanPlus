@@ -127,13 +127,13 @@ public class SVMBaseListener implements SVMListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMul(SVMParser.MulContext ctx) { }
+	@Override public void enterMult(SVMParser.MultContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMul(SVMParser.MulContext ctx) { }
+	@Override public void exitMult(SVMParser.MultContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

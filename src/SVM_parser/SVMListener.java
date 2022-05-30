@@ -101,15 +101,15 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitSub(SVMParser.SubContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SVMParser#mul}.
+	 * Enter a parse tree produced by {@link SVMParser#mult}.
 	 * @param ctx the parse tree
 	 */
-	void enterMul(SVMParser.MulContext ctx);
+	void enterMult(SVMParser.MultContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SVMParser#mul}.
+	 * Exit a parse tree produced by {@link SVMParser#mult}.
 	 * @param ctx the parse tree
 	 */
-	void exitMul(SVMParser.MulContext ctx);
+	void exitMult(SVMParser.MultContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SVMParser#div}.
 	 * @param ctx the parse tree
