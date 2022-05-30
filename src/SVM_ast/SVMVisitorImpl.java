@@ -189,6 +189,22 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
+	public Void visitLw(SVMParser.LwContext ctx) {
+		code[i++] = SVMParser.LW;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // TODO: Calcolare offset mem e passare quello
+		return null;
+	}
+
+	@Override
+	public Void visitSw(SVMParser.SwContext ctx) {
+		code[i++] = SVMParser.LW;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // TODO: Calcolare offset mem e passare quello
+		return null;
+	}
+
+	@Override
 	public Void visitHalt(SVMParser.HaltContext ctx) {
 		code[i++] = SVMParser.HALT;
 		return null;

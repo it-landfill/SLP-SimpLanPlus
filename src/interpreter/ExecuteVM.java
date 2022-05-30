@@ -57,6 +57,21 @@ public class ExecuteVM {
 						val = code[ip++];
 						t[rd] = val;
 					}
+					case SVMParser.MOV -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						t[rd] = t[r1];
+					}
+					case SVMParser.LW -> {
+						rd = code[ip++];
+						val = code[ip++];
+						// TODO: e mo che faccio?
+					}
+					case SVMParser.SW -> {
+						r1 = code[ip++];
+						val = code[ip++];
+						// TODO: e mo che faccio?
+					}
 					case SVMParser.ADD -> {
 						rd = code[ip++];
 						r1 = code[ip++];
@@ -69,7 +84,7 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						t[rd] = t[r1] - t[r2]; //FIXME: Come gestisco negativi?
 					}
-					case SVMParser.MUL -> {
+					case SVMParser.MULT -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
