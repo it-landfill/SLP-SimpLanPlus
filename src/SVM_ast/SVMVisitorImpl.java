@@ -56,8 +56,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitMult(SVMParser.MultContext ctx) {
-		code[i++] = SVMParser.MULT;
+	public Void visitMul(SVMParser.MulContext ctx) {
+		code[i++] = SVMParser.MUL;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
 		code[i++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(1)));
 		code[i++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(1)));
