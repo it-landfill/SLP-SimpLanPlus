@@ -44,6 +44,12 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTop(SVMParser.TopContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#li}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLi(SVMParser.LiContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#add}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -127,12 +133,6 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrint(SVMParser.PrintContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#li}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLi(SVMParser.LiContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SVMParser#halt}.
 	 * @param ctx the parse tree

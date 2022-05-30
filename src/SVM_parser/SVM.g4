@@ -1,5 +1,7 @@
 grammar SVM;
 
+// Sintassi allineata al più possibile con sintassi NASM assembly (http://www.nasm.us)
+
 @header {
 import java.util.HashMap;
 }
@@ -95,11 +97,12 @@ PRINT	 : 'print' ;	// print top of stack
 HALT	 : 'halt' ;	// stop execution
 
 fragment DIGIT  : '0'..'9';
-REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
+REG : ('t'DIGIT|'ra'|'sp'|'fp');
 MEM :   DIGIT+ '(' REG ')';
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')DIGIT*) ;
 
 WHITESP  : ( '\t' | ' ' | '\r' | '\n' )+   -> skip;
+LINECOMMENTS 	: ';' (~('\n'|'\r'))* -> skip;
 
