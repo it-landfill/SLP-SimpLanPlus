@@ -19,21 +19,21 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitPush(SVMParser.PushContext ctx) {
 		code[i++] = SVMParser.PUSH;
-		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(1)));
 		return null;
 	}
 
 	@Override
 	public Void visitPop(SVMParser.PopContext ctx) {
 		code[i++] = SVMParser.POP;
-		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
 		return null;
 	}
 
 	@Override
 	public Void visitTop(SVMParser.TopContext ctx) {
 		code[i++] = SVMParser.TOP;
-		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
 		return null;
 	}
 
@@ -153,14 +153,14 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitNot(SVMParser.NotContext ctx) {
 		code[i++] = SVMParser.NOT;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
-		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(1)));
 		return null;
 	}
 
 	@Override
 	public Void visitPrint(SVMParser.PrintContext ctx) {
 		code[i++] = SVMParser.PRINT;
-		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(1)));
 		return null;
 	}
 
@@ -169,6 +169,22 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[i++] = SVMParser.LI;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
 		code[i++] = Integer.parseInt(ctx.n.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitMov(SVMParser.MovContext ctx) {
+		code[i++] = SVMParser.MOV;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(1)));
+		return null;
+	}
+
+	@Override
+	public Void visitNeg(SVMParser.NegContext ctx) {
+		code[i++] = SVMParser.NEG;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(1)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(1)));
 		return null;
 	}
 

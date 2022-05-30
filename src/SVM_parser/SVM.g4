@@ -19,9 +19,10 @@ assembly: (instruction)* ;
 instruction : push
             | pop
             | top
+            | li
             | add
             | sub
-            | mult
+            | mul
             | div
             | lt
             | lte
@@ -32,20 +33,20 @@ instruction : push
             | and
             | or
             | not
+            | neg
             | print
-            | li
             | halt;
 
 // MEM
-push    : PUSH reg=REG;
-pop     : POP reg=REG;
-top     : TOP reg=REG;
+push    : PUSH src=REG;
+pop     : POP dest=REG;
+top     : TOP dest=REG;
 li      : LI dest=REG n=NUMBER;
-
+mov     : MOV dest=REG src=REG;
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
 sub     : SUB dest=REG reg1=REG reg2=REG;
-mult    : MULT dest=REG reg1=REG reg2=REG;
+mul    : MUL dest=REG reg1=REG reg2=REG;
 div     : DIV dest=REG reg1=REG reg2=REG;
 lt      : LT dest=REG reg1=REG reg2=REG;
 lte     : LTE dest=REG reg1=REG reg2=REG;
@@ -55,10 +56,11 @@ eq      : EQ dest=REG reg1=REG reg2=REG;
 neq     : NEQ dest=REG reg1=REG reg2=REG;
 and     : AND dest=REG reg1=REG reg2=REG;
 or      : OR dest=REG reg1=REG reg2=REG;
-not     : NOT dest=REG reg=REG;
+not     : NOT dest=REG src=REG;
+neg     : NEG dest=REG src=REG;
 
 // STM
-print   : PRINT reg=REG;
+print   : PRINT src=REG;
 
 // Program
 halt    : HALT;
@@ -72,13 +74,14 @@ PUSH  	 : 'push' ; 	// pushes constant in the stack
 POP	 : 'pop' ; 	// pops from stack
 TOP : 'top' ;
 LI      : 'li';
+MOV     : 'mov';
 LW      : 'lw';
 SW      : 'sw';
 
 // EXP
 ADD	 : 'add' ;  	// add two values from the stack
 SUB	 : 'sub' ;	// add two values from the stack
-MULT	 : 'mult' ;  	// add two values from the stack
+MUL	 : 'mul' ;  	// add two values from the stack
 DIV	 : 'div' ;	// add two values from the stack
 LT        : 'lt' ; // Lower than
 LTE       : 'lte' ; // Lower than or equal
@@ -89,6 +92,7 @@ NEQ       : 'neq' ; // Not Equal
 AND       : 'and' ;
 OR        : 'or' ;
 NOT     : 'not' ;
+NEG     : 'neg' ;
 
 //STM
 PRINT	 : 'print' ;	// print top of stack

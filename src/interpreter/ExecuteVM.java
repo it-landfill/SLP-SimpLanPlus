@@ -35,6 +35,10 @@ public class ExecuteVM {
 		memory[--sp] = t[reg];
 	}
 
+	/*
+	* Le seguenti operazioni non sono implementate poichè convertite in altre operazioni in SVMVisitorImpl
+	* neq -> eq + not
+	* */
 	public boolean evaluate() {
 		while ( true ) {
 			if(hp+1>=sp) {
@@ -48,6 +52,11 @@ public class ExecuteVM {
 					case SVMParser.PUSH -> push();
 					case SVMParser.POP -> pop();
 					case SVMParser.TOP -> top();
+					case SVMParser.LI -> {
+						rd = code[ip++];
+						val = code[ip++];
+						t[rd] = val;
+					}
 					case SVMParser.ADD -> {
 						rd = code[ip++];
 						r1 = code[ip++];
@@ -60,7 +69,7 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						t[rd] = t[r1] - t[r2]; //FIXME: Come gestisco negativi?
 					}
-					case SVMParser.MULT -> {
+					case SVMParser.MUL -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
@@ -119,14 +128,14 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						t[rd] = (t[r1] == 1)?0:1;
 					}
+					case SVMParser.NEG -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						t[rd] = t[r1]*-1;
+					}
 					case SVMParser.PRINT -> {
 						rd = code[ip++];
 						System.out.println(t[rd]);
-					}
-					case SVMParser.LI -> {
-						rd = code[ip++];
-						val = code[ip++];
-						t[rd] = val;
 					}
 					case SVMParser.HALT -> {
 						//to print the result
