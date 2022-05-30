@@ -25,7 +25,7 @@ public class PrintNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return exp.codeGeneration()+"print\n";
+		return "";
 	}
 
 	@Override
