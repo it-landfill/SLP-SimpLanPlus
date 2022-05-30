@@ -21,6 +21,8 @@ instruction : push
             | top
             | li
             | mov
+            | lw
+            | sw
             | add
             | sub
             | mult
@@ -44,6 +46,8 @@ pop     : POP dest=REG;
 top     : TOP dest=REG;
 li      : LI dest=REG n=NUMBER;
 mov     : MOV dest=REG src=REG;
+lw      : LW reg=REG mem=MEM;
+sw      : LW reg=REG mem=MEM;
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
 sub     : SUB dest=REG reg1=REG reg2=REG;
