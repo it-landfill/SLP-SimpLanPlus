@@ -44,6 +44,18 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTop(SVMParser.TopContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#li}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLi(SVMParser.LiContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#mov}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMov(SVMParser.MovContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#add}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -56,11 +68,11 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSub(SVMParser.SubContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SVMParser#mult}.
+	 * Visit a parse tree produced by {@link SVMParser#mul}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMult(SVMParser.MultContext ctx);
+	T visitMul(SVMParser.MulContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SVMParser#div}.
 	 * @param ctx the parse tree
@@ -122,17 +134,17 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNot(SVMParser.NotContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#neg}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNeg(SVMParser.NegContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#print}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitPrint(SVMParser.PrintContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#li}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLi(SVMParser.LiContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SVMParser#halt}.
 	 * @param ctx the parse tree
