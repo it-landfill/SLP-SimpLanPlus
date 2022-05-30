@@ -34,10 +34,13 @@ instruction : push
             | li
             | halt;
 
-
+// MEM
 push    : PUSH reg=REG;
 pop     : POP reg=REG;
 top     : TOP reg=REG;
+li      : LI dest=REG n=NUMBER;
+
+// EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
 sub     : SUB dest=REG reg1=REG reg2=REG;
 mult    : MULT dest=REG reg1=REG reg2=REG;
@@ -51,23 +54,30 @@ neq     : NEQ dest=REG reg1=REG reg2=REG;
 and     : AND dest=REG reg1=REG reg2=REG;
 or      : OR dest=REG reg1=REG reg2=REG;
 not     : NOT dest=REG reg=REG;
+
+// STM
 print   : PRINT reg=REG;
-li      : LI dest=REG n=NUMBER;
+
+// Program
 halt    : HALT;
 
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
 
+// MEM
 PUSH  	 : 'push' ; 	// pushes constant in the stack
 POP	 : 'pop' ; 	// pops from stack
 TOP : 'top' ;
+LI      : 'li';
+LW      : 'lw';
+SW      : 'sw';
+
+// EXP
 ADD	 : 'add' ;  	// add two values from the stack
 SUB	 : 'sub' ;	// add two values from the stack
 MULT	 : 'mult' ;  	// add two values from the stack
 DIV	 : 'div' ;	// add two values from the stack
-PRINT	 : 'print' ;	// print top of stack
-HALT	 : 'halt' ;	// stop execution
 LT        : 'lt' ; // Lower than
 LTE       : 'lte' ; // Lower than or equal
 GT        : 'gt' ; // Greater than
@@ -77,9 +87,12 @@ NEQ       : 'neq' ; // Not Equal
 AND       : 'and' ;
 OR        : 'or' ;
 NOT     : 'not' ;
-LI      : 'li';
-LW      : 'lw';
-SW      : 'sw';
+
+//STM
+PRINT	 : 'print' ;	// print top of stack
+
+//Program
+HALT	 : 'halt' ;	// stop execution
 
 fragment DIGIT  : '0'..'9';
 REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
