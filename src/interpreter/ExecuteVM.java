@@ -10,6 +10,8 @@ public class ExecuteVM {
 	private final int[] code;
 	private final int[] memory = new int[MEMSIZE];
 
+	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
+
 	private int ip = 0;
 	private int sp = MEMSIZE;
 	private int hp = 0;
@@ -18,12 +20,16 @@ public class ExecuteVM {
 		this.code = code;
 	}
 
-	private int pop() {
-		return memory[sp++];
+	private void pop(int reg) {
+		t[reg] = memory[sp++];
 	}
 
-	private void push(int v) {
-		memory[--sp] = v;
+	private void top(int reg) {
+		t[reg] = memory[sp];
+	}
+
+	private void push(int reg) {
+		memory[--sp] = t[reg];
 	}
 
 	public void evaluate() {
@@ -34,68 +40,66 @@ public class ExecuteVM {
 			}
 			else {
 				int bytecode = code[ip++]; // fetch
-				int v1,v2;
+				int rd,r1,r2;
 				switch (bytecode) {
-					case SVMParser.PUSH -> push(code[ip++]);
+					case SVMParser.PUSH -> {
+						rd = code[ip++];
+						push(rd);
+					}
 					case SVMParser.POP -> pop();
 					case SVMParser.ADD -> {
-						v1 = pop();
-						v2 = pop();
-						push(v2 + v1);
+						r1 = pop();
+						r2 = pop();
+						push(r2 + r1);
 					}
 					case SVMParser.MULT -> {
-						v1 = pop();
-						v2 = pop();
-						push(v2 * v1);
+						r1 = pop();
+						r2 = pop();
+						push(r2 * r1);
 					}
 					case SVMParser.DIV -> {
-						v1 = pop();
-						v2 = pop();
-						push(v2 / v1);
+						r1 = pop();
+						r2 = pop();
+						push(r2 / r1);
 					}
 					case SVMParser.SUB -> {
-						v1 = pop();
-						v2 = pop();
-						push(v2 - v1);
+						r1 = pop();
+						r2 = pop();
+						push(r2 - r1);
 					}
 					case SVMParser.LT -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 < v1)?1:0);
+						r1 = pop();
+						r2 = pop();
+						push((r2 < r1)?1:0);
 					}
 					case SVMParser.LTE -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 <= v1)?1:0);
+						r1 = pop();
+						r2 = pop();
+						push((r2 <= r1)?1:0);
 					}
 					case SVMParser.GT -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 > v1)?1:0);
+						r1 = pop();
+						r2 = pop();
+						push((r2 > r1)?1:0);
 					}
 					case SVMParser.GTE -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 >= v1)?1:0);
+						r1 = pop();
+						r2 = pop();
+						push((r2 >= r1)?1:0);
 					}
 					case SVMParser.EQ -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 == v1)?1:0);
-					}
-					case SVMParser.NEQ -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 != v1)?1:0);
+						r1 = pop();
+						r2 = pop();
+						push((r2 == r1)?1:0);
 					}
 					case SVMParser.OR -> {
-						v1 = pop();
-						v2 = pop();
-						push((v2 + v1 != 0)?1:0);
+						r1 = pop();
+						r2 = pop();
+						push((r2 + r1 != 0)?1:0);
 					}
 					case SVMParser.NOT -> {
-						v1 = pop();
-						push((v1 == 1)?0:1);
+						r1 = pop();
+						push((r1 == 1)?0:1);
 					}
 					case SVMParser.PRINT -> System.out.println((sp < MEMSIZE) ? memory[sp] : "Empty stack!");
 					case SVMParser.HALT -> {

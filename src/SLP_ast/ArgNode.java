@@ -40,7 +40,7 @@ public class ArgNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "TODO: Arg";
+		return "";
 	}
 
 	@Override

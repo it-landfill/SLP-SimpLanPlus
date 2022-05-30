@@ -1,13 +1,15 @@
-push 1
-push 1
-and
-print
-push 1
-not
-print
-push 1
+push 5
+push 6
+lt
 push 0
-not
-and
+beq label0
+push 6
 print
+halt
+b label1
+label0:
+push 5
+print
+halt
+label1:
 halt

@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
     public static void main(String[] args) throws Exception {
+        Boolean runTypeCheck = false, runCodegen = false, runVM = false;
+
         // Relative path to the file WITHOUT EXTENSION
         String fileName = "src/TestSimpLanPlus/prova";
         // File loading.
@@ -71,35 +73,41 @@ public class mainSimpLanPlus {
         System.out.println("Visualizing AST...");
         System.out.println(ast.toPrint(""));
 
-        //TODO: Type Check
+        if(runTypeCheck) {
+            //TODO: Type Check
+        }
 
-        // CODE GENERATION
-        String code=ast.codeGeneration();
-        BufferedWriter out = new BufferedWriter(new FileWriter(fileName+".asm"));
-        out.write(code);
-        out.close();
-        System.out.println("[SUCCESS] Code generated! Assembling and running generated code.");
+        if(runCodegen) {
+            // CODE GENERATION
+            String code = ast.codeGeneration();
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
+            out.write(code);
+            out.close();
+            System.out.println("[SUCCESS] Code generated! Assembling and running generated code.");
 
-        // CODE PARSING
-        // File loading.
-        CharStream svmInputFile = CharStreams.fromFileName(fileName+".asm");
+            // CODE PARSING
+            // File loading.
+            CharStream svmInputFile = CharStreams.fromFileName(fileName + ".asm");
 
-        // Lexical verification.
-        System.out.println("[INFO] Starting lexical verification.");
-        SVMLexer svmLexer = new SVMLexer(svmInputFile);
-        CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
-        SVMParser svmParser = new SVMParser(svmTokens);
+            // Lexical verification.
+            System.out.println("[INFO] Starting lexical verification.");
+            SVMLexer svmLexer = new SVMLexer(svmInputFile);
+            CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
+            SVMParser svmParser = new SVMParser(svmTokens);
 
-        SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
-        // The depth-first search for the abstract syntax tree starts from the root node, in the
-        // case of the SVM grammar.
-        svmVisitor.visit(svmParser.assembly());
+            SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
+            // The depth-first search for the abstract syntax tree starts from the root node, in the
+            // case of the SVM grammar.
+            svmVisitor.visit(svmParser.assembly());
 
-        System.out.println("You had: "+svmLexer.lexicalErrors+" lexical errors and "+svmParser.getNumberOfSyntaxErrors()+" syntax errors.");
-        if (svmLexer.lexicalErrors>0 || svmParser.getNumberOfSyntaxErrors()>0) System.exit(1);
+            System.out.println("You had: " + svmLexer.lexicalErrors + " lexical errors and " + svmParser.getNumberOfSyntaxErrors() + " syntax errors.");
+            if (svmLexer.lexicalErrors > 0 || svmParser.getNumberOfSyntaxErrors() > 0) System.exit(1);
 
-        System.out.println("Starting Virtual Machine...");
-        ExecuteVM vm = new ExecuteVM(svmVisitor.code);
-        vm.evaluate();
+            if(runVM) {
+                System.out.println("Starting Virtual Machine...");
+                ExecuteVM vm = new ExecuteVM(svmVisitor.code);
+                vm.evaluate();
+            }
+        }
     }
 }

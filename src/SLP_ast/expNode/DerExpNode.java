@@ -29,7 +29,7 @@ public class DerExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "TODO: DerExp" + ID + "\n";
+		return "";
 	}
 
 	@Override

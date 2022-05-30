@@ -29,15 +29,7 @@ public class LogicExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		StringBuilder out = new StringBuilder();
-		out.append(left.codeGeneration());
-		out.append(right.codeGeneration());
-		switch (op) {
-			case "&&" -> out.append("and");
-			case "||" -> out.append("or");
-		}
-		out.append("\n");
-		return out.toString();
+		return "";
 	}
 
 	@Override

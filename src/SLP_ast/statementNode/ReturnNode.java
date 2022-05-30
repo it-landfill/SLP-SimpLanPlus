@@ -32,11 +32,7 @@ public class ReturnNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		if(exp != null) {
-			return exp.codeGeneration() + "TODO: Return";
-		} else {
-			return "TODO: Return";
-		}
+		return "";
 	}
 
 	@Override

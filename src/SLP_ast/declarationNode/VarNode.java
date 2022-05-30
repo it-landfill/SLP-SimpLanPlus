@@ -51,7 +51,7 @@ public class VarNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return "TODO: Var\n"+exp.codeGeneration();
+        return "";
     }
 
     @Override
