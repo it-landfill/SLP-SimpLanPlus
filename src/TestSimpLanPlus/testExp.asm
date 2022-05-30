@@ -31,7 +31,7 @@ add $t4 $t0 $t1
 print $t4
 sub $t4 $t0 $t1
 print $t4
-mul $t4 $t0 $t1
+mult $t4 $t0 $t1
 print $t4
 div $t4 $t0 $t1
 print $t4
