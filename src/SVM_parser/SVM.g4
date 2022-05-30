@@ -58,6 +58,7 @@ and     : AND dest=REG reg1=REG reg2=REG;
 or      : OR dest=REG reg1=REG reg2=REG;
 not     : NOT dest=REG src=REG;
 neg     : NEG dest=REG src=REG;
+//TODO call
 
 // STM
 print   : PRINT src=REG;
