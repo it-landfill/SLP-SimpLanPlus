@@ -69,7 +69,7 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						t[rd] = t[r1] - t[r2]; //FIXME: Come gestisco negativi?
 					}
-					case SVMParser.MUL -> {
+					case SVMParser.MULT -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
