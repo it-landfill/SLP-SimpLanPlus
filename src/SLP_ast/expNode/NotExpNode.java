@@ -25,7 +25,7 @@ public class NotExpNode implements Node {
 	@Override
 	public Node typeCheck() {
 		if (!(TypeChecking.isSubtype(exp.typeCheck(), new BoolTypeNode()))) {
-			System.out.println("Al not (!) non è associato un tipo boolean");
+			System.out.println("Al not (!) non è associato un tipo boolean.");
 			System.exit(0);
 		}
 		return new BoolTypeNode();
