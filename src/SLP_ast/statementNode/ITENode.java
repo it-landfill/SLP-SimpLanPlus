@@ -1,9 +1,11 @@
 package SLP_ast.statementNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -30,8 +32,15 @@ public class ITENode implements Node {
 		return out.toString();
 	}
 
+
 	@Override
 	public Node typeCheck() {
+		if (!(TypeChecking.isSubtype(condition.typeCheck(),new BoolTypeNode()))) {
+			System.out.println("Nella condizione dell'If non è associato un tipo boolean.");
+			System.exit(0);
+		}
+		ifTrue.typeCheck();
+		if (ifFalse != null) ifFalse.typeCheck();
 		return null;
 	}
 
