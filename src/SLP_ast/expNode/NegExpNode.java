@@ -24,7 +24,7 @@ public class NegExpNode implements Node {
 	@Override
 	public Node typeCheck() {
 		if (!(TypeChecking.isSubtype(exp.typeCheck(), new IntTypeNode()))) {
-			System.out.println("Al neg (-) non è associato un tipo integer");
+			System.out.println("Al neg (-) non è associato un tipo integer.");
 			System.exit(0);
 		}
 		return new IntTypeNode();

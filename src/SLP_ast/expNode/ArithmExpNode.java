@@ -1,8 +1,11 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.IntTypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,12 @@ public class ArithmExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		if (! ( TypeChecking.isSubtype(left.typeCheck(),new IntTypeNode()) &&
+				TypeChecking.isSubtype(right.typeCheck(),new IntTypeNode()) ) ) {
+			System.out.println("Al compare (+, -, *, /) non sono associati i tipi corretti.");
+			System.exit(0);
+		}
+		return new IntTypeNode();
 	}
 
 	@Override
