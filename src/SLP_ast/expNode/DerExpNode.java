@@ -24,7 +24,11 @@ public class DerExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		if (entry == null) {
+			System.out.println("L'ID richiamato non risulta essere dichiarato.");
+			System.exit(0);
+		}
+		return entry.getType();
 	}
 
 	@Override
