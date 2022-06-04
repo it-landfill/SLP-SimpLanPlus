@@ -1,6 +1,7 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.IntTypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -20,7 +21,7 @@ public class ValExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		return new IntTypeNode();
 	}
 
 	@Override
