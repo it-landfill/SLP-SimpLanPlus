@@ -1,8 +1,11 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.IntTypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -21,7 +24,11 @@ public class NotExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		if (!(TypeChecking.isSubtype(exp.typeCheck(), new BoolTypeNode()))) {
+			System.out.println("Al not (!) non è associato un tipo boolean");
+			System.exit(0);
+		}
+		return new BoolTypeNode();
 	}
 
 	@Override
