@@ -2,7 +2,8 @@ grammar SimpLanPlus;
 
 // THIS IS THE PARSER INPUT
 
-block	    : LCPAR declaration* statement* RCPAR;
+program     : LCPAR declaration* statement* RCPAR EOF;
+block	    : LCPAR decVar* statement* RCPAR;
 
 statement   : assignment SEMIC
             | print SEMIC

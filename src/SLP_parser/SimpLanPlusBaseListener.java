@@ -16,6 +16,18 @@ public class SimpLanPlusBaseListener implements SimpLanPlusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterProgram(SimpLanPlusParser.ProgramContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProgram(SimpLanPlusParser.ProgramContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBlock(SimpLanPlusParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
