@@ -58,7 +58,8 @@ public class VarNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();
         // Generation of the entry for the symbol table.
-        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID);
+
+        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED)); //TODO: Chiedere prof se va fatto qua o in type Check l'inizializzazione degli effect
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));

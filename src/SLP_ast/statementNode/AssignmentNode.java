@@ -34,6 +34,9 @@ public class AssignmentNode implements Node {
 			System.out.println("Al asgm (=) non sono associati i tipi corretti.");
 			System.exit(0);
 		}
+
+		if (entry.getEffect() == STentry.Effects.DECLARED) entry.setEffect(STentry.Effects.INITIALIZED);
+
 		return new VoidTypeNode();
 	}
 

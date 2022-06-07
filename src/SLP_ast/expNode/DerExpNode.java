@@ -28,6 +28,12 @@ public class DerExpNode implements Node {
 			System.out.println("L'ID richiamato non risulta essere dichiarato.");
 			System.exit(0);
 		}
+
+		if (entry.getEffect() == STentry.Effects.DECLARED || entry.getEffect() == STentry.Effects.NONE) {
+			System.out.println("L'ID richiamato non risulta essere inizializzato.");
+			System.exit(0);
+		}
+
 		return entry.getType();
 	}
 

@@ -75,7 +75,7 @@ public class FunNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();
         // Generation of the entry for the symbol table.
-        STentry entry = new STentry(env.nestingLevel, returnType, env.offset, funcName);
+        STentry entry = new STentry(env.nestingLevel, returnType, env.offset, funcName, STentry.Effects.NONE);
         // If the function has formal parameters, save the number of them in the entry.
         if (params != null) entry.setnArgs(params.size());
         else entry.setnArgs(0);
@@ -88,7 +88,7 @@ public class FunNode implements Node {
         if (params != null) {
             for (ArgNode a : params) {
                 errors.addAll(a.checkSemantics(env));
-                STentry tmp = new STentry(env.nestingLevel, a.getType(), env.offset, a.getArgName());
+                STentry tmp = new STentry(env.nestingLevel, a.getType(), env.offset, a.getArgName(), STentry.Effects.NONE);
                 if (env.symbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
             }

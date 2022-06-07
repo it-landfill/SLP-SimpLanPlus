@@ -2,6 +2,13 @@ package SLP_ast;
 
 public class STentry {
 
+    public enum Effects {
+        NONE,
+        DECLARED,
+        INITIALIZED,
+        USED
+    }
+
     // Nesting Level
     private final int nl;
     // "sarà utile per l'interprete"
@@ -9,16 +16,19 @@ public class STentry {
     // Servirà in futuro per la mutua ricorsione
     private final String ID;
     // Tipo della variabile
-    private Node type;
+    private final Node type;
     //Se si tratta di una funzione rappresenta il numero di argomenti, altrimenti è -1
     private int nArgs;
+    // TODO: COmment
+    private Effects effect;
 
-    public STentry(int n, Node t, int os, String ID) {
+    public STentry(int n, Node t, int os, String ID, Effects effect) {
         nl = n;
         type = t;
         offset = os;
         nArgs = -1;
         this.ID = ID;
+        this.effect = effect;
     }
 
     public int getnArgs() {
@@ -43,6 +53,14 @@ public class STentry {
 
     public String getID() {
         return ID;
+    }
+
+    public Effects getEffect() {
+        return effect;
+    }
+
+    public void setEffect(Effects effect) {
+        this.effect = effect;
     }
 
     /**
