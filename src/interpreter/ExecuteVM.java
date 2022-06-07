@@ -71,12 +71,16 @@ public class ExecuteVM {
 					case SVMParser.LW:
 						rd = code[ip++];
 						val = code[ip++];
-						// TODO: e mo che faccio?
+						if (memory[val] == -10000) {
+							System.out.println("\nError: Null pointer exception");
+							return false;
+						}
+						t[rd] = memory[val];
 						break;
 					case SVMParser.SW:
 						r1 = code[ip++];
 						val = code[ip++];
-						// TODO: e mo che faccio?
+						memory[val] = t[r1];
 						break;
 					case SVMParser.ADD:
 						rd = code[ip++];
