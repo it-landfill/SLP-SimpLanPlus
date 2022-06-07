@@ -1,6 +1,7 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -20,7 +21,8 @@ public class CallExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		// TODO: Controlli della call
+		return new VoidTypeNode();
 	}
 
 	@Override

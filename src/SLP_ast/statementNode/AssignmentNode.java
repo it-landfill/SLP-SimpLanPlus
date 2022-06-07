@@ -2,13 +2,16 @@ package SLP_ast.statementNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.TypeChecking;
 
 import java.util.ArrayList;
 
 public class AssignmentNode implements Node {
 	private final String ID;
+	private STentry entry;
 	private final Node exp;
 
 	public AssignmentNode(String ID, Node exp) {
@@ -23,7 +26,15 @@ public class AssignmentNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		if (entry == null) {
+			System.out.println("L'ID richiamato non risulta essere dichiarato.");
+			System.exit(0);
+		}
+		if (!(TypeChecking.isSubtype(exp.typeCheck(), entry.getType()))) {
+			System.out.println("Al asgm (=) non sono associati i tipi corretti.");
+			System.exit(0);
+		}
+		return new VoidTypeNode();
 	}
 
 	@Override
@@ -35,7 +46,7 @@ public class AssignmentNode implements Node {
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		STentry entry = env.symbolTable.findFirstInSymbolTable(ID);
+		entry = env.symbolTable.findFirstInSymbolTable(ID);
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} else if(entry.getnArgs()!=-1) {
