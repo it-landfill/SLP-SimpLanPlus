@@ -18,16 +18,16 @@ import java.util.ArrayList;
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 	/**
-	 * Valutazione "block rule"
+	 * Valutazione "program rule"
 	 * <p>
-	 * Regola "block : '{' declaration* statement* '}';"
+	 * Regola "program : '{' declaration* statement* '}' EOF;"
 	 *
 	 * @param ctx Contesto in analisi.
-	 * @return Ritorno di un oggetto BlockNode contenente due ArrayList Node per le declarations e statements del
+	 * @return Ritorno di un oggetto ProgramNode contenente due ArrayList Node per le declarations e statements del
 	 * contesto.
 	 */
 	@Override
-	public Node visitBlock(SimpLanPlusParser.BlockContext ctx) {
+	public Node visitProgram(SimpLanPlusParser.ProgramContext ctx) {
 		ArrayList<Node> declarations = new ArrayList<>();
 		ArrayList<Node> statements = new ArrayList<>();
 
@@ -40,7 +40,32 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 			statements.add(visit(sc));
 		}
 
-		return new BlockNode(declarations, statements);
+		return new BlockNode(declarations, statements, true);
+	}
+
+	/**
+	 * Valutazione "block rule"
+	 * <p>
+	 * Regola "block : '{' decVar* statement* '}';"
+	 *
+	 * @param ctx Contesto in analisi.
+	 * @return Ritorno di un oggetto BlockNode contenente una ArrayList Node per gli statements del contesto.
+	 */
+	@Override
+	public Node visitBlock(SimpLanPlusParser.BlockContext ctx) {
+		ArrayList<Node> declarations = new ArrayList<>();
+		ArrayList<Node> statements = new ArrayList<>();
+
+
+		for (SimpLanPlusParser.DecVarContext dc : ctx.decVar()) {
+			declarations.add(visit(dc));
+		}
+
+		for (SimpLanPlusParser.StatementContext sc : ctx.statement()) {
+			statements.add(visit(sc));
+		}
+
+		return new BlockNode(declarations, statements, false);
 	}
 
 	/**
