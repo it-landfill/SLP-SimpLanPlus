@@ -3,8 +3,8 @@ package SLP_ast.expNode;
 import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
-import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class EqualExpNode implements Node {
 	public Node typeCheck() {
 		Node leftType = left.typeCheck();
 		Node rightType = right.typeCheck();
-		if (! ( TypeChecking.isSubtype(leftType, rightType) || TypeChecking.isSubtype(rightType,leftType) ) ) {
+		if (! SLPUtils.checkTypes(leftType, rightType)) {
 			System.out.println("Al eq (==) o neq (!=) non sono associati i tipi corretti.");
 			System.exit(0);
 		}

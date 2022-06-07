@@ -3,8 +3,8 @@ package SLP_ast.expNode;
 import SLP_ast.Node;
 import SLP_ast.typeNode.IntTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
-import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class NegExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		if (!(TypeChecking.isSubtype(exp.typeCheck(), new IntTypeNode()))) {
+		if (!SLPUtils.checkIntType(exp.typeCheck())) {
 			System.out.println("Al neg (-) non è associato un tipo integer.");
 			System.exit(0);
 		}

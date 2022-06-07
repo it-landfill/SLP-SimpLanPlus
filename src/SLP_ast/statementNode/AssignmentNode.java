@@ -4,8 +4,8 @@ import SLP_ast.Node;
 import SLP_ast.STentry;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
-import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class AssignmentNode implements Node {
 			System.out.println("L'ID richiamato non risulta essere dichiarato.");
 			System.exit(0);
 		}
-		if (!(TypeChecking.isSubtype(exp.typeCheck(), entry.getType()))) {
+		if (!(SLPUtils.checkTypes(exp.typeCheck(), entry.getType()))) {
 			System.out.println("Al asgm (=) non sono associati i tipi corretti.");
 			System.exit(0);
 		}

@@ -6,7 +6,6 @@ import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
-import util.TypeChecking;
 
 import java.util.ArrayList;
 
@@ -37,13 +36,13 @@ public class ITENode implements Node {
 	@Override
 	public Node typeCheck() {
 		Node returnTrueType;
-		if (!(TypeChecking.isSubtype(condition.typeCheck(),new BoolTypeNode()))) {
+		if(!SLPUtils.checkBoolType(condition.typeCheck())) {
 			System.out.println("Nella condizione dell'If non è associato un tipo boolean.");
 			System.exit(0);
 		}
 		returnTrueType = ifTrue.typeCheck();
 		if (ifFalse != null){
-			if(!(TypeChecking.isSubtype(returnTrueType, ifFalse.typeCheck()))){
+			if(!SLPUtils.checkTypes(returnTrueType, ifFalse.typeCheck())){
 				System.out.println("Nella condizione dell'If non è associato il tipo corretto per i branch.");
 				System.exit(0);
 			}
