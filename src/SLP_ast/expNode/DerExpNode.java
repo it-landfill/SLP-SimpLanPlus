@@ -2,6 +2,7 @@ package SLP_ast.expNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -23,7 +24,7 @@ public class DerExpNode implements Node {
 
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		if (entry == null) {
 			System.out.println("L'ID richiamato non risulta essere dichiarato.");
 			System.exit(0);

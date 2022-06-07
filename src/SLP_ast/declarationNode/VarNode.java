@@ -2,6 +2,7 @@ package SLP_ast.declarationNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -20,19 +21,19 @@ public class VarNode implements Node {
     /**
      * Variable type.
      */
-    private final Node type;
+    private final TypeNode type;
     /**
      * Expression to be assigned to the variable
      */
     private final Node exp;
 
-    public VarNode(String ID, Node type, Node exp) {
+    public VarNode(String ID, TypeNode type, Node exp) {
         this.ID = ID;
         this.type = type;
         this.exp = exp;
     }
 
-    public VarNode(String ID, Node type) {
+    public VarNode(String ID, TypeNode type) {
         this(ID, type, null);
     }
 
@@ -45,7 +46,7 @@ public class VarNode implements Node {
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 

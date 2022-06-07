@@ -1,6 +1,7 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -21,7 +22,7 @@ public class BaseExpNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		return exp.typeCheck();
 	}
 

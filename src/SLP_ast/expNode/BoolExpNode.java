@@ -2,6 +2,7 @@ package SLP_ast.expNode;
 
 import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -20,7 +21,7 @@ public class BoolExpNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		return new BoolTypeNode();
 	}
 

@@ -2,6 +2,7 @@ package SLP_ast.statementNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
@@ -25,7 +26,7 @@ public class AssignmentNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		if (entry == null) {
 			System.out.println("L'ID richiamato non risulta essere dichiarato.");
 			System.exit(0);

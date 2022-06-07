@@ -6,7 +6,7 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class VoidTypeNode implements Node {
+public class VoidTypeNode implements TypeNode {
 
 	public VoidTypeNode() {
 	}
@@ -17,7 +17,7 @@ public class VoidTypeNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		return null;
 	}
 

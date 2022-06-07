@@ -1,6 +1,7 @@
 package SLP_ast.statementNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SemanticError;
@@ -27,7 +28,7 @@ public class ReturnNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		// TODO: Sicuramente da rivedere
 		if (exp != null) return exp.typeCheck();
 		return new VoidTypeNode();

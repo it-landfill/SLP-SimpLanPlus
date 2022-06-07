@@ -2,6 +2,7 @@ package SLP_ast.statementNode;
 
 import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
@@ -34,8 +35,8 @@ public class ITENode implements Node {
 
 
 	@Override
-	public Node typeCheck() {
-		Node returnTrueType;
+	public TypeNode typeCheck() {
+		TypeNode returnTrueType;
 		if(!SLPUtils.checkBoolType(condition.typeCheck())) {
 			System.out.println("Nella condizione dell'If non è associato un tipo boolean.");
 			System.exit(0);

@@ -3,24 +3,25 @@ package util;
 import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
 import SLP_ast.typeNode.IntTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 
 public class SLPUtils {
 	private static int labCount;
 
-	public static boolean checkTypes(Node a, Node b) {
+	public static boolean checkTypes(TypeNode a, TypeNode b) {
 		return a.getClass().equals(b.getClass());
 	}
 
-	public static boolean checkIntType(Node a) {
+	public static boolean checkIntType(TypeNode a) {
 		return a instanceof IntTypeNode;
 	}
 
-	public static boolean checkBoolType(Node a) {
+	public static boolean checkBoolType(TypeNode a) {
 		return a instanceof BoolTypeNode;
 	}
 
-	public static boolean checkVoidType(Node a) {
+	public static boolean checkVoidType(TypeNode a) {
 		return a instanceof VoidTypeNode;
 	}
 

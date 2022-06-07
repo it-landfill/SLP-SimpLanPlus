@@ -1,5 +1,6 @@
 package SLP_ast;
 
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -33,7 +34,7 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		return null;
 	}
 

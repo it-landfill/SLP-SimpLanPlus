@@ -6,7 +6,7 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
-public class BoolTypeNode implements Node {
+public class BoolTypeNode implements TypeNode {
 
 	public BoolTypeNode() {
 	}
@@ -17,7 +17,7 @@ public class BoolTypeNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		return null;
 	}
 

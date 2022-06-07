@@ -3,6 +3,7 @@ package SLP_ast.expNode;
 import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
 import SLP_ast.typeNode.IntTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
@@ -26,7 +27,7 @@ public class ArithmExpNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
+	public TypeNode typeCheck() {
 		if (! ( SLPUtils.checkIntType(left.typeCheck()) &&
 				SLPUtils.checkIntType(right.typeCheck()) ) ) {
 			System.out.println("Al compare (+, -, *, /) non sono associati i tipi corretti.");

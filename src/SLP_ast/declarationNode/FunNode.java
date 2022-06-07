@@ -3,6 +3,7 @@ package SLP_ast.declarationNode;
 import SLP_ast.ArgNode;
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
 
@@ -18,7 +19,7 @@ public class FunNode implements Node {
     /**
      * Return type of the function.
      */
-    private final Node returnType;
+    private final TypeNode returnType;
     /**
      * Function name (in the grammar defined as ID).
      */
@@ -32,7 +33,7 @@ public class FunNode implements Node {
      */
     private final Node block;
 
-    public FunNode(Node returnType, String funName, ArrayList<ArgNode> params, Node block) {
+    public FunNode(TypeNode returnType, String funName, ArrayList<ArgNode> params, Node block) {
         this.returnType = returnType;
         this.funcName = funName;
         this.params = params;
@@ -62,7 +63,7 @@ public class FunNode implements Node {
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 
