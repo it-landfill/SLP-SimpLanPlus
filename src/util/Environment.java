@@ -7,15 +7,12 @@ public class Environment {
 
     // Variabile utilizzata dall'interprete.
     public int offset;
-    // Tiene traccia della funzione di cui stiamo analizzando il body
-    public String baseFun;
     // Livello di nesting dell'enviroment attuale
     public int nestingLevel;
 
     public Environment() {
         this.symbolTable = new SymbolTableWrapper();
         this.offset = 0;
-        this.baseFun = null;
         this.nestingLevel = -1;
     }
 }

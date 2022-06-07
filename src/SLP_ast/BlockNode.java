@@ -9,8 +9,10 @@ public class BlockNode implements Node {
 
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
+	private final boolean isRoot;
 
-	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements) {
+	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
+		this.isRoot = isRoot;
 		declarationList = declarations;
 		statementList = statements;
 	}
