@@ -74,7 +74,6 @@ public class FunNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();
-1
         // Generation of the entry for the symbol table.
         STentry entry = new STentry(env.nestingLevel, returnType, env.offset, funcName);
         // If the function has formal parameters, save the number of them in the entry.
