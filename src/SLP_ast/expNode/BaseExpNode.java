@@ -6,6 +6,8 @@ import util.SemanticError;
 
 import java.util.ArrayList;
 
+// Potrebbe essere eliminato come nodo. (secondo Ale)
+
 public class BaseExpNode implements Node {
 	private final Node exp;
 
@@ -20,7 +22,7 @@ public class BaseExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		return null;
+		return exp.typeCheck();
 	}
 
 	@Override

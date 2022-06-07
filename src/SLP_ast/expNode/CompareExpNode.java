@@ -28,8 +28,8 @@ public class CompareExpNode implements Node {
 
 	@Override
 	public Node typeCheck() {
-		if (! ( TypeChecking.isSubtype(left.typeCheck(),new IntTypeNode()) &&
-				TypeChecking.isSubtype(right.typeCheck(),new IntTypeNode()) ) ) {
+		if (! ( TypeChecking.isSubtype(left.typeCheck(), new IntTypeNode()) &&
+				TypeChecking.isSubtype(right.typeCheck(), new IntTypeNode()) ) ) {
 			System.out.println("Al compare (>=, <=, >, <) non sono associati i tipi corretti.");
 			System.exit(0);
 		}
