@@ -326,6 +326,18 @@ public class SVMBaseListener implements SVMListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitHalt(SVMParser.HaltContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJmp(SVMParser.JmpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJmp(SVMParser.JmpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

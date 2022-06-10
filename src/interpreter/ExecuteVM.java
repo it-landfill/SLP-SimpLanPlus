@@ -166,6 +166,9 @@ public class ExecuteVM {
 						rd = code[ip++];
 						System.out.println(t[rd]);
 						break;
+					case SVMParser.JMP:
+						ip = code[ip];
+						break;
 					case SVMParser.HALT:
 						//to print the result
 						System.out.println("\nEnd program");

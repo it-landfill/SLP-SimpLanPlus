@@ -169,4 +169,10 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHalt(SVMParser.HaltContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#jmp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJmp(SVMParser.JmpContext ctx);
 }

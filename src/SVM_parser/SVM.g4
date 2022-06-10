@@ -72,9 +72,9 @@ neg     : NEG dest=REG src=REG;
 print   : PRINT src=REG;
 
 // Program
-label   : LABEL':';
+label   : lab=LABEL':';
 halt    : HALT;
-jmp     : JMP LABEL;
+jmp     : JMP lab=LABEL;
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/

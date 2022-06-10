@@ -195,7 +195,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitLw(SVMParser.LwContext ctx) {
 		code[i++] = SVMParser.LW;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
-		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // TODO: Calcolare offset mem e passare quello
+		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // FIXME: Calcolare offset mem e passare quello, da fare in base decisioni prese in type check
 		return null;
 	}
 
@@ -203,7 +203,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitSw(SVMParser.SwContext ctx) {
 		code[i++] = SVMParser.LW;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
-		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // TODO: Calcolare offset mem e passare quello
+		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // FIXME: Calcolare offset mem e passare quello, da fare in base decisioni prese in type check
 		return null;
 	}
 
@@ -212,6 +212,18 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		String labName = ctx.getText();
 		labName = labName.replace(":","");
 		labelLookup.put(labName, i);
+		return null;
+	}
+
+	@Override
+	public Void visitJmp(SVMParser.JmpContext ctx) {
+		code[i++] = SVMParser.JMP;
+		Integer labPos = labelLookup.get(ctx.lab.getText());
+		if (labPos == null) {
+			System.out.println("[INTERNAL ERROR] Label " + ctx.lab.getText() + " not found");
+		} else {
+			code[i++] = labPos;
+		}
 		return null;
 	}
 
