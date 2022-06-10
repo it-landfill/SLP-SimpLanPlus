@@ -56,6 +56,18 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMov(SVMParser.MovContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#lw}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLw(SVMParser.LwContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#sw}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSw(SVMParser.SwContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#add}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -146,9 +158,21 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrint(SVMParser.PrintContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#label}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLabel(SVMParser.LabelContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#halt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitHalt(SVMParser.HaltContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#jmp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJmp(SVMParser.JmpContext ctx);
 }

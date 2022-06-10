@@ -5,9 +5,12 @@ import SVM_parser.SVMLexer;
 import SVM_parser.SVMParser;
 import interpreter.ExecuteVM;
 
+import java.util.HashMap;
+
 public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	public int[] code = new int[ExecuteVM.CODESIZE];
+	private final HashMap<String, Integer> labelLookup = new HashMap<>();
 	private int i = 0;
 
 	@Override
@@ -185,6 +188,42 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[i++] = SVMParser.NEG;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
 		code[i++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(2)));
+		return null;
+	}
+
+	@Override
+	public Void visitLw(SVMParser.LwContext ctx) {
+		code[i++] = SVMParser.LW;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // FIXME: Calcolare offset mem e passare quello, da fare in base decisioni prese in type check
+		return null;
+	}
+
+	@Override
+	public Void visitSw(SVMParser.SwContext ctx) {
+		code[i++] = SVMParser.LW;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // FIXME: Calcolare offset mem e passare quello, da fare in base decisioni prese in type check
+		return null;
+	}
+
+	@Override
+	public Void visitLabel(SVMParser.LabelContext ctx) {
+		String labName = ctx.getText();
+		labName = labName.replace(":","");
+		labelLookup.put(labName, i);
+		return null;
+	}
+
+	@Override
+	public Void visitJmp(SVMParser.JmpContext ctx) {
+		code[i++] = SVMParser.JMP;
+		Integer labPos = labelLookup.get(ctx.lab.getText());
+		if (labPos == null) {
+			System.out.println("[INTERNAL ERROR] Label " + ctx.lab.getText() + " not found");
+		} else {
+			code[i++] = labPos;
+		}
 		return null;
 	}
 

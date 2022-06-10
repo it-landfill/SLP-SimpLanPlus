@@ -14,13 +14,16 @@ public int lexicalErrors=0;
  * PARSER RULES
  *------------------------------------------------------------------*/
 
-assembly: (instruction)* ;
+assembly: instruction* ;
 
-instruction : push
+instruction : label
+            | push
             | pop
             | top
             | li
             | mov
+            | lw
+            | sw
             | add
             | sub
             | mult
@@ -36,6 +39,7 @@ instruction : push
             | not
             | neg
             | print
+            | jmp
             | halt;
 
 // MEM
@@ -44,6 +48,9 @@ pop     : POP dest=REG;
 top     : TOP dest=REG;
 li      : LI dest=REG n=NUMBER;
 mov     : MOV dest=REG src=REG;
+lw      : LW reg=REG mem=MEM;
+sw      : LW reg=REG mem=MEM;
+
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
 sub     : SUB dest=REG reg1=REG reg2=REG;
@@ -65,8 +72,9 @@ neg     : NEG dest=REG src=REG;
 print   : PRINT src=REG;
 
 // Program
+label   : lab=LABEL':';
 halt    : HALT;
-
+jmp     : JMP lab=LABEL;
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
@@ -101,10 +109,16 @@ PRINT	 : 'print' ;	// print top of stack
 
 //Program
 HALT	 : 'halt' ;	// stop execution
+JMP     : 'jmp' ; // Jump to label
+SYMBOLS : '_';
+LABEL   : STRING(STRING|NUMBER|SYMBOLS)*;
 
 fragment DIGIT  : '0'..'9';
 REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
 MEM :   DIGIT+ '(' REG ')';
+
+fragment CHAR : ('a'..'z'|'A'..'Z');
+STRING : CHAR+;
 
 COL	 : ':' ;
 NUMBER	 : '0' | ('-')?(('1'..'9')DIGIT*) ;

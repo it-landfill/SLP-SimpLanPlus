@@ -1,6 +1,10 @@
 package interpreter;
 
+import SLP_ast.STentry;
 import SVM_parser.SVMParser;
+
+import java.util.ArrayDeque;
+import java.util.HashMap;
 
 public class ExecuteVM {
 
@@ -49,103 +53,129 @@ public class ExecuteVM {
 				int bytecode = code[ip++]; // fetch
 				int rd,r1,r2, val;
 				switch (bytecode) {
-					case SVMParser.PUSH -> push();
-					case SVMParser.POP -> pop();
-					case SVMParser.TOP -> top();
-					case SVMParser.LI -> {
+					case SVMParser.PUSH:
+						push();
+						break;
+					case SVMParser.POP:
+						pop();
+						break;
+					case SVMParser.TOP:
+						top();
+						break;
+					case SVMParser.LI:
 						rd = code[ip++];
 						val = code[ip++];
 						t[rd] = val;
-					}
-					case SVMParser.ADD -> {
+						break;
+					case SVMParser.MOV:
+						rd = code[ip++];
+						r1 = code[ip++];
+						t[rd] = t[r1];
+						break;
+					case SVMParser.LW:
+						rd = code[ip++];
+						val = code[ip++];
+						if (memory[val] == -10000) {
+							System.out.println("\nError: Null pointer exception");
+							return false;
+						}
+						t[rd] = memory[val];
+						break;
+					case SVMParser.SW:
+						r1 = code[ip++];
+						val = code[ip++];
+						memory[val] = t[r1];
+						break;
+					case SVMParser.ADD:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
 						t[rd] = t[r1] + t[r2];
-					}
-					case SVMParser.SUB -> {
+						break;
+					case SVMParser.SUB:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
 						t[rd] = t[r1] - t[r2]; //FIXME: Come gestisco negativi?
-					}
-					case SVMParser.MULT -> {
+						break;
+					case SVMParser.MULT:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
 						t[rd] = t[r1] * t[r2];
-					}
-					case SVMParser.DIV -> {
+						break;
+					case SVMParser.DIV:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
 						t[rd] = t[r1] / t[r2]; //FIXME: Come gestisco il resto della divisione?
-					}
-					case SVMParser.LT -> {
+						break;
+					case SVMParser.LT:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] < t[r2])?1:0;
-					}
-					case SVMParser.LTE -> {
+						t[rd] = (t[r1] < t[r2]) ? 1 : 0;
+						break;
+					case SVMParser.LTE:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] <= t[r2])?1:0;
-					}
-					case SVMParser.GT -> {
+						t[rd] = (t[r1] <= t[r2]) ? 1 : 0;
+						break;
+					case SVMParser.GT:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] > t[r2])?1:0;
-					}
-					case SVMParser.GTE -> {
+						t[rd] = (t[r1] > t[r2]) ? 1 : 0;
+						break;
+					case SVMParser.GTE:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] >= t[r2])?1:0;
-					}
-					case SVMParser.EQ -> {
+						t[rd] = (t[r1] >= t[r2]) ? 1 : 0;
+						break;
+					case SVMParser.EQ:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] == t[r2])?1:0;
-					} //Non abbiamo neq perchè viene convertita in una eq negata in SVMVisitorImpl
-					case SVMParser.AND -> {
+						t[rd] = (t[r1] == t[r2]) ? 1 : 0;
+						break; //Non abbiamo neq perchè viene convertita in una eq negata in SVMVisitorImpl
+					case SVMParser.AND:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] + t[r2] == 2)?1:0;
-					}
-					case SVMParser.OR -> {
+						t[rd] = (t[r1] + t[r2] == 2) ? 1 : 0;
+						break;
+					case SVMParser.OR:
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = (t[r1] + t[r2] != 0)?1:0;
-					}
-					case SVMParser.NOT -> {
+						t[rd] = (t[r1] + t[r2] != 0) ? 1 : 0;
+						break;
+					case SVMParser.NOT:
 						rd = code[ip++];
 						r1 = code[ip++];
-						t[rd] = (t[r1] == 1)?0:1;
-					}
-					case SVMParser.NEG -> {
+						t[rd] = (t[r1] == 1) ? 0 : 1;
+						break;
+					case SVMParser.NEG:
 						rd = code[ip++];
 						r1 = code[ip++];
-						t[rd] = t[r1]*-1;
-					}
-					case SVMParser.PRINT -> {
+						t[rd] = t[r1] * -1;
+						break;
+					case SVMParser.PRINT:
 						rd = code[ip++];
 						System.out.println(t[rd]);
-					}
-					case SVMParser.HALT -> {
+						break;
+					case SVMParser.JMP:
+						ip = code[ip];
+						break;
+					case SVMParser.HALT:
 						//to print the result
 						System.out.println("\nEnd program");
 						return true;
-					}
-					default -> {
+					default:
 						System.out.println("[ERROR] Not a valid instruction " + bytecode + " at position " + ip + ".Terminating");
 						return false;
-					}
 				}
 			}
 		}

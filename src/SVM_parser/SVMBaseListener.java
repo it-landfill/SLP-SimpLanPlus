@@ -103,6 +103,30 @@ public class SVMBaseListener implements SVMListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLw(SVMParser.LwContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLw(SVMParser.LwContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSw(SVMParser.SwContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSw(SVMParser.SwContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAdd(SVMParser.AddContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -283,6 +307,18 @@ public class SVMBaseListener implements SVMListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLabel(SVMParser.LabelContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLabel(SVMParser.LabelContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHalt(SVMParser.HaltContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -290,6 +326,18 @@ public class SVMBaseListener implements SVMListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitHalt(SVMParser.HaltContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJmp(SVMParser.JmpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJmp(SVMParser.JmpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

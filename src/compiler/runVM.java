@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class runVM {
 	public static void main(String[] args) throws Exception {
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/testExp";
+		String fileName = "src/TestSimpLanPlus/testMem";
 
 		// CODE PARSING
 		// File loading.
@@ -26,7 +26,7 @@ public class runVM {
 		SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
 		// The depth-first search for the abstract syntax tree starts from the root node, in the
 		// case of the SVM grammar.
-		svmVisitor.visit(svmParser.assembly());
+		svmVisitor.visitAssembly(svmParser.assembly());
 
 		System.out.println("You had: " + svmLexer.lexicalErrors + " lexical errors and " + svmParser.getNumberOfSyntaxErrors() + " syntax errors.");
 		if (svmLexer.lexicalErrors > 0 || svmParser.getNumberOfSyntaxErrors() > 0) System.exit(1);
