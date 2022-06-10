@@ -307,6 +307,18 @@ public class SVMBaseListener implements SVMListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLabel(SVMParser.LabelContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLabel(SVMParser.LabelContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHalt(SVMParser.HaltContext ctx) { }
 	/**
 	 * {@inheritDoc}

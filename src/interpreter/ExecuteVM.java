@@ -1,6 +1,10 @@
 package interpreter;
 
+import SLP_ast.STentry;
 import SVM_parser.SVMParser;
+
+import java.util.ArrayDeque;
+import java.util.HashMap;
 
 public class ExecuteVM {
 

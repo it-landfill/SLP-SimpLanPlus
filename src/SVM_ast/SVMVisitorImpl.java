@@ -5,9 +5,12 @@ import SVM_parser.SVMLexer;
 import SVM_parser.SVMParser;
 import interpreter.ExecuteVM;
 
+import java.util.HashMap;
+
 public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	public int[] code = new int[ExecuteVM.CODESIZE];
+	private final HashMap<String, Integer> labelLookup = new HashMap<>();
 	private int i = 0;
 
 	@Override
@@ -201,6 +204,14 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[i++] = SVMParser.LW;
 		code[i++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
 		code[i++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // TODO: Calcolare offset mem e passare quello
+		return null;
+	}
+
+	@Override
+	public Void visitLabel(SVMParser.LabelContext ctx) {
+		String labName = ctx.getText();
+		labName = labName.replace(":","");
+		labelLookup.put(labName, i);
 		return null;
 	}
 
