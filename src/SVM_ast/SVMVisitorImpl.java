@@ -228,6 +228,20 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
+	public Void visitBeq(SVMParser.BeqContext ctx) {
+		code[i++] = SVMParser.BEQ;
+		code[i++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
+		code[i++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		Integer labPos = labelLookup.get(ctx.lab.getText());
+		if (labPos == null) {
+			System.out.println("[INTERNAL ERROR] Label " + ctx.lab.getText() + " not found");
+		} else {
+			code[i++] = labPos;
+		}
+		return null;
+	}
+
+	@Override
 	public Void visitHalt(SVMParser.HaltContext ctx) {
 		code[i++] = SVMParser.HALT;
 		return null;

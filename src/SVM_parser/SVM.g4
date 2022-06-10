@@ -40,6 +40,7 @@ instruction : label
             | neg
             | print
             | jmp
+            | beq
             | halt;
 
 // MEM
@@ -70,6 +71,7 @@ neg     : NEG dest=REG src=REG;
 
 // STM
 print   : PRINT src=REG;
+beq     : BEQ reg1=REG reg2=REG lab=LABEL;
 
 // Program
 label   : lab=LABEL':';
@@ -106,6 +108,7 @@ NEG     : 'neg' ;
 
 //STM
 PRINT	 : 'print' ;	// print top of stack
+BEQ      : 'beq' ;	// Break if equal w
 
 //Program
 HALT	 : 'halt' ;	// stop execution

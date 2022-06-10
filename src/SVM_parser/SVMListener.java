@@ -251,6 +251,16 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitPrint(SVMParser.PrintContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SVMParser#beq}.
+	 * @param ctx the parse tree
+	 */
+	void enterBeq(SVMParser.BeqContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#beq}.
+	 * @param ctx the parse tree
+	 */
+	void exitBeq(SVMParser.BeqContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SVMParser#label}.
 	 * @param ctx the parse tree
 	 */
