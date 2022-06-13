@@ -166,8 +166,11 @@ public class ExecuteVM {
 						rd = code[ip++];
 						System.out.println(t[rd]);
 						break;
-					case SVMParser.JMP:
+					case SVMParser.JAL:
 						ip = code[ip];
+						break;
+					case SVMParser.JR:
+						ip = t[code[ip]];
 						break;
 					case SVMParser.BEQ:
 						r1 = code[ip++];

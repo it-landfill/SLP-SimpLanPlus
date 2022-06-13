@@ -281,13 +281,23 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitHalt(SVMParser.HaltContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SVMParser#jmp}.
+	 * Enter a parse tree produced by {@link SVMParser#jal}.
 	 * @param ctx the parse tree
 	 */
-	void enterJmp(SVMParser.JmpContext ctx);
+	void enterJal(SVMParser.JalContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SVMParser#jmp}.
+	 * Exit a parse tree produced by {@link SVMParser#jal}.
 	 * @param ctx the parse tree
 	 */
-	void exitJmp(SVMParser.JmpContext ctx);
+	void exitJal(SVMParser.JalContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#jr}.
+	 * @param ctx the parse tree
+	 */
+	void enterJr(SVMParser.JrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#jr}.
+	 * @param ctx the parse tree
+	 */
+	void exitJr(SVMParser.JrContext ctx);
 }

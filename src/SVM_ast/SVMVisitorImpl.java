@@ -72,6 +72,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 				case SVMParser.PUSH:
 				case SVMParser.POP:
 				case SVMParser.TOP:
+				case SVMParser.JR:
 				case SVMParser.PRINT:
 					i+=1;
 					break;
@@ -96,7 +97,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 				case SVMParser.OR:
 					i+=3;
 					break;
-				case SVMParser.JMP:
+				case SVMParser.JAL:
 					i++;
 					code[i] = labelLookup(code[i]);
 					break;
@@ -323,10 +324,17 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitJmp(SVMParser.JmpContext ctx) {
+	public Void visitJal(SVMParser.JalContext ctx) {
 		// Vedere funzionamento label spiegato all'inizio
-		code[ip++] = SVMParser.JMP;
+		code[ip++] = SVMParser.JAL;
 		code[ip++] = labelLookup(ctx.lab.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitJr(SVMParser.JrContext ctx) {
+		code[ip++] = SVMParser.JR;
+		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
 		return null;
 	}
 
