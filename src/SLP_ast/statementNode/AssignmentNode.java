@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class AssignmentNode implements Node {
 	private final String ID;
 	private final Node exp;
+	private int nestinglevel;
+	private STentry entry;
 
 	public AssignmentNode(String ID, Node exp) {
 		this.ID = ID;
@@ -28,14 +30,21 @@ public class AssignmentNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		StringBuilder out = new StringBuilder();
+
+		out.append(exp.codeGeneration());
+		out.append("move $t1 $fp\n"); //TODO: FP o SP??????
+		out.append("lw $t1 0($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
+		out.append("sw $t0 ").append(entry.getOffset()).append("($t1)\n");
+
+		return out.toString();
 	}
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		STentry entry = env.symbolTable.findFirstInSymbolTable(ID);
+		nestinglevel = env.nestingLevel;
+		entry = env.symbolTable.findFirstInSymbolTable(ID);
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} else if(entry.getnArgs()!=-1) {
