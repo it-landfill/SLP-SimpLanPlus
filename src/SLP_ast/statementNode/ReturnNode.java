@@ -4,6 +4,7 @@ import SLP_ast.Node;
 import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.util.ArrayList;
@@ -28,8 +29,7 @@ public class ReturnNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
-		// TODO: Sicuramente da rivedere
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		if (exp != null) return exp.typeCheck();
 		return new VoidTypeNode();
 	}

@@ -26,14 +26,13 @@ public class AssignmentNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		if (entry == null) {
-			System.out.println("L'ID richiamato non risulta essere dichiarato.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("L'ID richiamato non risulta essere dichiarato.");
 		}
+
 		if (!(SLPUtils.checkTypes(exp.typeCheck(), entry.getType()))) {
-			System.out.println("Al asgm (=) non sono associati i tipi corretti.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("Al asgm (=) non sono associati i tipi corretti.");
 		}
 
 		if (entry.getEffect() == STentry.Effects.DECLARED) entry.setEffect(STentry.Effects.INITIALIZED);

@@ -35,19 +35,28 @@ public class ITENode implements Node {
 
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		TypeNode returnTrueType;
+
+		// Controllo che la condizione dell'if sia bool
 		if(!SLPUtils.checkBoolType(condition.typeCheck())) {
-			System.out.println("Nella condizione dell'If non è associato un tipo boolean.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("Alla condizione dell'If non è associato un tipo boolean.");
 		}
+
+		// Calcolo il tipo del branch then
 		returnTrueType = ifTrue.typeCheck();
+
+		// Se esiste else, calcolo tipo dell'else
 		if (ifFalse != null){
-			if(!SLPUtils.checkTypes(returnTrueType, ifFalse.typeCheck())){
-				System.out.println("Nella condizione dell'If non è associato il tipo corretto per i branch.");
-				System.exit(0);
+			TypeNode elseType = ifFalse.typeCheck();
+			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
+			// Se lo è, il type check ritornerà void, altrimenti errore.
+			if(!SLPUtils.checkTypes(returnTrueType, elseType)){
+				if(SLPUtils.checkVoidType(elseType)) returnTrueType = elseType;
+				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
 			}
 		}
+
 		return returnTrueType;
 	}
 
