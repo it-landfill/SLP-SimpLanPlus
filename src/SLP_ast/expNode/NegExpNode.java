@@ -23,10 +23,9 @@ public class NegExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		if (!SLPUtils.checkIntType(exp.typeCheck())) {
-			System.out.println("Al neg (-) non è associato un tipo integer.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("Al neg (-) non è associato un tipo integer.");
 		}
 		return new IntTypeNode();
 	}

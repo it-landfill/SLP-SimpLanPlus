@@ -1,6 +1,5 @@
 package util;
 
-import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
 import SLP_ast.typeNode.IntTypeNode;
 import SLP_ast.typeNode.TypeNode;
@@ -28,4 +27,10 @@ public class SLPUtils {
 	public static String newLabel(String baseLabel) {return (baseLabel.equals("")?"label":baseLabel)+"_"+(labCount++);}
 
 	public static String newLabel() {return newLabel("");}
+
+	public static class TypeCheckError extends Exception {
+		public TypeCheckError(String errorMessage) {
+			super(errorMessage);
+		}
+	}
 }

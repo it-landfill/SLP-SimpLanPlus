@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		boolean runTypeCheck = false, runCodegen = false, runVM = false;
+		boolean runTypeCheck = true, runCodegen = false, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
 		String fileName = "src/TestSimpLanPlus/prova";

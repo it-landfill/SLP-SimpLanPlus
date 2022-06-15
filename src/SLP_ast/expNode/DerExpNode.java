@@ -4,6 +4,7 @@ import SLP_ast.Node;
 import SLP_ast.STentry;
 import SLP_ast.typeNode.TypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.util.ArrayList;
@@ -24,15 +25,14 @@ public class DerExpNode implements Node {
 
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		if (entry == null) {
 			System.out.println("L'ID richiamato non risulta essere dichiarato.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("L'ID richiamato (" + ID + ") non risulta essere dichiarato.");
 		}
 
 		if (entry.getEffect() == STentry.Effects.DECLARED || entry.getEffect() == STentry.Effects.NONE) {
-			System.out.println("L'ID richiamato non risulta essere inizializzato.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("L'ID richiamato (" + ID + ") non risulta essere inizializzato.");
 		} else if (entry.getEffect() != STentry.Effects.USED) entry.setEffect(STentry.Effects.USED);
 
 		return entry.getType();

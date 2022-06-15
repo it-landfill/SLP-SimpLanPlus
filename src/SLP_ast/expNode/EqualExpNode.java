@@ -26,12 +26,11 @@ public class EqualExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		TypeNode leftType = left.typeCheck();
 		TypeNode rightType = right.typeCheck();
 		if (! SLPUtils.checkTypes(leftType, rightType)) {
-			System.out.println("Al eq (==) o neq (!=) non sono associati i tipi corretti.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("Al eq (==) o neq (!=) non sono associati i tipi corretti.");
 		}
 		return new BoolTypeNode();
 	}

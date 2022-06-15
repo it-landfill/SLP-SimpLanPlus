@@ -26,10 +26,9 @@ public class LogicExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		if (!(SLPUtils.checkBoolType(left.typeCheck()) && SLPUtils.checkBoolType(right.typeCheck()))) {
-			System.out.println("Al compare (&&, ||) non sono associati i tipi corretti.");
-			System.exit(0);
+			throw new SLPUtils.TypeCheckError("Un termine dell'operazione logica (&&, ||) non è di tipo corretto.");
 		}
 		return new BoolTypeNode();
 	}

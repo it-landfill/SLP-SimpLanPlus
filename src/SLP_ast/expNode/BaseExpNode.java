@@ -3,6 +3,7 @@ package SLP_ast.expNode;
 import SLP_ast.Node;
 import SLP_ast.typeNode.TypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class BaseExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 		return exp.typeCheck();
 	}
 
