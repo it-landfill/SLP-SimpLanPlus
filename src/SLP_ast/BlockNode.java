@@ -5,6 +5,7 @@ import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,8 @@ public class BlockNode implements Node {
 
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
+	private SymbolTableWrapper localSymbolTable;
+	private int localNestingLevel;
 	private final boolean isRoot;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
@@ -75,6 +78,8 @@ public class BlockNode implements Node {
 			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(env));
 		}
 
+		localSymbolTable = env.symbolTable.clone();
+		localNestingLevel = env.nestingLevel;
 
 		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
 		env.nestingLevel--;

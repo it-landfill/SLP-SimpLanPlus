@@ -14,6 +14,16 @@ public class SymbolTableWrapper {
         symbolTable = new HashMap<>();
     }
 
+    public SymbolTableWrapper(HashMap<String, ArrayDeque<STentry>> st) {
+
+        symbolTable = new HashMap<>();
+
+        st.forEach((k, v) -> {
+            symbolTable.put(k,v.clone());
+        });
+
+    }
+
     /**
      * Controlla se l'elemento esiste nella symbol table allo stesso livello, altrimenti lo aggiunge.
      *
@@ -83,5 +93,13 @@ public class SymbolTableWrapper {
 
         // Itero la lista di chiavi da rimuovere e le rimuovo dall'arraylist
         emptyList.forEach(symbolTable::remove);
+    }
+
+    public SymbolTableWrapper clone() {
+        return new SymbolTableWrapper(symbolTable);
+    }
+
+    public HashMap<String, ArrayDeque<STentry>> getSymbolTable() {
+        return symbolTable;
     }
 }

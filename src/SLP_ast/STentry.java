@@ -33,6 +33,15 @@ public class STentry {
         this.effect = effect;
     }
 
+    public STentry(int n, TypeNode t, int os, int nArgs, String ID, Effects effect) {
+        nl = n;
+        type = t;
+        offset = os;
+        this.nArgs = nArgs;
+        this.ID = ID;
+        this.effect = effect;
+    }
+
     public int getnArgs() {
         return nArgs;
     }
@@ -72,5 +81,9 @@ public class STentry {
      */
     public String toPrint(String s) {
         return s + "STentry: ID " + ID + "\n" + s + "STentry: nestlev " + nl + "\n" + s + "STentry: type" + (type == null ? " void " : type.toPrint(s + "  ")) + "\n" + s + "STentry: offset " + offset + "\n";
+    }
+
+    public STentry clone() {
+        return new STentry(nl, type, offset, nArgs, ID, effect);
     }
 }  
