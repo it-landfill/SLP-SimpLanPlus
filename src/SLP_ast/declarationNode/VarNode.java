@@ -3,7 +3,9 @@ package SLP_ast.declarationNode;
 import SLP_ast.Node;
 import SLP_ast.STentry;
 import SLP_ast.typeNode.TypeNode;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.util.ArrayList;
@@ -46,8 +48,13 @@ public class VarNode implements Node {
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
+
+        if (!(SLPUtils.checkTypes(exp.typeCheck(), type))) {
+            throw new SLPUtils.TypeCheckError("L'espressione con cui si intende inizializzare la variabile " + ID + " non  è del tipo corretto." );
+        }
+
+        return new VoidTypeNode();
     }
 
     @Override
@@ -60,7 +67,7 @@ public class VarNode implements Node {
         ArrayList<SemanticError> errors = new ArrayList<>();
         // Generation of the entry for the symbol table.
 
-        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED)); //TODO: Chiedere prof se va fatto qua o in type Check l'inizializzazione degli effect
+        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));

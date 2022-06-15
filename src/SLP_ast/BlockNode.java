@@ -1,7 +1,9 @@
 package SLP_ast;
 
 import SLP_ast.typeNode.TypeNode;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.util.ArrayList;
@@ -34,8 +36,23 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
-		return null;
+	public TypeNode typeCheck() throws SLPUtils.TypeCheckError{
+		TypeNode retType = new VoidTypeNode(), tmp;
+
+		for (Node decl: declarationList) {
+			decl.typeCheck();
+		}
+
+		for (Node stm: statementList) {
+			tmp = stm.typeCheck();
+
+			if(!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(retType)){
+				if (!SLPUtils.checkVoidType(tmp)) throw new SLPUtils.TypeCheckError("The type of the statements is not coherent.");
+			} else if(!SLPUtils.checkVoidType(tmp))	retType = tmp;
+
+		}
+
+		return (isRoot ? new VoidTypeNode() : retType);
 	}
 
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
