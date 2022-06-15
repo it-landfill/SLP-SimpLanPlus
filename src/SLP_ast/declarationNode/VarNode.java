@@ -50,7 +50,7 @@ public class VarNode implements Node {
     @Override
     public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
 
-        if (!(SLPUtils.checkTypes(exp.typeCheck(), type))) {
+        if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(), type))) {
             throw new SLPUtils.TypeCheckError("L'espressione con cui si intende inizializzare la variabile " + ID + " non  è del tipo corretto." );
         }
 

@@ -13,6 +13,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import util.Environment;
 import util.SLPErrorParser;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.io.BufferedWriter;
@@ -24,7 +25,7 @@ public class mainSimpLanPlus {
 		boolean runTypeCheck = true, runCodegen = false, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/prova";
+		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_1";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
@@ -74,7 +75,14 @@ public class mainSimpLanPlus {
 		System.out.println(ast.toPrint(""));
 
 		if (runTypeCheck) {
-			//TODO: Type Check
+			System.out.println("[INFO] Starting type check.");
+			try {
+				ast.typeCheck();
+			} catch (SLPUtils.TypeCheckError e) {
+				System.out.println("[ERROR] Error while running type check: " + e.getMessage());
+				System.exit(1);
+			}
+			System.out.println("[INFO] No type check errors found.");
 		}
 
 		if (runCodegen) {

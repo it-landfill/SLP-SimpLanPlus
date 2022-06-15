@@ -75,6 +75,7 @@ public class BlockNode implements Node {
 			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(env));
 		}
 
+
 		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
 		env.nestingLevel--;
 
