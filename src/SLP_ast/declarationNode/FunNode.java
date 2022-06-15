@@ -6,6 +6,7 @@ import SLP_ast.STentry;
 import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class FunNode implements Node {
     }
 
     @Override
-    public TypeNode typeCheck() {
+    public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
         return null;
     }
 

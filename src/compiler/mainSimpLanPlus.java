@@ -77,7 +77,7 @@ public class mainSimpLanPlus {
 		if (runTypeCheck) {
 			System.out.println("[INFO] Starting type check.");
 			try {
-				ast.typeCheck();
+				ast.typeCheck(null);
 			} catch (SLPUtils.TypeCheckError e) {
 				System.out.println("[ERROR] Error while running type check: " + e.getMessage());
 				System.exit(1);

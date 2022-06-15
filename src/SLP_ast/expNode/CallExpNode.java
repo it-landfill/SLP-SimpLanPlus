@@ -5,6 +5,7 @@ import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class CallExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
 		// TODO: Controlli della call
 		return new VoidTypeNode();
 	}

@@ -7,6 +7,7 @@ import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -48,9 +49,9 @@ public class VarNode implements Node {
     }
 
     @Override
-    public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
+    public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 
-        if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(), type))) {
+        if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(symbolTable), type))) {
             throw new SLPUtils.TypeCheckError("L'espressione con cui si intende inizializzare la variabile " + ID + " non  è del tipo corretto." );
         }
 

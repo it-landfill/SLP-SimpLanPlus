@@ -39,15 +39,15 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError{
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError{
 		TypeNode retType = new VoidTypeNode(), tmp;
 
 		for (Node decl: declarationList) {
-			decl.typeCheck();
+			decl.typeCheck(localSymbolTable);
 		}
 
 		for (Node stm: statementList) {
-			tmp = stm.typeCheck();
+			tmp = stm.typeCheck(localSymbolTable);
 
 			if(!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(retType)){
 				if (!SLPUtils.checkVoidType(tmp)) throw new SLPUtils.TypeCheckError("The type of the statements is not coherent.");

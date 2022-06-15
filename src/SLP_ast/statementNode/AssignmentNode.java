@@ -7,6 +7,7 @@ import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -26,12 +27,12 @@ public class AssignmentNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		if (entry == null) {
 			throw new SLPUtils.TypeCheckError("L'ID richiamato non risulta essere dichiarato.");
 		}
 
-		if (!(SLPUtils.checkTypes(exp.typeCheck(), entry.getType()))) {
+		if (!(SLPUtils.checkTypes(exp.typeCheck(symbolTable), entry.getType()))) {
 			throw new SLPUtils.TypeCheckError("Al asgm (=) non sono associati i tipi corretti.");
 		}
 

@@ -6,6 +6,7 @@ import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -29,8 +30,8 @@ public class ReturnNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
-		if (exp != null) return exp.typeCheck();
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		if (exp != null) return exp.typeCheck(symbolTable);
 		return new VoidTypeNode();
 	}
 

@@ -5,6 +5,7 @@ import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -23,8 +24,8 @@ public class BaseExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
-		return exp.typeCheck();
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		return exp.typeCheck(symbolTable);
 	}
 
 	@Override

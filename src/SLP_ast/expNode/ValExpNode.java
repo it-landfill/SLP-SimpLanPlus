@@ -5,6 +5,7 @@ import SLP_ast.typeNode.IntTypeNode;
 import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class ValExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() {
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
 		return new IntTypeNode();
 	}
 

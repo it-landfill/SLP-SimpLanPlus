@@ -6,6 +6,7 @@ import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -26,9 +27,9 @@ public class CompareExpNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
-		if (! ( SLPUtils.checkIntType(left.typeCheck()) &&
-				SLPUtils.checkIntType(right.typeCheck()) ) ) {
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		if (! ( SLPUtils.checkIntType(left.typeCheck(symbolTable)) &&
+				SLPUtils.checkIntType(right.typeCheck(symbolTable)) ) ) {
 			throw new SLPUtils.TypeCheckError("Un termine dell'operazione logica (>=, <=, >, <) non è di tipo corretto.");
 		}
 		return new BoolTypeNode();

@@ -6,6 +6,7 @@ import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class DerExpNode implements Node {
 
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		if (entry == null) {
 			System.out.println("L'ID richiamato non risulta essere dichiarato.");
 			throw new SLPUtils.TypeCheckError("L'ID richiamato (" + ID + ") non risulta essere dichiarato.");

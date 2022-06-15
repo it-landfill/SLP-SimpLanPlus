@@ -7,6 +7,7 @@ import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -35,20 +36,20 @@ public class ITENode implements Node {
 
 
 	@Override
-	public TypeNode typeCheck() throws SLPUtils.TypeCheckError {
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode returnTrueType;
 
 		// Controllo che la condizione dell'if sia bool
-		if(!SLPUtils.checkBoolType(condition.typeCheck())) {
+		if(!SLPUtils.checkBoolType(condition.typeCheck(symbolTable))) {
 			throw new SLPUtils.TypeCheckError("Alla condizione dell'If non è associato un tipo boolean.");
 		}
 
 		// Calcolo il tipo del branch then
-		returnTrueType = ifTrue.typeCheck();
+		returnTrueType = ifTrue.typeCheck(symbolTable);
 
 		// Se esiste else, calcolo tipo dell'else
 		if (ifFalse != null){
-			TypeNode elseType = ifFalse.typeCheck();
+			TypeNode elseType = ifFalse.typeCheck(symbolTable);
 			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
 			// Se lo è, il type check ritornerà void, altrimenti errore.
 			if(!SLPUtils.checkTypes(returnTrueType, elseType)){
