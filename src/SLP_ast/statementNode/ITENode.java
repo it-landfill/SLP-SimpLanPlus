@@ -59,7 +59,7 @@ public class ITENode implements Node {
 				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
 			}
 
-			symbolTable = max(symbolTable, symbolTableElse);
+			symbolTable.update(symbolTableElse);
 		}
 
 		return returnTrueType;

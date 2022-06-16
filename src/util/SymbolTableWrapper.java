@@ -19,7 +19,9 @@ public class SymbolTableWrapper {
         symbolTable = new HashMap<>();
 
         st.forEach((k, v) -> {
-            symbolTable.put(k,v.clone());
+            ArrayDeque<STentry> newAl = new ArrayDeque<>();
+            v.forEach(el -> newAl.add(el.clone()));
+            symbolTable.put(k,newAl);
         });
 
     }
@@ -72,6 +74,20 @@ public class SymbolTableWrapper {
         return null;
     }
 
+    // TODO: Comment
+    public STentry findInSymbolTable(String ID, int nestingLevel) {
+        ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(ID, null);
+
+        if (entryStack != null && !entryStack.isEmpty()) {
+            for (STentry st: entryStack){
+                if (nestingLevel == st.getNestinglevel()) return st;
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Rimuove tutte le entry da un determinato livello dalla Symbol Table.
      *
@@ -99,7 +115,13 @@ public class SymbolTableWrapper {
         return new SymbolTableWrapper(symbolTable);
     }
 
-    public HashMap<String, ArrayDeque<STentry>> getSymbolTable() {
-        return symbolTable;
+
+    public void update(SymbolTableWrapper st) {
+        symbolTable.forEach((k,v) -> {
+            STentry e1 = findFirstInSymbolTable(k);
+            STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
+            if (e1.getEffect() != e2.getEffect()) e1.setEffect(e2.getEffect());
+        });
     }
+
 }

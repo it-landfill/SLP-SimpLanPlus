@@ -28,6 +28,7 @@ public class AssignmentNode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel()); // Mi serve perchè copio le symbolTable
 		if (entry == null) {
 			throw new SLPUtils.TypeCheckError("L'ID richiamato non risulta essere dichiarato.");
 		}

@@ -54,6 +54,8 @@ public class BlockNode implements Node {
 
 		}
 
+		if (symbolTable != null) symbolTable.update(localSymbolTable);
+
 		return (isRoot ? new VoidTypeNode() : retType);
 	}
 
