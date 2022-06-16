@@ -43,19 +43,23 @@ public class ITENode implements Node {
 		if(!SLPUtils.checkBoolType(condition.typeCheck(symbolTable))) {
 			throw new SLPUtils.TypeCheckError("Alla condizione dell'If non è associato un tipo boolean.");
 		}
+		SymbolTableWrapper symbolTableElse = symbolTable.clone();
 
 		// Calcolo il tipo del branch then
 		returnTrueType = ifTrue.typeCheck(symbolTable);
 
+
 		// Se esiste else, calcolo tipo dell'else
 		if (ifFalse != null){
-			TypeNode elseType = ifFalse.typeCheck(symbolTable);
+			TypeNode elseType = ifFalse.typeCheck(symbolTableElse);
 			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
 			// Se lo è, il type check ritornerà void, altrimenti errore.
 			if(!SLPUtils.checkTypes(returnTrueType, elseType)){
 				if(SLPUtils.checkVoidType(elseType)) returnTrueType = elseType;
 				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
 			}
+
+			symbolTable = max(symbolTable, symbolTableElse);
 		}
 
 		return returnTrueType;

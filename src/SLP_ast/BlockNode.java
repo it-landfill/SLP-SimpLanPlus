@@ -14,7 +14,6 @@ public class BlockNode implements Node {
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
 	private SymbolTableWrapper localSymbolTable;
-	private int localNestingLevel;
 	private final boolean isRoot;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
@@ -79,7 +78,6 @@ public class BlockNode implements Node {
 		}
 
 		localSymbolTable = env.symbolTable.clone();
-		localNestingLevel = env.nestingLevel;
 
 		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
 		env.nestingLevel--;

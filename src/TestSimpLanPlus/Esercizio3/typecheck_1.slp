@@ -1,11 +1,22 @@
 {
+    // [a [INT, offset, D], b[INT, offset, D], c [INT, offset, I]]
     int a;
     int b;
     int c = 1;
-
+    // [a [INT, offset, D], b[INT, offset, D], c [INT, offset, I]]
     if(c > 1){
+        int d;
         b = c;
-    }else{
-        a = b;
-    }
+        // [a [INT, offset, D], b[INT, offset, I], c [INT, offset, U], d [INT, offset, D]]
+    } else{
+          a = b;
+          // [a [INT, offset, I], b[INT, offset, D->U->T], c [INT, offset, U]]
+      }
+
+    funzione(symtb1, symtb2) -> symtb3
+        ciclare su ogni var comune ad entrambe
+            var.Stato.symtb1 e var.Stato.symtb2 (D < I < U)
+                salvara in symtb3 il max stato
+    // Desiderata: [a [INT, offset, I], b[INT, offset,T], c [INT, offset, U]]
+
 }
