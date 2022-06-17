@@ -2,6 +2,7 @@ package SLP_ast.statementNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.FunctionSingatureType;
 import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
@@ -54,7 +55,7 @@ public class AssignmentNode implements Node {
 		entry = env.symbolTable.findFirstInSymbolTable(ID);
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
-		} else if(entry.getnArgs()!=-1) {
+		} else if(entry.getType() instanceof FunctionSingatureType) {
 			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
 		}
 

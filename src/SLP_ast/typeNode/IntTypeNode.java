@@ -7,28 +7,11 @@ import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
-public class IntTypeNode implements TypeNode {
-
-	public IntTypeNode() {
-	}
+public class IntTypeNode extends TypeNode {
 
 	@Override
 	public String toPrint(String indent) {
 		return indent + "type: integer";
 	}
 
-	@Override
-	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
-		return null;
-	}
-
-	@Override
-	public String codeGeneration() {
-		return "";
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return new ArrayList<>();
-	}
 }

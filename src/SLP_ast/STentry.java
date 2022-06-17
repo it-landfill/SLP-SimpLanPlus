@@ -19,8 +19,7 @@ public class STentry {
     private final String ID;
     // Tipo della variabile
     private final TypeNode type;
-    //Se si tratta di una funzione rappresenta il numero di argomenti, altrimenti è -1
-    private int nArgs;
+
     // TODO: COmment
     private Effects effect;
 
@@ -28,26 +27,8 @@ public class STentry {
         nl = n;
         type = t;
         offset = os;
-        nArgs = -1;
         this.ID = ID;
         this.effect = effect;
-    }
-
-    public STentry(int n, TypeNode t, int os, int nArgs, String ID, Effects effect) {
-        nl = n;
-        type = t;
-        offset = os;
-        this.nArgs = nArgs;
-        this.ID = ID;
-        this.effect = effect;
-    }
-
-    public int getnArgs() {
-        return nArgs;
-    }
-
-    public void setnArgs(int nArgs) {
-        this.nArgs = nArgs;
     }
 
     public TypeNode getType() {
@@ -84,6 +65,6 @@ public class STentry {
     }
 
     public STentry clone() {
-        return new STentry(nl, type, offset, nArgs, ID, effect);
+        return new STentry(nl, type, offset, ID, effect);
     }
 }  

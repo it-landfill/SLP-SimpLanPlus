@@ -10,16 +10,12 @@ import java.util.ArrayList;
 public class ArgNode implements Node {
 	private final TypeNode type;
 	private final String argName;
-	private final boolean byReference; //TODO: Gestire questo caso
+	private final boolean byReference;
 
 	public ArgNode(TypeNode type, String argName, boolean byReference) {
 		this.type = type;
 		this.argName = argName;
 		this.byReference = byReference;
-	}
-
-	public TypeNode getType() {
-		return type;
 	}
 
 	public String getArgName() {
@@ -37,8 +33,7 @@ public class ArgNode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
-		// TODO:
-		return null;
+		return type;
 	}
 
 	@Override
