@@ -31,6 +31,10 @@ public class ArgNode implements Node {
 		return indent + "arg: " + type.toPrint(indent) + argName + " by reference: " + byReference;
 	}
 
+	public TypeNode getType() {
+		return type;
+	}
+
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
 		return type;

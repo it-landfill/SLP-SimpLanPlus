@@ -64,7 +64,6 @@ public class FunNode implements Node {
         TypeNode blockReturnType = new VoidTypeNode();
 
         if (block != null) blockReturnType = block.typeCheck(symbolTable);
-
         if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType)) throw new SLPUtils.TypeCheckError("Wrong return type");
 
         return signature.getReturnType();
@@ -91,7 +90,7 @@ public class FunNode implements Node {
         if (signature.getArguments() != null) {
             for (ArgNode a : signature.getArguments()) {
                 errors.addAll(a.checkSemantics(env));
-                STentry tmp = new STentry(env.nestingLevel, a.typeCheck(null), env.offset, a.getArgName(), STentry.Effects.NONE);
+                STentry tmp = new STentry(env.nestingLevel, a.getType(), env.offset, a.getArgName(), STentry.Effects.INITIALIZED);
                 if (env.symbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
             }

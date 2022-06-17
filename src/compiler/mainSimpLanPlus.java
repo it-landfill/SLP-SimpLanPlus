@@ -25,7 +25,7 @@ public class mainSimpLanPlus {
 		boolean runTypeCheck = true, runCodegen = false, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_1";
+		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_2";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
@@ -42,7 +42,7 @@ public class mainSimpLanPlus {
 		// The depth-first search for the abstract syntax tree starts from the root node, in the
 		// case of the SimpLanPlus grammar.
 		// TODO: Check for final delivery that the root node has remained unchanged in the grammar.
-		Node ast = visitor.visit(parser.block());
+		Node ast = visitor.visit(parser.program());
 		// If errors have been identified in the lexical analysis phase, they are printed, a report
 		// file is generated, and the program stops.
 		if (errHandler.hasMessages()) {
