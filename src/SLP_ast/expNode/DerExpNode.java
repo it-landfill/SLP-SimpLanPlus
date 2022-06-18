@@ -53,6 +53,8 @@ public class DerExpNode implements Node {
 		nestingLevel = env.nestingLevel;
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
+		} else if (entry.getNestinglevel() != env.nestingLevel) { //FIXME: Devo davero farlo?????
+			errors.add(new SemanticError("Var " + ID + " out of scope."));
 		}
 
 		return errors;

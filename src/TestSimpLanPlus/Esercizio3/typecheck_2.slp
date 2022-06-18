@@ -2,8 +2,10 @@
     int a;
     int b;
     int c;
+
     void f(int n, var int x){
           x = n ;
+          print x;
     }
 
     f(1,a);
