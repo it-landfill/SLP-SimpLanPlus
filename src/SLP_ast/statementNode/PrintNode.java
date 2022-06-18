@@ -30,7 +30,9 @@ public class PrintNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+
+		return exp.codeGeneration() +
+				"print $t0\n";
 	}
 
 	@Override

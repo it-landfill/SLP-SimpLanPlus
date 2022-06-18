@@ -39,7 +39,9 @@ instruction : label
             | not
             | neg
             | print
-            | jmp
+            | jal
+            | jr
+            | beq
             | halt;
 
 // MEM
@@ -70,11 +72,13 @@ neg     : NEG dest=REG src=REG;
 
 // STM
 print   : PRINT src=REG;
+beq     : BEQ reg1=REG reg2=REG lab=LABEL;
 
 // Program
 label   : lab=LABEL':';
 halt    : HALT;
-jmp     : JMP lab=LABEL;
+jal     : JAL lab=LABEL;
+jr      : JR dest=REG;
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
@@ -106,10 +110,12 @@ NEG     : 'neg' ;
 
 //STM
 PRINT	 : 'print' ;	// print top of stack
+BEQ      : 'beq' ;	// Break if equal w
 
 //Program
 HALT	 : 'halt' ;	// stop execution
-JMP     : 'jmp' ; // Jump to label
+JAL     : 'jal' ; // Jump to label
+JR      : 'jr' ; // Jump to register
 SYMBOLS : '_';
 LABEL   : STRING(STRING|NUMBER|SYMBOLS)*;
 
