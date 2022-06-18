@@ -2,8 +2,12 @@ package SLP_ast.declarationNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.TypeNode;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -20,19 +24,19 @@ public class VarNode implements Node {
     /**
      * Variable type.
      */
-    private final Node type;
+    private final TypeNode type;
     /**
      * Expression to be assigned to the variable
      */
     private final Node exp;
 
-    public VarNode(String ID, Node type, Node exp) {
+    public VarNode(String ID, TypeNode type, Node exp) {
         this.ID = ID;
         this.type = type;
         this.exp = exp;
     }
 
-    public VarNode(String ID, Node type) {
+    public VarNode(String ID, TypeNode type) {
         this(ID, type, null);
     }
 
@@ -45,8 +49,13 @@ public class VarNode implements Node {
     }
 
     @Override
-    public Node typeCheck() {
-        return null;
+    public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+
+        if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(symbolTable), type))) {
+            throw new SLPUtils.TypeCheckError("L'espressione con cui si intende inizializzare la variabile " + ID + " non  è del tipo corretto." );
+        }
+
+        return new VoidTypeNode();
     }
 
     @Override
@@ -58,7 +67,8 @@ public class VarNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();
         // Generation of the entry for the symbol table.
-        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID);
+
+        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));
