@@ -4,9 +4,7 @@ import SLP_ast.declarationNode.FunNode;
 import SLP_ast.declarationNode.VarNode;
 import SLP_ast.expNode.*;
 import SLP_ast.statementNode.*;
-import SLP_ast.typeNode.BoolTypeNode;
-import SLP_ast.typeNode.IntTypeNode;
-import SLP_ast.typeNode.VoidTypeNode;
+import SLP_ast.typeNode.*;
 import SLP_parser.SimpLanPlusBaseVisitor;
 import SLP_parser.SimpLanPlusParser;
 
@@ -216,21 +214,33 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	@Override
 	public Node visitDecFun(SimpLanPlusParser.DecFunContext ctx) {
 		String ID = ctx.ID().getText();
-		Node retType = null;
-		Node block = visit(ctx.block());
-		ArrayList<ArgNode> args = null;
 
-		if (ctx.type() != null) retType = visit(ctx.type());
+		TypeNode retType = null;
+		ArrayList<ArgNode> args;
+		FunctionSingatureType signature;
+
+		Node block = visit(ctx.block());
+
+		// Valuto il tipo di ritorno della funzione
+		if (ctx.type() != null) {
+			Node tmpType = visit(ctx.type());
+			if (!(tmpType instanceof TypeNode)) System.out.println("[INTERNAL ERROR] Casting to typeNode failed");
+			else retType = (TypeNode) tmpType;
+		}
 		else retType = new VoidTypeNode();
 
+		// Valuto i parametri formali della funzione
 		if (ctx.arg() != null && !ctx.arg().isEmpty()) {
 			args = new ArrayList<>();
 			for (SimpLanPlusParser.ArgContext arg : ctx.arg()) {
 				args.add(visitArg(arg));
 			}
-		}
+		} else args = null;
 
-		return new FunNode(retType, ID, args, block);
+		// Genero la signature
+		signature = new FunctionSingatureType(args, retType);
+
+		return new FunNode(ID, signature, block);
 	}
 
 	/**
@@ -243,7 +253,12 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 	 */
 	@Override
 	public Node visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
-		Node type = visit(ctx.type());
+		TypeNode type = null;
+
+		Node tmpType = visit(ctx.type());
+		if (!(tmpType instanceof TypeNode)) System.out.println("[INTERNAL ERROR] Casting to typeNode failed");
+		else type = (TypeNode) tmpType;
+
 		String ID = ctx.ID().getText();
 		if (ctx.exp() != null) {
 			Node exp = visit(ctx.exp());
@@ -284,7 +299,12 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 		boolean byReference = ctx.VAR() != null; // TODO: Controllare se funziona
 		String ID = ctx.ID().getText();
-		Node type = visit(ctx.type());
+
+		TypeNode type = null;
+
+		Node tmpType = visit(ctx.type());
+		if (!(tmpType instanceof TypeNode)) System.out.println("[INTERNAL ERROR] Casting to typeNode failed");
+		else type = (TypeNode) tmpType;
 
 		return new ArgNode(type, ID, byReference);
 	}

@@ -1,6 +1,15 @@
 package SLP_ast;
 
+import SLP_ast.typeNode.TypeNode;
+
 public class STentry {
+
+    public enum Effects {
+        NONE,
+        DECLARED,
+        INITIALIZED,
+        USED
+    }
 
     // Nesting Level
     private final int nl;
@@ -9,27 +18,20 @@ public class STentry {
     // Servirà in futuro per la mutua ricorsione
     private final String ID;
     // Tipo della variabile
-    private Node type;
-    //Se si tratta di una funzione rappresenta il numero di argomenti, altrimenti è -1
-    private int nArgs;
+    private final TypeNode type;
 
-    public STentry(int n, Node t, int os, String ID) {
+    // TODO: COmment
+    private Effects effect;
+
+    public STentry(int n, TypeNode t, int os, String ID, Effects effect) {
         nl = n;
         type = t;
         offset = os;
-        nArgs = -1;
         this.ID = ID;
+        this.effect = effect;
     }
 
-    public int getnArgs() {
-        return nArgs;
-    }
-
-    public void setnArgs(int nArgs) {
-        this.nArgs = nArgs;
-    }
-
-    public Node getType() {
+    public TypeNode getType() {
         return type;
     }
 
@@ -45,6 +47,14 @@ public class STentry {
         return ID;
     }
 
+    public Effects getEffect() {
+        return effect;
+    }
+
+    public void setEffect(Effects effect) {
+        this.effect = effect;
+    }
+
     /**
      * Funzione che ritorna la String contenente le informazioni di una entry della symbol table.
      *
@@ -52,5 +62,9 @@ public class STentry {
      */
     public String toPrint(String s) {
         return s + "STentry: ID " + ID + "\n" + s + "STentry: nestlev " + nl + "\n" + s + "STentry: type" + (type == null ? " void " : type.toPrint(s + "  ")) + "\n" + s + "STentry: offset " + offset + "\n";
+    }
+
+    public STentry clone() {
+        return new STentry(nl, type, offset, ID, effect);
     }
 }  

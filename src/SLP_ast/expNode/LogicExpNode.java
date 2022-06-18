@@ -1,8 +1,12 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -23,8 +27,11 @@ public class LogicExpNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
-		return null;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		if (!(SLPUtils.checkBoolType(left.typeCheck(symbolTable)) && SLPUtils.checkBoolType(right.typeCheck(symbolTable)))) {
+			throw new SLPUtils.TypeCheckError("Un termine dell'operazione logica (&&, ||) non è di tipo corretto.");
+		}
+		return new BoolTypeNode();
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import util.Environment;
 import util.SLPErrorParser;
+import util.SLPUtils;
 import util.SemanticError;
 
 import java.io.BufferedWriter;
@@ -21,10 +22,10 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		boolean runTypeCheck = false, runCodegen = false, runVM = false;
+		boolean runTypeCheck = true, runCodegen = false, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/prova";
+		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_4";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
@@ -41,7 +42,7 @@ public class mainSimpLanPlus {
 		// The depth-first search for the abstract syntax tree starts from the root node, in the
 		// case of the SimpLanPlus grammar.
 		// TODO: Check for final delivery that the root node has remained unchanged in the grammar.
-		Node ast = visitor.visit(parser.block());
+		Node ast = visitor.visit(parser.program());
 		// If errors have been identified in the lexical analysis phase, they are printed, a report
 		// file is generated, and the program stops.
 		if (errHandler.hasMessages()) {
@@ -74,7 +75,14 @@ public class mainSimpLanPlus {
 		System.out.println(ast.toPrint(""));
 
 		if (runTypeCheck) {
-			//TODO: Type Check
+			System.out.println("[INFO] Starting type check.");
+			try {
+				ast.typeCheck(null);
+			} catch (SLPUtils.TypeCheckError e) {
+				System.out.println("[ERROR] Error while running type check: " + e.getMessage());
+				System.exit(1);
+			}
+			System.out.println("[INFO] No type check errors found.");
 		}
 
 		if (runCodegen) {

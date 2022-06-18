@@ -1,7 +1,11 @@
 package SLP_ast;
 
+import SLP_ast.typeNode.TypeNode;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -9,6 +13,7 @@ public class BlockNode implements Node {
 
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
+	private SymbolTableWrapper localSymbolTable;
 	private final boolean isRoot;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
@@ -33,8 +38,25 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
-		return null;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError{
+		TypeNode retType = new VoidTypeNode(), tmp;
+
+		for (Node decl: declarationList) {
+			decl.typeCheck(localSymbolTable);
+		}
+
+		for (Node stm: statementList) {
+			tmp = stm.typeCheck(localSymbolTable);
+
+			if(!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(retType)){
+				if (!SLPUtils.checkVoidType(tmp)) throw new SLPUtils.TypeCheckError("The type of the statements is not coherent.");
+			} else if(!SLPUtils.checkVoidType(tmp))	retType = tmp;
+
+		}
+
+		if (symbolTable != null) symbolTable.update(localSymbolTable);
+
+		return (isRoot ? new VoidTypeNode() : retType);
 	}
 
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
@@ -56,6 +78,8 @@ public class BlockNode implements Node {
 		if (statementList != null) {
 			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(env));
 		}
+
+		localSymbolTable = env.symbolTable.clone();
 
 		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
 		env.nestingLevel--;

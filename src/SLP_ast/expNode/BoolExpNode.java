@@ -1,8 +1,11 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -19,8 +22,8 @@ public class BoolExpNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
-		return null;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
+		return new BoolTypeNode();
 	}
 
 	@Override

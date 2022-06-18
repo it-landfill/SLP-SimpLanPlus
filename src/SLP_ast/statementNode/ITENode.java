@@ -1,9 +1,13 @@
 package SLP_ast.statementNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.TypeNode;
+import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -30,9 +34,35 @@ public class ITENode implements Node {
 		return out.toString();
 	}
 
+
 	@Override
-	public Node typeCheck() {
-		return null;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		TypeNode returnTrueType;
+
+		// Controllo che la condizione dell'if sia bool
+		if(!SLPUtils.checkBoolType(condition.typeCheck(symbolTable))) {
+			throw new SLPUtils.TypeCheckError("Alla condizione dell'If non è associato un tipo boolean.");
+		}
+		SymbolTableWrapper symbolTableElse = symbolTable.clone();
+
+		// Calcolo il tipo del branch then
+		returnTrueType = ifTrue.typeCheck(symbolTable);
+
+
+		// Se esiste else, calcolo tipo dell'else
+		if (ifFalse != null){
+			TypeNode elseType = ifFalse.typeCheck(symbolTableElse);
+			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
+			// Se lo è, il type check ritornerà void, altrimenti errore.
+			if(!SLPUtils.checkTypes(returnTrueType, elseType)){
+				if(SLPUtils.checkVoidType(elseType)) returnTrueType = elseType;
+				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
+			}
+
+			symbolTable.update(symbolTableElse);
+		}
+
+		return returnTrueType;
 	}
 
 	@Override

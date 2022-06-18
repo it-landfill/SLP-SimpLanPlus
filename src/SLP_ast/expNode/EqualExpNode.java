@@ -1,8 +1,12 @@
 package SLP_ast.expNode;
 
 import SLP_ast.Node;
+import SLP_ast.typeNode.BoolTypeNode;
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
+import util.SLPUtils;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
@@ -23,8 +27,13 @@ public class EqualExpNode implements Node {
 	}
 
 	@Override
-	public Node typeCheck() {
-		return null;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		TypeNode leftType = left.typeCheck(symbolTable);
+		TypeNode rightType = right.typeCheck(symbolTable);
+		if (! SLPUtils.checkTypes(leftType, rightType)) {
+			throw new SLPUtils.TypeCheckError("Al eq (==) o neq (!=) non sono associati i tipi corretti.");
+		}
+		return new BoolTypeNode();
 	}
 
 	@Override
