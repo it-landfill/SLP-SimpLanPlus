@@ -68,21 +68,24 @@ public class ITENode implements Node {
 	@Override
 	public String codeGeneration() {
 		StringBuilder sb = new StringBuilder();
-		String trueLabel = SLPUtils.newLabel("ifTrue");
+		String elseLabel = SLPUtils.newLabel("ifElse");
 		String endLabel = SLPUtils.newLabel("ifEnd");
 
 		// Controllo condizione
 		sb.append(condition.codeGeneration()); // La codegen di una exp booleana salva in $t0 il risultato
-		sb.append("li $t1 1\n");
-		sb.append("beq $t0 $t1 ").append(trueLabel).append("\n");
-
-		// False branch
-		sb.append(ifFalse.codeGeneration());
-		sb.append("jal ").append(endLabel).append("\n");
+		sb.append("li $t1 0\n");
+		sb.append("beq $t0 $t1 ").append(ifFalse != null ? elseLabel : endLabel).append("\n");
 
 		// True branch
-		sb.append(trueLabel).append(":\n");
 		sb.append(ifTrue.codeGeneration());
+
+		// False branch
+		if (ifFalse != null) {
+			sb.append("jal ").append(endLabel).append("\n");
+			sb.append(elseLabel).append(":\n");
+			sb.append(ifFalse.codeGeneration());
+		}
+
 		sb.append(endLabel).append(":\n");
 
 		return sb.toString();

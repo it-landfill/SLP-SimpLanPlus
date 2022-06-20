@@ -62,7 +62,11 @@ public class BlockNode implements Node {
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
 	@Override
 	public String codeGeneration() {
-		return "";
+
+		StringBuilder sb = new StringBuilder();
+		declarationList.forEach(declaration -> sb.append(declaration.codeGeneration()));
+		statementList.forEach(statement -> sb.append(statement.codeGeneration()));
+		return sb.toString();
 	}
 
 	@Override

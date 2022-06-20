@@ -17,7 +17,6 @@ public class AssignmentNode implements Node {
 	private STentry entry;
 	private final Node exp;
 	private int nestinglevel;
-	private STentry entry;
 
 	public AssignmentNode(String ID, Node exp) {
 		this.ID = ID;

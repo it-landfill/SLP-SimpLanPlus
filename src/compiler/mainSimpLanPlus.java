@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		boolean runTypeCheck = true, runCodegen = false, runVM = false;
+		boolean runTypeCheck = true, runCodegen = true, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_4";
+		String fileName = "src/TestSimpLanPlus/Esercizio4/test1";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
