@@ -1,10 +1,9 @@
 {
-    int a;
-
-    void foo() {
-        print a;
+    int c = 1;
+    void test(int a) {
+        print c;
     }
 
-    a = 1;
-    foo();
+    int b = 4;
+    test(b);
 }
