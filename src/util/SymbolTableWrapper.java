@@ -120,7 +120,8 @@ public class SymbolTableWrapper {
         symbolTable.forEach((k,v) -> {
             STentry e1 = findFirstInSymbolTable(k);
             STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
-            if (e1.getEffect() != e2.getEffect()) e1.setEffect(e2.getEffect());
+            // Aggiorno l'effetto solo se l'effetto 2 è maggiore dell'effetto 1
+            if (e1.getEffect().compareTo(e2.getEffect())<0) e1.setEffect(e2.getEffect());
         });
     }
 
