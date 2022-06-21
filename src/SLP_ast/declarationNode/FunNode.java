@@ -75,7 +75,6 @@ public class FunNode implements Node {
         return "";
     }
 
-    // TODO: Il prof dice che le funzioni non possono accedere a scope esterni. >> Vedere codice balu
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();
@@ -109,7 +108,6 @@ public class FunNode implements Node {
         if (block != null) errors.addAll(block.checkSemantics(localEnv));
 
         // If the function has parameters, they are removed from the symbol table.
-        // TODO: Verificare che non dia problemi il non eliminare in caso di nessun parametro per la funzione.
         if (signature.getArguments() != null) localEnv.symbolTable.removeLevelFromSymbolTable(localEnv.nestingLevel);
 
         // Decreased nesting level.

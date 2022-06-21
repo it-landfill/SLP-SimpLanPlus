@@ -12,6 +12,10 @@ public class ExecuteVM {
 	public static final int MEMSIZE = 10000;
 
 	private final int[] code;
+
+	/*DOMANDA: Ha senso lavorare l'offset in type check con +1 o +4 in base al tipo anche se poi salvo tutto
+	 * su un array con celle di dimensione fissa?
+	 */
 	private final int[] memory = new int[MEMSIZE];
 
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
