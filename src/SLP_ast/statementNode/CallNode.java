@@ -50,7 +50,7 @@ public class CallNode implements Node {
 	}
 	// TODO: In questo caso imponiamo sia a parametri attuali con parametro formale
 	//  corrispondente con var e non si essere nello di inizializzato, nel caso di
-	//  derExp come parametri attuali.
+	//  derExp come parametri attuali. >> Tutto inizializzato e non si rompono i maroni.
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
