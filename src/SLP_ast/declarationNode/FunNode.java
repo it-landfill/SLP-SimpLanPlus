@@ -74,6 +74,7 @@ public class FunNode implements Node {
         return "";
     }
 
+    // TODO: Il prof dice che le funzioni non possono accedere a scope esterni.
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();

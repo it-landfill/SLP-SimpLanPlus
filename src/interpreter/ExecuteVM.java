@@ -108,7 +108,7 @@ public class ExecuteVM {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = t[r1] / t[r2]; //FIXME: Come gestisco il resto della divisione?
+						t[rd] = t[r1] / t[r2]; //FIXME: Come gestisco il resto della divisione? Non lo facciamo, easy.
 						break;
 					case SVMParser.LT:
 						rd = code[ip++];
