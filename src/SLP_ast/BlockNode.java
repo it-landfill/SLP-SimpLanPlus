@@ -2,6 +2,7 @@ package SLP_ast;
 
 import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
+import SLP_ast.typeNode.VoidableTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
@@ -13,8 +14,8 @@ public class BlockNode implements Node {
 
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
-	private SymbolTableWrapper localSymbolTable;
 	private final boolean isRoot;
+	private SymbolTableWrapper localSymbolTable;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
 		this.isRoot = isRoot;
@@ -38,19 +39,37 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError{
-		TypeNode retType = new VoidTypeNode(), tmp;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		TypeNode retType = new VoidTypeNode(), tmp, voidableType = null;
+		boolean isVoidable;
 
-		for (Node decl: declarationList) {
+		for (Node decl : declarationList) {
 			decl.typeCheck(localSymbolTable);
 		}
 
-		for (Node stm: statementList) {
+		for (Node stm : statementList) {
 			tmp = stm.typeCheck(localSymbolTable);
 
-			if(!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(retType)){
-				if (!SLPUtils.checkVoidType(tmp)) throw new SLPUtils.TypeCheckError("The type of the statements is not coherent.");
-			} else if(!SLPUtils.checkVoidType(tmp))	retType = tmp;
+			if (SLPUtils.checkVoidableType(tmp)) {
+				isVoidable = true;
+				if (voidableType != null) {
+					TypeNode tmpType = ((VoidableTypeNode) tmp).getAlternativeType();
+					if (!SLPUtils.checkTypes(tmpType, voidableType))
+						throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + retType.toPrint("") + "  Type2: " + tmp.toPrint(""));
+				} else {
+					voidableType = ((VoidableTypeNode) tmp).getAlternativeType();
+					tmp = voidableType;
+				}
+			} else isVoidable = false;
+
+			if (!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(retType) && !SLPUtils.checkVoidType(tmp))
+				throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + retType.toPrint("") + "  Type2: " + tmp.toPrint(""));
+			if (voidableType != null && !SLPUtils.checkTypes(voidableType, tmp) && !SLPUtils.checkVoidType(tmp))
+				throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + voidableType.toPrint("") + "  Type2: " + tmp.toPrint(""));
+
+			if (!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(tmp) && !isVoidable) {
+				retType = tmp;
+			}
 
 		}
 

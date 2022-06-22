@@ -65,6 +65,7 @@ public class FunNode implements Node {
         TypeNode blockReturnType = new VoidTypeNode();
 
         if (block != null) blockReturnType = block.typeCheck(localEnv.symbolTable);
+        if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType) && SLPUtils.checkVoidType(blockReturnType)) throw new SLPUtils.TypeCheckError("Missing return in function " + funcName);
         if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType)) throw new SLPUtils.TypeCheckError("Wrong return type");
 
         return signature.getReturnType();

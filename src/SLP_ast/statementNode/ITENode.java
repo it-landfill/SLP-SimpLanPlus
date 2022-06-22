@@ -4,6 +4,7 @@ import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
 import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
+import SLP_ast.typeNode.VoidableTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
@@ -37,7 +38,7 @@ public class ITENode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		TypeNode returnTrueType;
+		TypeNode thenType;
 
 		// Controllo che la condizione dell'if sia bool
 		if(!SLPUtils.checkBoolType(condition.typeCheck(symbolTable))) {
@@ -46,7 +47,7 @@ public class ITENode implements Node {
 		SymbolTableWrapper symbolTableElse = symbolTable.clone();
 
 		// Calcolo il tipo del branch then
-		returnTrueType = ifTrue.typeCheck(symbolTable);
+		thenType = ifTrue.typeCheck(symbolTable);
 
 
 		// Se esiste else, calcolo tipo dell'else
@@ -54,15 +55,16 @@ public class ITENode implements Node {
 			TypeNode elseType = ifFalse.typeCheck(symbolTableElse);
 			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
 			// Se lo è, il type check ritornerà void, altrimenti errore.
-			if(!SLPUtils.checkTypes(returnTrueType, elseType)){
-				if(SLPUtils.checkVoidType(elseType)) returnTrueType = elseType;
+			if(!SLPUtils.checkTypes(thenType, elseType)){
+				if(SLPUtils.checkVoidType(thenType)) thenType = new VoidableTypeNode(elseType);
+				else if(SLPUtils.checkVoidType(elseType)) thenType = new VoidableTypeNode(thenType);
 				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
 			}
 
 			symbolTable.update(symbolTableElse);
 		}
 
-		return returnTrueType;
+		return thenType;
 	}
 
 	@Override
