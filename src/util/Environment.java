@@ -15,4 +15,10 @@ public class Environment {
         this.offset = 0;
         this.nestingLevel = -1;
     }
+
+    public Environment(int offset, int nestingLevel) {
+        this.symbolTable = new SymbolTableWrapper();
+        this.offset = offset;
+        this.nestingLevel = nestingLevel;
+    }
 }

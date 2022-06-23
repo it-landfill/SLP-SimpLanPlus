@@ -1,0 +1,21 @@
+{   int x;
+    bool y = false;
+    int fun(var int a, bool b) {
+        if(a == 1)
+            return a;
+        else
+            print(b);
+        return a;
+    }
+    x = 5;
+    fun(x, y);
+    {
+        int y;
+        bool x;
+        y = 6;
+        x = false;
+        print(x);
+        print(y);
+    }
+    print(x);
+}

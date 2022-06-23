@@ -12,6 +12,10 @@ public class ExecuteVM {
 	public static final int MEMSIZE = 10000;
 
 	private final int[] code;
+
+	/*DOMANDA: Ha senso lavorare l'offset in type check con +1 o +4 in base al tipo anche se poi salvo tutto
+	 * su un array con celle di dimensione fissa?
+	 */
 	private final int[] memory = new int[MEMSIZE];
 
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
@@ -108,7 +112,7 @@ public class ExecuteVM {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
-						t[rd] = t[r1] / t[r2]; //FIXME: Come gestisco il resto della divisione?
+						t[rd] = t[r1] / t[r2]; //FIXME: Come gestisco il resto della divisione? Non lo facciamo, easy.
 						break;
 					case SVMParser.LT:
 						rd = code[ip++];

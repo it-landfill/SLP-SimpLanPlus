@@ -17,7 +17,6 @@ public class AssignmentNode implements Node {
 	private STentry entry;
 	private final Node exp;
 	private int nestinglevel;
-	private STentry entry;
 
 	public AssignmentNode(String ID, Node exp) {
 		this.ID = ID;
@@ -50,7 +49,7 @@ public class AssignmentNode implements Node {
 		StringBuilder out = new StringBuilder();
 
 		out.append(exp.codeGeneration());
-		out.append("move $t1 $fp\n"); //TODO: FP o SP??????
+		out.append("move $t1 $fp\n"); //Domanda: FP o SP??????
 		out.append("lw $t1 0($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
 		out.append("sw $t0 ").append(entry.getOffset()).append("($t1)\n");
 

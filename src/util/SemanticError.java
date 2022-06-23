@@ -1,7 +1,6 @@
 package util;
 
 public class SemanticError {
-    //TODO: Can we remove this and use strings directly?
 
     // Variabile contenente il messaggio di errore semantico.
     public final String msg;

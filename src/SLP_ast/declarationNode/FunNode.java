@@ -30,6 +30,7 @@ public class FunNode implements Node {
      * Node that contains the body of the function.
      */
     private final Node block;
+    private  Environment localEnv;
 
     public FunNode(String funcName, FunctionSingatureType signature, Node block) {
         this.funcName = funcName;
@@ -63,7 +64,8 @@ public class FunNode implements Node {
     public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
         TypeNode blockReturnType = new VoidTypeNode();
 
-        if (block != null) blockReturnType = block.typeCheck(symbolTable);
+        if (block != null) blockReturnType = block.typeCheck(localEnv.symbolTable);
+        if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType) && SLPUtils.checkVoidType(blockReturnType)) throw new SLPUtils.TypeCheckError("Missing return in function " + funcName);
         if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType)) throw new SLPUtils.TypeCheckError("Wrong return type");
 
         return signature.getReturnType();
@@ -77,20 +79,26 @@ public class FunNode implements Node {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<>();
+        localEnv = new Environment(env.offset, env.nestingLevel);
+
         // Generation of the entry for the symbol table.
-        STentry entry = new STentry(env.nestingLevel, signature, env.offset, funcName, STentry.Effects.NONE);
+        STentry entry = new STentry(localEnv.nestingLevel, signature, localEnv.offset, funcName, STentry.Effects.NONE);
 
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
+        if (localEnv.symbolTable.addToSymbolTable(entry))
+            errors.add(new SemanticError("Fun " + funcName + " already declared"));
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Fun " + funcName + " already declared"));
         // Increased nesting level and start analyzing formal parameters (if any).
-        env.nestingLevel++;
+        localEnv.nestingLevel++;
 
         // Check arguments if there is at least one and add them to the symbolTable
         if (signature.getArguments() != null) {
             for (ArgNode a : signature.getArguments()) {
-                errors.addAll(a.checkSemantics(env));
-                STentry tmp = new STentry(env.nestingLevel, a.getType(), env.offset, a.getArgName(), STentry.Effects.INITIALIZED);
+                errors.addAll(a.checkSemantics(localEnv));
+                STentry tmp = new STentry(localEnv.nestingLevel, a.getType(), localEnv.offset, a.getArgName(), STentry.Effects.INITIALIZED);
+                if (localEnv.symbolTable.addToSymbolTable(tmp))
+                    errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
                 if (env.symbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
             }
@@ -98,14 +106,13 @@ public class FunNode implements Node {
 
         // Check the body of the function.
         // NOTE: The symbol table of the block and the nesting level are handled in the semantic check of the block.
-        if (block != null) errors.addAll(block.checkSemantics(env));
+        if (block != null) errors.addAll(block.checkSemantics(localEnv));
 
         // If the function has parameters, they are removed from the symbol table.
-        // TODO: Verificare che non dia problemi il non eliminare in caso di nessun parametro per la funzione.
-        if (signature.getArguments() != null) env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
+        if (signature.getArguments() != null) localEnv.symbolTable.removeLevelFromSymbolTable(localEnv.nestingLevel);
 
         // Decreased nesting level.
-        env.nestingLevel--;
+        localEnv.nestingLevel--;
         return errors;
     }
 }
