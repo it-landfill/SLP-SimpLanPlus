@@ -37,7 +37,21 @@ public class ArithmExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(left.codeGeneration());
+		sb.append("push $t0\n");
+		sb.append(right.codeGeneration());
+		sb.append("pop $t1\n");
+		switch(op) {
+			case "+" -> sb.append("add");
+			case "-" -> sb.append("sub");
+			case "*" -> sb.append("mult");
+			case "/" -> sb.append("div");
+		}
+		sb.append(" $t0 $t0 $t1\n");
+
+		return sb.toString();
 	}
 
 	@Override

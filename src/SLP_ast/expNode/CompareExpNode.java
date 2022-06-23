@@ -28,8 +28,8 @@ public class CompareExpNode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		if (! ( SLPUtils.checkIntType(left.typeCheck(symbolTable)) &&
-				SLPUtils.checkIntType(right.typeCheck(symbolTable)) ) ) {
+		if (!(SLPUtils.checkIntType(left.typeCheck(symbolTable)) &&
+				SLPUtils.checkIntType(right.typeCheck(symbolTable)))) {
 			throw new SLPUtils.TypeCheckError("Un termine dell'operazione logica (>=, <=, >, <) non è di tipo corretto.");
 		}
 		return new BoolTypeNode();
@@ -37,7 +37,21 @@ public class CompareExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(left.codeGeneration());
+		sb.append("push $t0\n");
+		sb.append(right.codeGeneration());
+		sb.append("pop $t1\n");
+		switch (op) {
+			case "<" -> sb.append("lt");
+			case "<=" -> sb.append("lte");
+			case ">" -> sb.append("gt");
+			case ">=" -> sb.append("gte");
+		}
+		sb.append(" $t0 $t0 $t1\n");
+
+		return sb.toString();
 	}
 
 	@Override

@@ -42,7 +42,13 @@ public class DerExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		StringBuilder out = new StringBuilder();
+
+		out.append("move $t1 $fp\n"); //Domanda: FP o SP??????
+		out.append("lw $t1 0($t1)\n".repeat(nestingLevel - entry.getNestinglevel()));
+		out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
+
+		return out.toString();
 	}
 
 	@Override

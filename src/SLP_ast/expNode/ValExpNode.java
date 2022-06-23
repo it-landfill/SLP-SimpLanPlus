@@ -28,7 +28,7 @@ public class ValExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		return "li $t0 " + val + "\n";
 	}
 
 	@Override
