@@ -29,7 +29,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	private int ip = 0;
 
 	/*
-	 * La gestione delle label avviene in 2 passate.
+	 * La gestione delle label avviene in due passate.
 	 * L'idea è che in visit non abbiamo ancora le posizioni di tutte le label, di conseguenza mettiamo al posto della
 	 * posizione un id univoco per la label.
 	 * A fine programma, in teoria, le label dovrebbero tutte avere il campo pos aggiornato al valore corretto,
@@ -69,47 +69,38 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		int i = -1;
 		while (++i<ip){
 			switch (code[i]) {
-				case SVMParser.PUSH:
-				case SVMParser.POP:
-				case SVMParser.TOP:
-				case SVMParser.JR:
-				case SVMParser.PRINT:
-					i+=1;
-					break;
-				case SVMParser.LI:
-				case SVMParser.MOV:
-				case SVMParser.LW:
-				case SVMParser.SW:
-				case SVMParser.NOT:
-				case SVMParser.NEG:
-					i+=2;
-					break;
-				case SVMParser.ADD:
-				case SVMParser.SUB:
-				case SVMParser.MULT:
-				case SVMParser.DIV:
-				case SVMParser.LT:
-				case SVMParser.LTE:
-				case SVMParser.GT:
-				case SVMParser.GTE:
-				case SVMParser.EQ:
-				case SVMParser.AND:
-				case SVMParser.OR:
-					i+=3;
-					break;
-				case SVMParser.JAL:
-					i++;
-					code[i] = labelLookup(code[i]);
-					break;
-				case SVMParser.BEQ:
-					i+=3;
-					code[i] = labelLookup(code[i]);
-					break;
-				case SVMParser.HALT:
-					break;
-				default:
-					System.out.println("[ERROR] Not a valid instruction " + code[i] + " at position " + i + ".Terminating");
-					break;
+				case    SVMParser.PUSH,
+						SVMParser.POP,
+						SVMParser.TOP,
+						SVMParser.JR,
+						SVMParser.PRINT -> i+=1;
+				case    SVMParser.LI,
+						SVMParser.MOV,
+						SVMParser.LW,
+						SVMParser.SW,
+						SVMParser.NOT,
+						SVMParser.NEG -> i+=2;
+				case    SVMParser.ADD,
+						SVMParser.SUB,
+						SVMParser.MULT,
+						SVMParser.DIV,
+						SVMParser.LT,
+						SVMParser.LTE,
+						SVMParser.GT,
+						SVMParser.GTE,
+						SVMParser.EQ,
+						SVMParser.AND,
+						SVMParser.OR -> i+=3;
+				case    SVMParser.JAL -> {
+						i++;
+						code[i] = labelLookup(code[i]);
+				}
+				case    SVMParser.BEQ -> {
+						i+=3;
+						code[i] = labelLookup(code[i]);
+				}
+				case    SVMParser.HALT -> {}
+				default -> System.out.println("[ERROR] Not a valid instruction " + code[i] + " at position " + i + ".Terminating");
 			}
 		}
 	}
