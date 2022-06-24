@@ -63,7 +63,7 @@ public class VarNode implements Node {
     public String codeGeneration() {
         if(exp != null) {
             return exp.codeGeneration() +
-                    "sw $t0 " + entry.getOffset() + "($t1)\n";
+                    "sw $t0 " + entry.getOffset() + "($fp)\n";
         }
 
         return "";

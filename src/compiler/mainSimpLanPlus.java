@@ -25,7 +25,7 @@ public class mainSimpLanPlus {
 		boolean runTypeCheck = true, runCodegen = true, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_4";
+		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_6";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
