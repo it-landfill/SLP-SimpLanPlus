@@ -44,7 +44,7 @@ public class DerExpNode implements Node {
 	public String codeGeneration() {
 		StringBuilder out = new StringBuilder();
 
-		out.append("move $t1 $fp\n"); //Domanda: FP o SP??????
+		out.append("move $t1 $fp\n");
 		out.append("lw $t1 0($t1)\n".repeat(nestingLevel - entry.getNestinglevel()));
 		out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
 
