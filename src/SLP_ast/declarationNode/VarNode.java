@@ -29,6 +29,7 @@ public class VarNode implements Node {
      * Expression to be assigned to the variable
      */
     private final Node exp;
+    private STentry entry;
 
     public VarNode(String ID, TypeNode type, Node exp) {
         this.ID = ID;
@@ -60,6 +61,11 @@ public class VarNode implements Node {
 
     @Override
     public String codeGeneration() {
+        if(exp != null) {
+            return exp.codeGeneration() +
+                    "sw $t0 " + entry.getOffset() + "($fp)\n";
+        }
+
         return "";
     }
 
@@ -68,7 +74,7 @@ public class VarNode implements Node {
         ArrayList<SemanticError> errors = new ArrayList<>();
         // Generation of the entry for the symbol table.
 
-        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
+        entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));
