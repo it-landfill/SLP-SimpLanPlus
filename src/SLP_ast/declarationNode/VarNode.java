@@ -75,6 +75,10 @@ public class VarNode implements Node {
         // Generation of the entry for the symbol table.
 
         entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
+
+        if (SLPUtils.checkIntType(type)) env.offset += 4;
+        else env.offset += 1;
+
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (env.symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));
