@@ -2,7 +2,6 @@ package SLP_ast.expNode;
 
 import SLP_ast.Node;
 import SLP_ast.typeNode.BoolTypeNode;
-import SLP_ast.typeNode.IntTypeNode;
 import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SLPUtils;
@@ -38,7 +37,7 @@ public class NotExpNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return exp.checkSemantics(env);
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return exp.checkSemantics(env, symbolTable);
 	}
 }

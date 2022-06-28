@@ -2,7 +2,6 @@ package SLP_ast.typeNode;
 
 import SLP_ast.Node;
 import util.Environment;
-import util.SLPUtils;
 import util.SemanticError;
 import util.SymbolTableWrapper;
 
@@ -21,7 +20,7 @@ public abstract class TypeNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		return new ArrayList<>();
 	}
 

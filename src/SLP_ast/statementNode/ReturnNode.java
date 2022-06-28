@@ -42,9 +42,9 @@ public class ReturnNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		if (exp != null) {
-			return exp.checkSemantics(env);
+			return exp.checkSemantics(env, symbolTable);
 		} else {
 			return new ArrayList<>();
 		}

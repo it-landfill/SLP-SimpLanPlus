@@ -31,6 +31,7 @@ public class FunNode implements Node {
      */
     private final Node block;
     private  Environment localEnv;
+    private SymbolTableWrapper localSymbolTable;
 
     public FunNode(String funcName, FunctionSingatureType signature, Node block) {
         this.funcName = funcName;
@@ -64,7 +65,7 @@ public class FunNode implements Node {
     public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
         TypeNode blockReturnType = new VoidTypeNode();
 
-        if (block != null) blockReturnType = block.typeCheck(localEnv.symbolTable);
+        if (block != null) blockReturnType = block.typeCheck(localSymbolTable);
         if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType) && SLPUtils.checkVoidType(blockReturnType)) throw new SLPUtils.TypeCheckError("Missing return in function " + funcName);
         if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType)) throw new SLPUtils.TypeCheckError("Wrong return type");
 
@@ -77,42 +78,46 @@ public class FunNode implements Node {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
         ArrayList<SemanticError> errors = new ArrayList<>();
-        localEnv = new Environment(env.offset, env.nestingLevel);
+        localEnv = new Environment(); //FIXME: Rivedere logica localEnv e localSymbolTable
+        localSymbolTable = new SymbolTableWrapper();
 
         // Generation of the entry for the symbol table.
-        STentry entry = new STentry(localEnv.nestingLevel, signature, localEnv.offset, funcName, STentry.Effects.NONE);
+        STentry entry = new STentry(localEnv.getNestingLevel(), signature, -1, funcName, STentry.Effects.NONE);
 
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
-        if (localEnv.symbolTable.addToSymbolTable(entry))
+        if (localSymbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Fun " + funcName + " already declared"));
-        if (env.symbolTable.addToSymbolTable(entry))
+        if (symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Fun " + funcName + " already declared"));
         // Increased nesting level and start analyzing formal parameters (if any).
-        localEnv.nestingLevel++;
+        Environment.incrementNestingLevel();
 
         // Check arguments if there is at least one and add them to the symbolTable
         if (signature.getArguments() != null) {
             for (ArgNode a : signature.getArguments()) {
-                errors.addAll(a.checkSemantics(localEnv));
-                STentry tmp = new STentry(localEnv.nestingLevel, a.getType(), localEnv.offset, a.getArgName(), STentry.Effects.INITIALIZED);
-                if (localEnv.symbolTable.addToSymbolTable(tmp))
+                errors.addAll(a.checkSemantics(localEnv, localSymbolTable));
+                STentry tmp = new STentry(localEnv.getNestingLevel(), a.getType(), -1, a.getArgName(), STentry.Effects.INITIALIZED);
+                if (localSymbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
-                if (env.symbolTable.addToSymbolTable(tmp))
+                if (symbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
             }
         }
 
         // Check the body of the function.
         // NOTE: The symbol table of the block and the nesting level are handled in the semantic check of the block.
-        if (block != null) errors.addAll(block.checkSemantics(localEnv));
+        if (block != null) errors.addAll(block.checkSemantics(localEnv, localSymbolTable));
 
         // If the function has parameters, they are removed from the symbol table.
-        if (signature.getArguments() != null) localEnv.symbolTable.removeLevelFromSymbolTable(localEnv.nestingLevel);
+        if (signature.getArguments() != null) {
+            localSymbolTable.removeLevelFromSymbolTable(localEnv.getNestingLevel());
+            symbolTable.removeLevelFromSymbolTable(env.getNestingLevel());
+        }
 
         // Decreased nesting level.
-        localEnv.nestingLevel--;
+        Environment.decrementNestingLevel();
         return errors;
     }
 }

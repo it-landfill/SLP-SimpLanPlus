@@ -116,7 +116,8 @@ public class SymbolTableWrapper {
     }
 
 
-    public void update(SymbolTableWrapper st) {
+    // Usata per aggiornare l'ambiente negli ITE
+    public void merge(SymbolTableWrapper st) {
         symbolTable.forEach((k,v) -> {
             STentry e1 = findFirstInSymbolTable(k);
             STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
@@ -124,6 +125,19 @@ public class SymbolTableWrapper {
             if (e1.getEffect().compareTo(e2.getEffect())!=0) { //TODO: Controllare se rompe tutto
                 if (e2.getEffect() == STentry.Effects.DECLARED) e1.setEffect(STentry.Effects.DECLARED); // _xD -> D
                 else if ((e1.getEffect() == STentry.Effects.INITIALIZED && e2.getEffect() == STentry.Effects.USED) || (e1.getEffect() == STentry.Effects.USED && e2.getEffect() == STentry.Effects.INITIALIZED)) e1.setEffect(STentry.Effects.USED); // IxU | UxI -> U
+            }
+        });
+    }
+
+    // Usata per aggiornare l'ambiente nei blocchi
+    public void update(SymbolTableWrapper st) {
+        symbolTable.forEach((k,v) -> {
+            STentry e1 = findFirstInSymbolTable(k);
+            STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
+            if (e2 != null) {
+                if (e1.getEffect().compareTo(e2.getEffect()) < 0) {
+                    e1.setEffect(e2.getEffect());
+                }
             }
         });
     }

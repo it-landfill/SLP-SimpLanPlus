@@ -83,10 +83,10 @@ public class CallNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		STentry entry = env.symbolTable.findFirstInSymbolTable(funcName);
+		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
 
 		if (entry == null) {
 			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
@@ -115,7 +115,7 @@ public class CallNode implements Node {
 		// Se ci sono parametri controllo gli errori su questi
 		if (actualParams != null) {
 			for (Node n : actualParams) {
-				errors.addAll(n.checkSemantics(env));
+				errors.addAll(n.checkSemantics(env, symbolTable));
 			}
 		}
 

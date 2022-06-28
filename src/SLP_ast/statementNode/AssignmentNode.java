@@ -57,17 +57,17 @@ public class AssignmentNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
-		nestinglevel = env.nestingLevel;
-		entry = env.symbolTable.findFirstInSymbolTable(ID);
+		nestinglevel = env.getNestingLevel();
+		entry = symbolTable.findFirstInSymbolTable(ID);
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} else if(entry.getType() instanceof FunctionSingatureType) {
 			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
 		}
 
-		errors.addAll(exp.checkSemantics(env));
+		errors.addAll(exp.checkSemantics(env, symbolTable));
 
 		return errors;
 	}

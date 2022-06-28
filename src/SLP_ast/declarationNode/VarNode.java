@@ -70,20 +70,20 @@ public class VarNode implements Node {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
         ArrayList<SemanticError> errors = new ArrayList<>();
         // Generation of the entry for the symbol table.
 
-        entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
+        entry = new STentry(env.getNestingLevel(), type, env.getOffset(), ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
 
-        if (SLPUtils.checkIntType(type)) env.offset += 4;
-        else env.offset += 1;
+        if (SLPUtils.checkIntType(type)) env.offsetAddInt();
+        else env.offsetAddBool();
 
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
-        if (env.symbolTable.addToSymbolTable(entry))
+        if (symbolTable.addToSymbolTable(entry))
             errors.add(new SemanticError("Var " + ID + " already declared"));
         // Semantic check of the expression (if any).
-        if (exp != null) errors.addAll(exp.checkSemantics(env));
+        if (exp != null) errors.addAll(exp.checkSemantics(env, symbolTable));
         return errors;
     }
 }

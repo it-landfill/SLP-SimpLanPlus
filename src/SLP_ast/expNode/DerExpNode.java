@@ -52,11 +52,11 @@ public class DerExpNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		entry = env.symbolTable.findFirstInSymbolTable(ID);
-		nestingLevel = env.nestingLevel;
+		entry = symbolTable.findFirstInSymbolTable(ID);
+		nestingLevel = env.getNestingLevel();
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} 

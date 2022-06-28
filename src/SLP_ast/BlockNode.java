@@ -43,6 +43,8 @@ public class BlockNode implements Node {
 		TypeNode retType = new VoidTypeNode(), tmp, voidableType = null;
 		boolean isVoidable;
 
+		if (symbolTable != null) localSymbolTable.update(symbolTable);
+
 		for (Node decl : declarationList) {
 			decl.typeCheck(localSymbolTable);
 		}
@@ -89,24 +91,68 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		env.nestingLevel++;
+		Environment localEnv = new Environment();
+		Environment.incrementNestingLevel();
 
 		if (declarationList != null) {
-			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(env));
+			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
 		}
 
 		if (statementList != null) {
-			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(env));
+			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
 		}
 
-		localSymbolTable = env.symbolTable.clone();
+		localSymbolTable = symbolTable.clone();
 
-		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
-		env.nestingLevel--;
+		symbolTable.removeLevelFromSymbolTable(localEnv.getNestingLevel());
+		Environment.decrementNestingLevel();
 
 		return errors;
 	}
 }
+
+
+/*
+ * bool d 5 sp
+ *
+ *
+ *
+ * int  c 1
+ * old_fp fp
+ * |
+ * |
+ * |
+ * int  b 5
+ * bool a 1
+ * old_fp
+ */
+
+/*
+ * bool 4 sp
+ *
+ *
+ *
+ * int  0 fp
+ * old_fp
+ * fp
+ * |
+ * |
+ * |
+ * int  1
+ * bool 0
+ */
+
+
+/*
+ * sp
+ * return address   ra
+ * y    bool
+ *
+ *
+ *
+ * x    int
+ * old_fp           fp
+ */

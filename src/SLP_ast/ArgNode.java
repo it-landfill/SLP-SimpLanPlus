@@ -46,7 +46,7 @@ public class ArgNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return type.checkSemantics(env);
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return type.checkSemantics(env, symbolTable);
 	}
 }
