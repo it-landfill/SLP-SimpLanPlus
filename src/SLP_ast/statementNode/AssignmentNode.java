@@ -29,6 +29,22 @@ public class AssignmentNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+		nestinglevel = Environment.getNestingLevel();
+		entry = symbolTable.findFirstInSymbolTable(ID);
+		if (entry == null) {
+			errors.add(new SemanticError("Var " + ID + " not declared."));
+		} else if(entry.getType() instanceof FunctionSingatureType) {
+			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
+		}
+
+		errors.addAll(exp.checkSemantics(env, symbolTable));
+
+		return errors;
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel()); // Mi serve perchè copio le symbolTable
 		if (entry == null) {
@@ -50,25 +66,9 @@ public class AssignmentNode implements Node {
 
 		out.append(exp.codeGeneration());
 		out.append("move $t1 $fp\n");
-		out.append("lw $t1 0($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
+		out.append("lw $t1 4($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
 		out.append("sw $t0 ").append(entry.getOffset()).append("($t1)\n");
 
 		return out.toString();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-		nestinglevel = env.getNestingLevel();
-		entry = symbolTable.findFirstInSymbolTable(ID);
-		if (entry == null) {
-			errors.add(new SemanticError("Var " + ID + " not declared."));
-		} else if(entry.getType() instanceof FunctionSingatureType) {
-			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
-		}
-
-		errors.addAll(exp.checkSemantics(env, symbolTable));
-
-		return errors;
 	}
 }

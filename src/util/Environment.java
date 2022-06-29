@@ -8,7 +8,7 @@ public class Environment {
     private static int nestingLevel = -1;
 
     public Environment() {
-        this.offset = 1;
+        this.offset = 0;
     }
 
     public int getOffset() {
@@ -20,14 +20,14 @@ public class Environment {
     }
 
     public void offsetAddInt() {
-        this.offset+=4;
+        this.offset-=4;
     }
 
     public void offsetAddBool() {
-        this.offset+=1;
+        this.offset-=1;
     }
 
-    public int getNestingLevel() {
+    public static int getNestingLevel() {
         return nestingLevel;
     }
 

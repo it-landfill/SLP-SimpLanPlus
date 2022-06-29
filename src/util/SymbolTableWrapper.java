@@ -5,6 +5,7 @@ import SLP_ast.STentry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SymbolTableWrapper {
     // Creazione di una Hash Table (la Symbol Table) avente come chiave una String e un ArrayDeque di STentry
@@ -140,6 +141,15 @@ public class SymbolTableWrapper {
                 }
             }
         });
+    }
+
+    public int nestingLevelRequiredBytes(int nl) {
+        AtomicInteger bytes = new AtomicInteger();
+        symbolTable.forEach((k,v) -> {
+           STentry e = findInSymbolTable(k, nl);
+           if (e != null) bytes.addAndGet(e.getNestinglevel());
+        });
+        return bytes.get();
     }
 
 }

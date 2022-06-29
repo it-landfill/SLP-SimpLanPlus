@@ -15,6 +15,7 @@ public class BlockNode implements Node {
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
 	private final boolean isRoot;
+	private int nestingLevel;
 	private SymbolTableWrapper localSymbolTable;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
@@ -36,6 +37,31 @@ public class BlockNode implements Node {
 			statStr.append(sta.toPrint(indent + "  "));
 
 		return indent + "\nBlock\n\t" + declStr + "\t" + statStr + indent + "End Block";
+	}
+
+	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		Environment localEnv = new Environment();
+		Environment.incrementNestingLevel();
+
+		nestingLevel = Environment.getNestingLevel();
+
+		if (declarationList != null) {
+			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
+		}
+
+		if (statementList != null) {
+			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
+		}
+
+		localSymbolTable = symbolTable.clone();
+
+		symbolTable.removeLevelFromSymbolTable(Environment.getNestingLevel());
+		Environment.decrementNestingLevel();
+
+		return errors;
 	}
 
 	@Override
@@ -83,76 +109,35 @@ public class BlockNode implements Node {
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
 	@Override
 	public String codeGeneration() {
-
 		StringBuilder sb = new StringBuilder();
+
+		int occupiedBytes = localSymbolTable.nestingLevelRequiredBytes(nestingLevel);
+
+		// push fp
+		// move fp sp
+		// sp = sp - n (n = byte occupati dalle variabili al livello)
+		sb.append("push $fp\n");
+		sb.append("mov $fp $sp\n");
+		sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
+
 		declarationList.forEach(declaration -> sb.append(declaration.codeGeneration()));
 		statementList.forEach(statement -> sb.append(statement.codeGeneration()));
+
+		// sp = sp + n
+		// fp pop
+		sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
+		sb.append("pop $fp");
 		return sb.toString();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		Environment localEnv = new Environment();
-		Environment.incrementNestingLevel();
-
-		if (declarationList != null) {
-			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
-		}
-
-		if (statementList != null) {
-			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
-		}
-
-		localSymbolTable = symbolTable.clone();
-
-		symbolTable.removeLevelFromSymbolTable(localEnv.getNestingLevel());
-		Environment.decrementNestingLevel();
-
-		return errors;
 	}
 }
 
 
-/*
- * bool d 5 sp
+/*                  sp
+ * return_addr      ra
+ * b
  *
  *
  *
- * int  c 1
- * old_fp fp
- * |
- * |
- * |
- * int  b 5
- * bool a 1
+ * a        fp
  * old_fp
- */
-
-/*
- * bool 4 sp
- *
- *
- *
- * int  0 fp
- * old_fp
- * fp
- * |
- * |
- * |
- * int  1
- * bool 0
- */
-
-
-/*
- * sp
- * return address   ra
- * y    bool
- *
- *
- *
- * x    int
- * old_fp           fp
  */
