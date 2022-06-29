@@ -62,29 +62,13 @@ public class FunNode implements Node {
     }
 
     @Override
-    public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-        TypeNode blockReturnType = new VoidTypeNode();
-
-        if (block != null) blockReturnType = block.typeCheck(localSymbolTable);
-        if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType) && SLPUtils.checkVoidType(blockReturnType)) throw new SLPUtils.TypeCheckError("Missing return in function " + funcName);
-        if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType)) throw new SLPUtils.TypeCheckError("Wrong return type");
-
-        return signature.getReturnType();
-    }
-
-    @Override
-    public String codeGeneration() {
-        return "";
-    }
-
-    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
         ArrayList<SemanticError> errors = new ArrayList<>();
         localEnv = new Environment(); //FIXME: Rivedere logica localEnv e localSymbolTable
         localSymbolTable = new SymbolTableWrapper();
 
         // Generation of the entry for the symbol table.
-        STentry entry = new STentry(localEnv.getNestingLevel(), signature, -1, funcName, STentry.Effects.NONE);
+        STentry entry = new STentry(Environment.getNestingLevel(), signature, -1, funcName, STentry.Effects.NONE);
 
         // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
         if (localSymbolTable.addToSymbolTable(entry))
@@ -98,7 +82,7 @@ public class FunNode implements Node {
         if (signature.getArguments() != null) {
             for (ArgNode a : signature.getArguments()) {
                 errors.addAll(a.checkSemantics(localEnv, localSymbolTable));
-                STentry tmp = new STentry(localEnv.getNestingLevel(), a.getType(), -1, a.getArgName(), STentry.Effects.INITIALIZED);
+                STentry tmp = new STentry(Environment.getNestingLevel(), a.getType(), -1, a.getArgName(), STentry.Effects.INITIALIZED);
                 if (localSymbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
                 if (symbolTable.addToSymbolTable(tmp))
@@ -112,12 +96,28 @@ public class FunNode implements Node {
 
         // If the function has parameters, they are removed from the symbol table.
         if (signature.getArguments() != null) {
-            localSymbolTable.removeLevelFromSymbolTable(localEnv.getNestingLevel());
-            symbolTable.removeLevelFromSymbolTable(env.getNestingLevel());
+            localSymbolTable.removeLevelFromSymbolTable(Environment.getNestingLevel());
+            symbolTable.removeLevelFromSymbolTable(Environment.getNestingLevel());
         }
 
         // Decreased nesting level.
         Environment.decrementNestingLevel();
         return errors;
+    }
+
+    @Override
+    public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+        TypeNode blockReturnType = new VoidTypeNode();
+
+        if (block != null) blockReturnType = block.typeCheck(localSymbolTable);
+        if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType) && SLPUtils.checkVoidType(blockReturnType)) throw new SLPUtils.TypeCheckError("Missing return in function " + funcName);
+        if (!SLPUtils.checkTypes(signature.getReturnType(),blockReturnType)) throw new SLPUtils.TypeCheckError("Wrong return type");
+
+        return signature.getReturnType();
+    }
+
+    @Override
+    public String codeGeneration() {
+        return "";
     }
 }

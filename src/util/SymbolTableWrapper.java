@@ -147,7 +147,10 @@ public class SymbolTableWrapper {
         AtomicInteger bytes = new AtomicInteger();
         symbolTable.forEach((k,v) -> {
            STentry e = findInSymbolTable(k, nl);
-           if (e != null) bytes.addAndGet(e.getNestinglevel());
+           if (e != null) {
+               if (SLPUtils.checkIntType(e.getType())) bytes.addAndGet(4);
+               else if (SLPUtils.checkBoolType(e.getType())) bytes.addAndGet(1);
+           }
         });
         return bytes.get();
     }

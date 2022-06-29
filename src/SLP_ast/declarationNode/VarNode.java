@@ -80,7 +80,7 @@ public class VarNode implements Node {
     @Override
     public String codeGeneration() {
         if(exp != null) {
-            return exp.codeGeneration() +
+            return "; Assignment var " + ID + "\n" + exp.codeGeneration() +
                     "sw $t0 " + entry.getOffset() + "($fp)\n";
         }
 

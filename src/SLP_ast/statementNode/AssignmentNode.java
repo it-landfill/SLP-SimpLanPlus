@@ -64,6 +64,7 @@ public class AssignmentNode implements Node {
 	public String codeGeneration() {
 		StringBuilder out = new StringBuilder();
 
+		out.append("; Assignment var ").append(ID).append("\n");
 		out.append(exp.codeGeneration());
 		out.append("move $t1 $fp\n");
 		out.append("lw $t1 4($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));

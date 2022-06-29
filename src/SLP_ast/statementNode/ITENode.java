@@ -71,6 +71,7 @@ public class ITENode implements Node {
 		String elseLabel = SLPUtils.newLabel("ifElse");
 		String endLabel = SLPUtils.newLabel("ifEnd");
 
+		sb.append("; Begin ITE\n");
 		// Controllo condizione
 		sb.append(condition.codeGeneration()); // La codegen di una exp booleana salva in $t0 il risultato
 		sb.append("li $t1 0\n");
@@ -87,6 +88,7 @@ public class ITENode implements Node {
 		}
 
 		sb.append(endLabel).append(":\n");
+		sb.append("; End ITE\n");
 
 		return sb.toString();
 	}

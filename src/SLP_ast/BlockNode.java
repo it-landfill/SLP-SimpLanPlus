@@ -116,6 +116,7 @@ public class BlockNode implements Node {
 		// push fp
 		// move fp sp
 		// sp = sp - n (n = byte occupati dalle variabili al livello)
+		sb.append("; Begin environment\n");
 		sb.append("push $fp\n");
 		sb.append("mov $fp $sp\n");
 		sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
@@ -126,7 +127,8 @@ public class BlockNode implements Node {
 		// sp = sp + n
 		// fp pop
 		sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
-		sb.append("pop $fp");
+		sb.append("pop $fp\n");
+		sb.append("; End environment\n");
 		return sb.toString();
 	}
 }
