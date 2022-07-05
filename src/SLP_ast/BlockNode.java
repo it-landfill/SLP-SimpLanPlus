@@ -101,7 +101,8 @@ public class BlockNode implements Node {
 
 		}
 
-		localSymbolTable.findUnused(nestingLevel);
+		String unused = localSymbolTable.findUnused(nestingLevel);
+		if (!unused.equals("")) System.out.println(unused);
 
 		if (symbolTable != null) symbolTable.update(localSymbolTable);
 
