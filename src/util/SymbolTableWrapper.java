@@ -155,4 +155,15 @@ public class SymbolTableWrapper {
         return bytes.get();
     }
 
+    public String findUnused(int nestinglevel) {
+        StringBuilder  sb = new StringBuilder();
+        symbolTable.forEach((k,v) -> {
+            STentry e = findInSymbolTable(k, nestinglevel);
+            if (e != null && (e.getEffect() == STentry.Effects.DECLARED || e.getEffect() == STentry.Effects.INITIALIZED)) {
+                sb.append("[WARNING] Variable ").append(e.getID()).append(" not used\n");
+            }
+        });
+        return sb.toString();
+    }
+
 }

@@ -101,6 +101,8 @@ public class BlockNode implements Node {
 
 		}
 
+		localSymbolTable.findUnused(nestingLevel);
+
 		if (symbolTable != null) symbolTable.update(localSymbolTable);
 
 		return (isRoot ? new VoidTypeNode() : retType);
