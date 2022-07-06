@@ -85,18 +85,24 @@ public class ExecuteVM {
 						writeReg(rd, readReg(r1));
 					}
 					case SVMParser.LW -> {
-						rd = code[ip++];
+						r1 = code[ip++];
 						val = code[ip++];
-						if (memory[val] == -10000) {
+						r2 = code[ip++];
+						r2 = readReg(r2);
+
+						if (memory[val+r2] == -10000) {
 							System.out.println("\nError: Null pointer exception");
 							return false;
 						}
-						writeReg(rd, memory[val]); // FIXME: Rivedere logica save/load mem
+
+						writeReg(r1, memory[val+r2]); // FIXME: Rivedere logica save/load mem
 					}
 					case SVMParser.SW -> {
 						r1 = code[ip++];
 						val = code[ip++];
-						memory[val] = readReg(r1);
+						r2 = code[ip++];
+						r2 = readReg(r2);
+						memory[r2+val] = readReg(r1);
 					}
 					case SVMParser.ADD -> {
 						rd = code[ip++];

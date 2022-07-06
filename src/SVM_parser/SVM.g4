@@ -24,6 +24,8 @@ instruction : label
             | mov
             | lw
             | sw
+            | lb
+            | sb
             | add
             | addi
             | sub
@@ -54,8 +56,10 @@ pop     : POP dest=REG;
 top     : TOP dest=REG;
 li      : LI dest=REG n=NUMBER;
 mov     : MOV dest=REG src=REG;
-lw      : LW reg=REG mem=MEM;
-sw      : LW reg=REG mem=MEM;
+lw      : LW reg1=REG offset=NUMBER'('reg2=REG')';
+sw      : SW reg1=REG offset=NUMBER'('reg2=REG')';
+lb      : LB reg1=REG offset=NUMBER'('reg2=REG')';
+sb      : SW reg1=REG offset=NUMBER'('reg2=REG')';
 
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
@@ -98,6 +102,8 @@ LI      : 'li';
 MOV     : 'mov';
 LW      : 'lw';
 SW      : 'sw';
+LB      : 'lb';
+SB      : 'sb';
 
 // EXP
 ADD	 : 'add' ;  	// add two values from the stack
@@ -132,7 +138,6 @@ LABEL   : STRING(STRING|NUMBER|SYMBOLS)*;
 
 fragment DIGIT  : '0'..'9';
 REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
-MEM :   DIGIT+ '(' REG ')';
 
 fragment CHAR : ('a'..'z'|'A'..'Z');
 STRING : CHAR+;

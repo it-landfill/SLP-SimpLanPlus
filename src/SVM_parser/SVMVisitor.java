@@ -68,6 +68,18 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSw(SVMParser.SwContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#lb}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLb(SVMParser.LbContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#sb}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSb(SVMParser.SbContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#add}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
