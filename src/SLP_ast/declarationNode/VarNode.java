@@ -80,8 +80,8 @@ public class VarNode implements Node {
     @Override
     public String codeGeneration() {
         if(exp != null) {
-            return "; Assignment var " + ID + "\n" + exp.codeGeneration() +
-                    "sw $t0 " + entry.getOffset() + "($fp)\n";
+            return "; Begin decl-assignment variable " + ID + "\n" + exp.codeGeneration() +
+                    "sw $t0 " + entry.getOffset() + "($fp)\n" + "; End decl-assignment variable " + ID + "\n";
         }
 
         return "";

@@ -41,10 +41,19 @@ public class BlockNode implements Node {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
+		return checkSemantics(env, symbolTable, true);
+	}
 
-		Environment localEnv = new Environment();
-		Environment.incrementNestingLevel();
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable, boolean newEnv) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+		Environment localEnv;
+
+		if (newEnv) {
+			localEnv = new Environment();
+			Environment.incrementNestingLevel();
+		} else {
+			localEnv = env;
+		}
 
 		nestingLevel = Environment.getNestingLevel();
 
@@ -59,7 +68,8 @@ public class BlockNode implements Node {
 		localSymbolTable = symbolTable.clone();
 
 		symbolTable.removeLevelFromSymbolTable(Environment.getNestingLevel());
-		Environment.decrementNestingLevel();
+
+		if (newEnv) Environment.decrementNestingLevel();
 
 		return errors;
 	}
@@ -112,37 +122,43 @@ public class BlockNode implements Node {
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
 	@Override
 	public String codeGeneration() {
+		return codeGeneration(true);
+	}
+
+	public String codeGeneration(boolean newEnv) {
 		StringBuilder sb = new StringBuilder();
 
 		int occupiedBytes = localSymbolTable.nestingLevelRequiredBytes(nestingLevel);
 
 		// push fp
-		// move fp sp
 		// sp = sp - n (n = byte occupati dalle variabili al livello)
-		sb.append("; Begin environment\n");
-		sb.append("push $fp\n");
-		sb.append("mov $fp $sp\n");
-		sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
+		// move fp sp
+		if (newEnv) {
+			sb.append("; Begin environment\n");
+			sb.append("push $fp\n");
+			sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
+			sb.append("mov $fp $sp\n");
+		}
 
 		declarationList.forEach(declaration -> sb.append(declaration.codeGeneration()));
 		statementList.forEach(statement -> sb.append(statement.codeGeneration()));
 
-		// sp = sp + n
-		// fp pop
-		sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
-		sb.append("pop $fp\n");
-		sb.append("; End environment\n");
+		if (newEnv) {
+			sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
+			sb.append("pop $fp\n");
+			sb.append("; End environment\n");
+		}
+
 		return sb.toString();
 	}
 }
 
 
-/*                  sp
- * return_addr      ra
+/* sp fp
+ * a
+ *
+ *
+ *
  * b
- *
- *
- *
- * a        fp
  * old_fp
  */

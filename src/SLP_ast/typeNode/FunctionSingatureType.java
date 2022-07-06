@@ -13,10 +13,19 @@ public class FunctionSingatureType extends TypeNode {
 
 	ArrayList<ArgNode> arguments;
 	TypeNode returnType;
+	String label;
 
 	public FunctionSingatureType(ArrayList<ArgNode> arguments, TypeNode returnType) {
 		this.arguments = arguments;
 		this.returnType = returnType;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public ArrayList<ArgNode> getArguments() {

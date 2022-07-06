@@ -109,6 +109,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		if (label.equals("$fp")) return -1;
 		if (label.equals("$sp")) return -2;
 		if (label.equals("$ra")) return -3;
+		if (label.equals("$ip")) return -4;
 		return Integer.parseInt(String.valueOf(label.charAt(2)));
 	}
 
@@ -324,6 +325,20 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitJal(SVMParser.JalContext ctx) {
 		// Vedere funzionamento label spiegato all'inizio
+
+		// Salvo l'indirizzo dell'istruzione attuale
+		code[ip++] = SVMParser.MOV;
+		code[ip++] = regLabelToCode("$ra");
+		code[ip++] = regLabelToCode("$ip");
+		/*
+		// Incremento ra dell'offset necessario ad arrivare alla successiva istruzione
+		// +4 per ADDI
+		// +2 per JAL
+		code[ip++] = SVMParser.ADDI;
+		code[ip++] = regLabelToCode("$ra");
+		code[ip++] = regLabelToCode("$ra");
+		code[ip++] = 6;
+		*/
 		code[ip++] = SVMParser.JAL;
 		code[ip++] = labelLookup(ctx.lab.getText());
 		return null;

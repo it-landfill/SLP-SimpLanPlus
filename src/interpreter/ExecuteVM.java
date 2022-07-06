@@ -33,6 +33,7 @@ public class ExecuteVM {
 		if (reg == -1) return fp;
 		if (reg == -2) return sp;
 		if (reg == -3) return ra;
+		if (reg == -4) return ip;
 		return t[reg];
 	}
 
@@ -40,6 +41,7 @@ public class ExecuteVM {
 		if (reg == -1) fp = val;
 		if (reg == -2) sp = val;
 		if (reg == -3) ra = val;
+		if (reg == -4) ip = val;
 		t[reg] = val;
 	}
 

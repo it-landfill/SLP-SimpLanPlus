@@ -1,6 +1,7 @@
 package SLP_ast.declarationNode;
 
 import SLP_ast.ArgNode;
+import SLP_ast.BlockNode;
 import SLP_ast.Node;
 import SLP_ast.STentry;
 import SLP_ast.typeNode.FunctionSingatureType;
@@ -29,14 +30,19 @@ public class FunNode implements Node {
     /**
      * Node that contains the body of the function.
      */
-    private final Node block;
+    private final BlockNode block;
     private  Environment localEnv;
     private SymbolTableWrapper localSymbolTable;
 
     public FunNode(String funcName, FunctionSingatureType signature, Node block) {
         this.funcName = funcName;
         this.signature = signature;
-        this.block = block;
+        this.signature.setLabel(SLPUtils.newLabel(funcName));
+        if (block instanceof BlockNode) this.block = (BlockNode) block;
+        else {
+            System.out.println("[INTERNAL ERROR] Unable to convert block to BlockNode");
+            this.block = null;
+        }
     }
 
     @Override
@@ -82,7 +88,9 @@ public class FunNode implements Node {
         if (signature.getArguments() != null) {
             for (ArgNode a : signature.getArguments()) {
                 errors.addAll(a.checkSemantics(localEnv, localSymbolTable));
-                STentry tmp = new STentry(Environment.getNestingLevel(), a.getType(), -1, a.getArgName(), STentry.Effects.INITIALIZED);
+                STentry tmp = new STentry(Environment.getNestingLevel(), a.getType(), localEnv.getOffset(), a.getArgName(), STentry.Effects.INITIALIZED);
+                if (SLPUtils.checkIntType(a.getType())) localEnv.offsetAddInt();
+                else localEnv.offsetAddBool();
                 if (localSymbolTable.addToSymbolTable(tmp))
                     errors.add(new SemanticError("arg " + a.getArgName() + " used multiple times"));
                 if (symbolTable.addToSymbolTable(tmp))
@@ -92,7 +100,7 @@ public class FunNode implements Node {
 
         // Check the body of the function.
         // NOTE: The symbol table of the block and the nesting level are handled in the semantic check of the block.
-        if (block != null) errors.addAll(block.checkSemantics(localEnv, localSymbolTable));
+        if (block != null) errors.addAll(block.checkSemantics(localEnv, localSymbolTable, false));
 
         // If the function has parameters, they are removed from the symbol table.
         if (signature.getArguments() != null) {
@@ -118,6 +126,87 @@ public class FunNode implements Node {
 
     @Override
     public String codeGeneration() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        int n = 0;
+        for (ArgNode arg : signature.getArguments()) {
+            if (SLPUtils.checkIntType(arg.getType())) n+=4;
+            else n+=1;
+        }
+
+        sb.append("; Begin function\n");
+        sb.append(signature.getLabel()).append(":\n");
+
+        sb.append("mov $fp $sp\n");
+        sb.append("push $ra\n");
+
+        sb.append(block.codeGeneration(false)); //TODO: Gestire return value
+
+        sb.append("top $ra\n");
+        sb.append("addi $sp $sp ").append(n+4).append("\n");
+        sb.append("pop $fp\n");
+        sb.append("jr $ra\n");
+        sb.append("; End function\n");
+
+        return sb.toString();
     }
 }
+
+/*
+ * sp
+ * $ra   fp
+ * e_0
+ * e_1
+ * e_2
+ * e_3
+ * old_fp
+ */
+
+/*
+ * void a(int b) {
+ *      CHECKPOINT
+ *      print(b)
+ * }
+ *
+ * a(5)
+ */
+
+/*
+ * 5
+ * fun
+ * ind
+ */
+
+
+/*
+ * a_1:
+ *  mov $fp $sp
+ *  push $ra
+ *
+ * ; Begin Env
+ *  push $fp
+ *  mov $fp $sp
+ *  subi $sp $sp k
+ *
+ *
+ *
+ *  mov $t1 $fp
+ *  lw $t0 0($t1)
+ *  print $t0
+ *
+ *  addi $sp $sp k
+ *  pop $fp
+ *  ; end env
+ *
+ *  top $ra
+ *  addi $sp $sp k
+ *  pop $fp
+ *  jr $ra
+ *
+ *
+ *  push $fp
+ *  li $a0 5
+ *  push $a0
+ *  mov $ra $ip
+ *  addi $ra $ra 3
+ *  jal a_1
+ */
