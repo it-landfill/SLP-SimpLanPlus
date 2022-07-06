@@ -111,6 +111,16 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitAdd(SVMParser.AddContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SVMParser#addi}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddi(SVMParser.AddiContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#addi}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddi(SVMParser.AddiContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SVMParser#sub}.
 	 * @param ctx the parse tree
 	 */
@@ -120,6 +130,16 @@ public interface SVMListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSub(SVMParser.SubContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#subi}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubi(SVMParser.SubiContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#subi}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubi(SVMParser.SubiContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SVMParser#mult}.
 	 * @param ctx the parse tree
@@ -131,6 +151,16 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitMult(SVMParser.MultContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SVMParser#multi}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulti(SVMParser.MultiContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#multi}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulti(SVMParser.MultiContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SVMParser#div}.
 	 * @param ctx the parse tree
 	 */
@@ -140,6 +170,16 @@ public interface SVMListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDiv(SVMParser.DivContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#divi}.
+	 * @param ctx the parse tree
+	 */
+	void enterDivi(SVMParser.DiviContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#divi}.
+	 * @param ctx the parse tree
+	 */
+	void exitDivi(SVMParser.DiviContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SVMParser#lt}.
 	 * @param ctx the parse tree

@@ -74,11 +74,23 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAdd(SVMParser.AddContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#addi}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddi(SVMParser.AddiContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#sub}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSub(SVMParser.SubContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#subi}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubi(SVMParser.SubiContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SVMParser#mult}.
 	 * @param ctx the parse tree
@@ -86,11 +98,23 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMult(SVMParser.MultContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SVMParser#multi}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulti(SVMParser.MultiContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SVMParser#div}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDiv(SVMParser.DivContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#divi}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDivi(SVMParser.DiviContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SVMParser#lt}.
 	 * @param ctx the parse tree

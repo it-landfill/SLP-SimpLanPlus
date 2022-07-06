@@ -25,9 +25,13 @@ instruction : label
             | lw
             | sw
             | add
+            | addi
             | sub
+            | subi
             | mult
+            | multi
             | div
+            | divi
             | lt
             | lte
             | gt
@@ -55,9 +59,13 @@ sw      : LW reg=REG mem=MEM;
 
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
+addi    : ADDI dest=REG reg1=REG val=NUMBER;
 sub     : SUB dest=REG reg1=REG reg2=REG;
+subi    : SUBI dest=REG reg1=REG val=NUMBER;
 mult    : MULT dest=REG reg1=REG reg2=REG;
+multi   : MULTI dest=REG reg1=REG val=NUMBER;
 div     : DIV dest=REG reg1=REG reg2=REG;
+divi    : DIVI dest=REG reg1=REG val=NUMBER;
 lt      : LT dest=REG reg1=REG reg2=REG;
 lte     : LTE dest=REG reg1=REG reg2=REG;
 gt      : GT dest=REG reg1=REG reg2=REG;
@@ -93,9 +101,13 @@ SW      : 'sw';
 
 // EXP
 ADD	 : 'add' ;  	// add two values from the stack
+ADDI : 'addi' ;
 SUB	 : 'sub' ;	// add two values from the stack
+SUBI	: 'subi' ;
 MULT	 : 'mult' ;  	// add two values from the stack
+MULTI	: 'multi' ;
 DIV	 : 'div' ;	// add two values from the stack
+DIVI : 'divi' ;
 LT        : 'lt' ; // Lower than
 LTE       : 'lte' ; // Lower than or equal
 GT        : 'gt' ; // Greater than
