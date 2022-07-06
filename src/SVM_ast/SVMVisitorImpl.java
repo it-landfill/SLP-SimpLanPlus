@@ -328,18 +328,38 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitLw(SVMParser.LwContext ctx) {
-		code[ip++] = SVMParser.LW;
-		code[ip++] = regLabelToCode(ctx.reg.getText());
-		code[ip++] = regLabelToCode(ctx.mem.getText()); // FIXME: Dividere in offset e reg
+	public Void visitSw(SVMParser.SwContext ctx) {
+		code[ip++] = SVMParser.SW;
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
-	public Void visitSw(SVMParser.SwContext ctx) {
+	public Void visitLw(SVMParser.LwContext ctx) {
 		code[ip++] = SVMParser.LW;
-		code[ip++] = regLabelToCode(ctx.reg.getText());
-		code[ip++] = regLabelToCode(ctx.mem.getText()); // FIXME: Dividere in offset e reg
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitLb(SVMParser.LbContext ctx) {
+		code[ip++] = SVMParser.LW;
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitSb(SVMParser.SbContext ctx) {
+		code[ip++] = SVMParser.SW;
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
