@@ -126,7 +126,7 @@ fragment CHAR : ('a'..'z'|'A'..'Z');
 STRING : CHAR+;
 
 COL	 : ':' ;
-NUMBER	 : '0' | ('-')?(('1'..'9')DIGIT*) ;
+NUMBER	 :  '0' | ('-')?(('1'..'9')DIGIT*) ;
 
 WHITESP  : ( '\t' | ' ' | '\r' | '\n' )+   -> skip;
 LINECOMMENTS 	: ';' (~('\n'|'\r'))* -> skip;

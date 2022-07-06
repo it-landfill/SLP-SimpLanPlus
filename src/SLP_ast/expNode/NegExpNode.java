@@ -37,7 +37,7 @@ public class NegExpNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return exp.checkSemantics(env);
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return exp.checkSemantics(env, symbolTable);
 	}
 }

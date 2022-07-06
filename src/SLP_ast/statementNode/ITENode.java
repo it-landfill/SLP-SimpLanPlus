@@ -1,9 +1,7 @@
 package SLP_ast.statementNode;
 
 import SLP_ast.Node;
-import SLP_ast.typeNode.BoolTypeNode;
 import SLP_ast.typeNode.TypeNode;
-import SLP_ast.typeNode.VoidTypeNode;
 import SLP_ast.typeNode.VoidableTypeNode;
 import util.Environment;
 import util.SLPUtils;
@@ -61,7 +59,7 @@ public class ITENode implements Node {
 				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
 			}
 
-			symbolTable.update(symbolTableElse);
+			symbolTable.merge(symbolTableElse);
 		}
 
 		return thenType;
@@ -73,6 +71,7 @@ public class ITENode implements Node {
 		String elseLabel = SLPUtils.newLabel("ifElse");
 		String endLabel = SLPUtils.newLabel("ifEnd");
 
+		sb.append("; Begin ITE\n");
 		// Controllo condizione
 		sb.append(condition.codeGeneration()); // La codegen di una exp booleana salva in $t0 il risultato
 		sb.append("li $t1 0\n");
@@ -89,17 +88,18 @@ public class ITENode implements Node {
 		}
 
 		sb.append(endLabel).append(":\n");
+		sb.append("; End ITE\n");
 
 		return sb.toString();
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		errors.addAll(condition.checkSemantics(env));
-		errors.addAll(ifTrue.checkSemantics(env));
-		if (ifFalse != null) errors.addAll(ifFalse.checkSemantics(env));
+		errors.addAll(condition.checkSemantics(env, symbolTable));
+		errors.addAll(ifTrue.checkSemantics(env, symbolTable));
+		if (ifFalse != null) errors.addAll(ifFalse.checkSemantics(env, symbolTable));
 
 		return errors;
 	}

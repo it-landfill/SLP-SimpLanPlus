@@ -32,7 +32,7 @@ public class BoolExpNode implements Node {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		// Essendo un exp base, non ho errori semantici
 		return new ArrayList<>();
 	}

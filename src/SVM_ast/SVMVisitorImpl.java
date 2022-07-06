@@ -105,6 +105,14 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		}
 	}
 
+	private int regLabelToCode(String label) {
+		if (label.equals("$fp")) return -1;
+		if (label.equals("$sp")) return -2;
+		if (label.equals("$ra")) return -3;
+		if (label.equals("$ip")) return -4;
+		return Integer.parseInt(String.valueOf(label.charAt(2)));
+	}
+
 	@Override
 	public Void visitAssembly(SVMParser.AssemblyContext ctx) {
 		visitChildren(ctx);
@@ -114,102 +122,102 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitPush(SVMParser.PushContext ctx) {
 		code[ip++] = SVMParser.PUSH;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitPop(SVMParser.PopContext ctx) {
 		code[ip++] = SVMParser.POP;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitTop(SVMParser.TopContext ctx) {
 		code[ip++] = SVMParser.TOP;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitAdd(SVMParser.AddContext ctx) {
 		code[ip++] = SVMParser.ADD;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitSub(SVMParser.SubContext ctx) {
 		code[ip++] = SVMParser.SUB;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitMult(SVMParser.MultContext ctx) {
 		code[ip++] = SVMParser.MULT;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitDiv(SVMParser.DivContext ctx) {
 		code[ip++] = SVMParser.DIV;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitLt(SVMParser.LtContext ctx) {
 		code[ip++] = SVMParser.LT;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitLte(SVMParser.LteContext ctx) {
 		code[ip++] = SVMParser.LTE;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitGt(SVMParser.GtContext ctx) {
 		code[ip++] = SVMParser.GT;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitGte(SVMParser.GteContext ctx) {
 		code[ip++] = SVMParser.GTE;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitEq(SVMParser.EqContext ctx) {
 		code[ip++] = SVMParser.EQ;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
@@ -217,52 +225,52 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitNeq(SVMParser.NeqContext ctx) {
 		// Calcolo una EQ e la nego
 		code[ip++] = SVMParser.EQ;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		code[ip++] = SVMParser.NOT;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.dest.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitAnd(SVMParser.AndContext ctx) {
 		code[ip++] = SVMParser.AND;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitOr(SVMParser.OrContext ctx) {
 		code[ip++] = SVMParser.OR;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitNot(SVMParser.NotContext ctx) {
 		code[ip++] = SVMParser.NOT;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitPrint(SVMParser.PrintContext ctx) {
 		code[ip++] = SVMParser.PRINT;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitLi(SVMParser.LiContext ctx) {
 		code[ip++] = SVMParser.LI;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
 		code[ip++] = Integer.parseInt(ctx.n.getText());
 		return null;
 	}
@@ -270,32 +278,32 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitMov(SVMParser.MovContext ctx) {
 		code[ip++] = SVMParser.MOV;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitNeg(SVMParser.NegContext ctx) {
 		code[ip++] = SVMParser.NEG;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.src.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
 
 	@Override
 	public Void visitLw(SVMParser.LwContext ctx) {
 		code[ip++] = SVMParser.LW;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // FIXME: Calcolare offset mem e passare quello, da fare in base decisioni prese in type check
+		code[ip++] = regLabelToCode(ctx.reg.getText());
+		code[ip++] = regLabelToCode(ctx.mem.getText()); // FIXME: Dividere in offset e reg
 		return null;
 	}
 
 	@Override
 	public Void visitSw(SVMParser.SwContext ctx) {
 		code[ip++] = SVMParser.LW;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.mem.getText().charAt(2))); // FIXME: Calcolare offset mem e passare quello, da fare in base decisioni prese in type check
+		code[ip++] = regLabelToCode(ctx.reg.getText());
+		code[ip++] = regLabelToCode(ctx.mem.getText()); // FIXME: Dividere in offset e reg
 		return null;
 	}
 
@@ -317,6 +325,20 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitJal(SVMParser.JalContext ctx) {
 		// Vedere funzionamento label spiegato all'inizio
+
+		// Salvo l'indirizzo dell'istruzione attuale
+		code[ip++] = SVMParser.MOV;
+		code[ip++] = regLabelToCode("$ra");
+		code[ip++] = regLabelToCode("$ip");
+		/*
+		// Incremento ra dell'offset necessario ad arrivare alla successiva istruzione
+		// +4 per ADDI
+		// +2 per JAL
+		code[ip++] = SVMParser.ADDI;
+		code[ip++] = regLabelToCode("$ra");
+		code[ip++] = regLabelToCode("$ra");
+		code[ip++] = 6;
+		*/
 		code[ip++] = SVMParser.JAL;
 		code[ip++] = labelLookup(ctx.lab.getText());
 		return null;
@@ -325,7 +347,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitJr(SVMParser.JrContext ctx) {
 		code[ip++] = SVMParser.JR;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.dest.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.dest.getText());
 		return null;
 	}
 
@@ -333,8 +355,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitBeq(SVMParser.BeqContext ctx) {
 		// Vedere funzionamento label spiegato all'inizio
 		code[ip++] = SVMParser.BEQ;
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg1.getText().charAt(2)));
-		code[ip++] = Integer.parseInt(String.valueOf(ctx.reg2.getText().charAt(2)));
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		String label = ctx.lab.getText();
 		if (label != null) code[ip++] = labelLookup(label);
 		else System.out.println("[INTERNAL ERROR] Unable to get label name.");

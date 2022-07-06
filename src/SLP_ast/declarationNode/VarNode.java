@@ -50,6 +50,24 @@ public class VarNode implements Node {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+        ArrayList<SemanticError> errors = new ArrayList<>();
+        // Generation of the entry for the symbol table.
+
+        entry = new STentry(Environment.getNestingLevel(), type, env.getOffset(), ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
+
+        if (SLPUtils.checkIntType(type)) env.offsetAddInt();
+        else env.offsetAddBool();
+
+        // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
+        if (symbolTable.addToSymbolTable(entry))
+            errors.add(new SemanticError("Var " + ID + " already declared"));
+        // Semantic check of the expression (if any).
+        if (exp != null) errors.addAll(exp.checkSemantics(env, symbolTable));
+        return errors;
+    }
+
+    @Override
     public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 
         if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(symbolTable), type))) {
@@ -62,24 +80,10 @@ public class VarNode implements Node {
     @Override
     public String codeGeneration() {
         if(exp != null) {
-            return exp.codeGeneration() +
-                    "sw $t0 " + entry.getOffset() + "($fp)\n";
+            return "; Begin decl-assignment variable " + ID + "\n" + exp.codeGeneration() +
+                    "sw $t0 " + entry.getOffset() + "($fp)\n" + "; End decl-assignment variable " + ID + "\n";
         }
 
         return "";
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> errors = new ArrayList<>();
-        // Generation of the entry for the symbol table.
-
-        entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
-        // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
-        if (env.symbolTable.addToSymbolTable(entry))
-            errors.add(new SemanticError("Var " + ID + " already declared"));
-        // Semantic check of the expression (if any).
-        if (exp != null) errors.addAll(exp.checkSemantics(env));
-        return errors;
     }
 }

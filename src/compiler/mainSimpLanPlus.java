@@ -11,10 +11,7 @@ import interpreter.ExecuteVM;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import util.Environment;
-import util.SLPErrorParser;
-import util.SLPUtils;
-import util.SemanticError;
+import util.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -25,7 +22,7 @@ public class mainSimpLanPlus {
 		boolean runTypeCheck = true, runCodegen = true, runVM = false;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_6";
+		String fileName = "src/TestSimpLanPlus/Esercizio4/test1";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
@@ -56,8 +53,9 @@ public class mainSimpLanPlus {
 		// Semantic verification.
 		System.out.println("[INFO] Starting semantic verification.");
 		Environment env = new Environment();
+		SymbolTableWrapper st = new SymbolTableWrapper();
 		// Generation of an ArrayList that will contain all semantic errors.
-		ArrayList<SemanticError> err = ast.checkSemantics(env);
+		ArrayList<SemanticError> err = ast.checkSemantics(env, st);
 		// If errors have been identified in the semantic analysis phase, they are printed, a report
 		// file is generated, and the program stops.
 		if (err != null && err.size() > 0) {

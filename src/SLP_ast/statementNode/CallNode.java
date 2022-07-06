@@ -18,6 +18,7 @@ public class CallNode implements Node {
 	private final String funcName;
 	private final ArrayList<Node> actualParams;
 	private boolean expNode;
+	private FunctionSingatureType signature;
 
 	public CallNode(String funcName, ArrayList<Node> params) {
 		this.funcName = funcName;
@@ -77,16 +78,10 @@ public class CallNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
-		//TODO
-		return "";
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		STentry entry = env.symbolTable.findFirstInSymbolTable(funcName);
+		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
 
 		if (entry == null) {
 			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
@@ -97,7 +92,7 @@ public class CallNode implements Node {
 				return errors;
 			}
 
-			FunctionSingatureType signature = (FunctionSingatureType) entry.getType();
+			signature = (FunctionSingatureType) entry.getType();
 			// Controllo il numero di parametri attuali rispetto a quelli formali
 			ArrayList<ArgNode> formalParams = signature.getArguments();
 
@@ -115,10 +110,27 @@ public class CallNode implements Node {
 		// Se ci sono parametri controllo gli errori su questi
 		if (actualParams != null) {
 			for (Node n : actualParams) {
-				errors.addAll(n.checkSemantics(env));
+				errors.addAll(n.checkSemantics(env, symbolTable));
 			}
 		}
 
 		return errors;
 	}
+
+	@Override
+	public String codeGeneration() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("; Begin function call ").append(funcName).append("\n");
+		sb.append("push $fp\n");
+		for (int i = actualParams.size() - 1; i >= 0; i--) {
+			sb.append(actualParams.get(i).codeGeneration());
+			sb.append("push $t0\n");
+		}
+		sb.append("jal ").append(signature.getLabel()).append("\n");
+		sb.append("; End function call ").append(funcName).append("\n");
+
+		return sb.toString();
+	}
+
 }
