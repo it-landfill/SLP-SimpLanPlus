@@ -150,11 +150,29 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
+	public Void visitAddi(SVMParser.AddiContext ctx) {
+		code[ip++] = SVMParser.ADDI;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = Integer.parseInt(ctx.val.getText());
+		return null;
+	}
+
+	@Override
 	public Void visitSub(SVMParser.SubContext ctx) {
 		code[ip++] = SVMParser.SUB;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitSubi(SVMParser.SubiContext ctx) {
+		code[ip++] = SVMParser.SUB;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = Integer.parseInt(ctx.val.getText());
 		return null;
 	}
 
@@ -168,11 +186,29 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
+	public Void visitMulti(SVMParser.MultiContext ctx) {
+		code[ip++] = SVMParser.MULTI;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = Integer.parseInt(ctx.val.getText());
+		return null;
+	}
+
+	@Override
 	public Void visitDiv(SVMParser.DivContext ctx) {
 		code[ip++] = SVMParser.DIV;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitDivi(SVMParser.DiviContext ctx) {
+		code[ip++] = SVMParser.DIVI;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = Integer.parseInt(ctx.val.getText());
 		return null;
 	}
 

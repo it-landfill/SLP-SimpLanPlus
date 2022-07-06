@@ -106,6 +106,13 @@ public class ExecuteVM {
 						r2 = readReg(r2);
 						writeReg(rd, r1+r2);
 					}
+					case SVMParser.ADDI -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						val = code[ip++];
+						r1 = readReg(r1);
+						writeReg(rd, r1+val);
+					}
 					case SVMParser.SUB -> {
 						rd = code[ip++];
 						r1 = code[ip++];
@@ -113,6 +120,13 @@ public class ExecuteVM {
 						r1 = readReg(r1);
 						r2 = readReg(r2);
 						writeReg(rd, r1-r2); //FIXME: Come gestisco negativi?
+					}
+					case SVMParser.SUBI -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						val = code[ip++];
+						r1 = readReg(r1);
+						writeReg(rd, r1-val);
 					}
 					case SVMParser.MULT -> {
 						rd = code[ip++];
@@ -122,13 +136,27 @@ public class ExecuteVM {
 						r2 = readReg(r2);
 						writeReg(rd, r1*r2);
 					}
+					case SVMParser.MULTI -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						val = code[ip++];
+						r1 = readReg(r1);
+						writeReg(rd, r1*val);
+					}
 					case SVMParser.DIV -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r2 = code[ip++];
 						r1 = readReg(r1);
 						r2 = readReg(r2);
-						writeReg(rd, r1/r2); //FIXME: Come gestisco il resto della divisione? Non lo facciamo, easy.
+						writeReg(rd, r1/r2);
+					}
+					case SVMParser.DIVI -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						val = code[ip++];
+						r1 = readReg(r1);
+						writeReg(rd, r1/val);
 					}
 					case SVMParser.LT -> {
 						rd = code[ip++];
