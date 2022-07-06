@@ -366,7 +366,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[ip++] = SVMParser.MOV;
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = regLabelToCode("$ip");
-		/*
+
 		// Incremento ra dell'offset necessario ad arrivare alla successiva istruzione
 		// +4 per ADDI
 		// +2 per JAL
@@ -374,7 +374,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = 6;
-		*/
+		
 		code[ip++] = SVMParser.JAL;
 		code[ip++] = labelLookup(ctx.lab.getText());
 		return null;
