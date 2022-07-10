@@ -66,7 +66,7 @@ public class AssignmentNode implements Node {
 
 		out.append("; Begin assignment variable ").append(ID).append("\n");
 		out.append(exp.codeGeneration());
-		out.append("move $t1 $fp\n");
+		out.append("mov $t1 $fp\n");
 		out.append("lw $t1 4($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
 		out.append("sw $t0 ").append(entry.getOffset()).append("($t1)\n");
 		out.append("; End assignment variable ").append(ID).append("\n");
