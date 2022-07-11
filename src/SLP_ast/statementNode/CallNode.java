@@ -121,14 +121,14 @@ public class CallNode implements Node {
 	public String codeGeneration() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("; Begin function call ").append(funcName).append("\n");
+		sb.append("; Begin function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
 		sb.append("push $fp\n");
 		for (int i = actualParams.size() - 1; i >= 0; i--) {
 			sb.append(actualParams.get(i).codeGeneration());
 			sb.append("push $t0\n");
 		}
 		sb.append("jal ").append(signature.getLabel()).append("\n");
-		sb.append("; End function call ").append(funcName).append("\n");
+		sb.append("; End function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
 
 		return sb.toString();
 	}
