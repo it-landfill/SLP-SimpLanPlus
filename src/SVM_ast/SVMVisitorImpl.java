@@ -76,14 +76,20 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 						SVMParser.PRINT -> i+=1;
 				case    SVMParser.LI,
 						SVMParser.MOV,
-						SVMParser.LW,
-						SVMParser.SW,
 						SVMParser.NOT,
 						SVMParser.NEG -> i+=2;
 				case    SVMParser.ADD,
+						SVMParser.ADDI,
 						SVMParser.SUB,
+						SVMParser.SUBI,
 						SVMParser.MULT,
+						SVMParser.MULTI,
 						SVMParser.DIV,
+						SVMParser.LW,
+						SVMParser.SW,
+						SVMParser.LB,
+						SVMParser.SB,
+						SVMParser.DIVI,
 						SVMParser.LT,
 						SVMParser.LTE,
 						SVMParser.GT,
@@ -100,7 +106,10 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 						code[i] = labelLookup(code[i]);
 				}
 				case    SVMParser.HALT -> {}
-				default -> System.out.println("[ERROR] Not a valid instruction " + code[i] + " at position " + i + ".Terminating");
+				default -> {
+					System.out.println("[ERROR] [labelAlign] Not a valid instruction " + code[i] + " at position " + i + ".Terminating");
+					System.exit(1);
+				}
 			}
 		}
 	}
@@ -169,7 +178,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitSubi(SVMParser.SubiContext ctx) {
-		code[ip++] = SVMParser.SUB;
+		code[ip++] = SVMParser.SUBI;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] = Integer.parseInt(ctx.val.getText());
@@ -382,6 +391,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitJal(SVMParser.JalContext ctx) {
 		// Vedere funzionamento label spiegato all'inizio
 
+
 		// Salvo l'indirizzo dell'istruzione attuale
 		code[ip++] = SVMParser.MOV;
 		code[ip++] = regLabelToCode("$ra");
@@ -390,10 +400,12 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		// Incremento ra dell'offset necessario ad arrivare alla successiva istruzione
 		// +4 per ADDI
 		// +2 per JAL
+		// +1 per nuova istruzione
 		code[ip++] = SVMParser.ADDI;
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = regLabelToCode("$ra");
-		code[ip++] = 6;
+		code[ip++] = 7;
+
 		
 		code[ip++] = SVMParser.JAL;
 		code[ip++] = labelLookup(ctx.lab.getText());

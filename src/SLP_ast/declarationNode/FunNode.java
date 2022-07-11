@@ -139,8 +139,11 @@ public class FunNode implements Node {
         sb.append("mov $fp $sp\n");
         sb.append("push $ra\n");
 
+        sb.append("; End function header\n");
+
         sb.append(block.codeGeneration(false)); //TODO: Gestire return value
 
+        sb.append("; Begin function footer\n");
         sb.append("top $ra\n");
         sb.append("addi $sp $sp ").append(n+4).append("\n");
         sb.append("pop $fp\n");

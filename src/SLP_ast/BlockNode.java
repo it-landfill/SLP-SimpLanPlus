@@ -1,5 +1,7 @@
 package SLP_ast;
 
+import SLP_ast.declarationNode.FunNode;
+import SLP_ast.declarationNode.VarNode;
 import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import SLP_ast.typeNode.VoidableTypeNode;
@@ -9,6 +11,7 @@ import util.SemanticError;
 import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BlockNode implements Node {
 
@@ -109,7 +112,7 @@ public class BlockNode implements Node {
 				retType = tmp;
 			}
 
-		}
+		} //TODO: Return dovrebbe uscire dalla funzione
 
 		String unused = localSymbolTable.findUnused(nestingLevel);
 		if (!unused.equals("")) System.out.println(unused);
@@ -129,6 +132,7 @@ public class BlockNode implements Node {
 		StringBuilder sb = new StringBuilder();
 
 		int occupiedBytes = localSymbolTable.nestingLevelRequiredBytes(nestingLevel);
+		String blockLabel = SLPUtils.newLabel("block");
 
 		// push fp
 		// sp = sp - n (n = byte occupati dalle variabili al livello)
@@ -136,18 +140,29 @@ public class BlockNode implements Node {
 		if (newEnv) {
 			sb.append("; Begin environment\n");
 			sb.append("push $fp\n");
-			sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
+			if (occupiedBytes > 0) sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
+			else sb.append("; subi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("mov $fp $sp\n");
 		}
 
-		declarationList.forEach(declaration -> sb.append(declaration.codeGeneration()));
+		if (declarationList.stream().filter(decl -> decl instanceof FunNode).count() != 0) {
+			sb.append("jal ").append(blockLabel).append("\n");
+			// Divido le declaration in function e variable, eseguo prima tutte le codegen delle function e poi tutte le codegen delle variable
+			declarationList.stream().filter(decl -> decl instanceof FunNode).forEach(declaration -> sb.append(declaration.codeGeneration()));
+			sb.append(blockLabel).append(":\n");
+		}
+		declarationList.stream().filter(decl -> decl instanceof VarNode).forEach(declaration -> sb.append(declaration.codeGeneration()));
+
 		statementList.forEach(statement -> sb.append(statement.codeGeneration()));
 
 		if (newEnv) {
-			sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
+			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
+			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("pop $fp\n");
 			sb.append("; End environment\n");
 		}
+
+		if (isRoot) sb.append("halt\n");
 
 		return sb.toString();
 	}

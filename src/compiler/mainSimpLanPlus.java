@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		boolean runTypeCheck = true, runCodegen = true, runVM = false;
+		boolean runTypeCheck = true, runCodegen = true, runVM = true;
 
 		// Relative path to the file WITHOUT EXTENSION
 		String fileName = "src/TestSimpLanPlus/prova";
@@ -97,7 +97,7 @@ public class mainSimpLanPlus {
 				CharStream svmInputFile = CharStreams.fromFileName(fileName + ".asm");
 
 				// Lexical verification.
-				System.out.println("[INFO] Starting lexical verification.");
+				System.out.println("[INFO] Starting asm code lexical verification.");
 				SVMLexer svmLexer = new SVMLexer(svmInputFile);
 				CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
 				SVMParser svmParser = new SVMParser(svmTokens);

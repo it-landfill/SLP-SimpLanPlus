@@ -21,7 +21,7 @@ public class ExecuteVM {
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
 
 	private int ip = 0;
-	private int sp = MEMSIZE, fp = MEMSIZE, ra = MEMSIZE;
+	private int sp = MEMSIZE-1, fp = MEMSIZE-1, ra = MEMSIZE-1;
 
 	private int hp = 0;
 
@@ -38,15 +38,18 @@ public class ExecuteVM {
 	}
 
 	private void writeReg(int reg, int val) {
-		if (reg == -1) fp = val;
-		if (reg == -2) sp = val;
-		if (reg == -3) ra = val;
-		if (reg == -4) ip = val;
-		t[reg] = val;
+		switch (reg) {
+			case -1 -> fp = val;
+			case -2 -> sp = val;
+			case -3 -> ra = val;
+			case -4 -> ip = val;
+			default -> t[reg] = val;
+		}
 	}
 
 	private void pop() {
-		writeReg(code[ip++], memory[sp++]);
+		writeReg(code[ip++], memory[sp]);
+		sp+=4;
 	}
 
 	private void top() {
@@ -54,7 +57,8 @@ public class ExecuteVM {
 	}
 
 	private void push() {
-		memory[--sp] = readReg(code[ip++]);
+		memory[sp] = readReg(code[ip++]);
+		sp-=4;
 	}
 
 	/*
