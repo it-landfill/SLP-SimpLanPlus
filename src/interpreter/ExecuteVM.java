@@ -48,12 +48,12 @@ public class ExecuteVM {
 	}
 
 	private void pop() {
-		writeReg(code[ip++], memory[sp]);
 		sp+=4;
+		writeReg(code[ip++], memory[sp]);
 	}
 
 	private void top() {
-		writeReg(code[ip++], memory[sp]);
+		writeReg(code[ip++], memory[sp-4]);
 	}
 
 	private void push() {

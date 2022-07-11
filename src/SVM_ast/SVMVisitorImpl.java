@@ -400,11 +400,10 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		// Incremento ra dell'offset necessario ad arrivare alla successiva istruzione
 		// +4 per ADDI
 		// +2 per JAL
-		// +1 per nuova istruzione
 		code[ip++] = SVMParser.ADDI;
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = regLabelToCode("$ra");
-		code[ip++] = 7;
+		code[ip++] = 6;
 
 		
 		code[ip++] = SVMParser.JAL;
