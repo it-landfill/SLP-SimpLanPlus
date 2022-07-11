@@ -30,7 +30,7 @@ public class CallExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		return callFun.codeGeneration();
 	}
 
 	@Override

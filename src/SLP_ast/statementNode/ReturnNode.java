@@ -37,7 +37,7 @@ public class ReturnNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		//TODO
+		if (exp != null) return exp.codeGeneration();
 		return "";
 	}
 
