@@ -145,7 +145,7 @@ public class BlockNode implements Node {
 			sb.append("mov $fp $sp\n");
 		}
 
-		if (declarationList.stream().filter(decl -> decl instanceof FunNode).count() != 0) {
+		if (declarationList.stream().anyMatch(decl -> decl instanceof FunNode)) {
 			sb.append("jal ").append(blockLabel).append("\n");
 			// Divido le declaration in function e variable, eseguo prima tutte le codegen delle function e poi tutte le codegen delle variable
 			declarationList.stream().filter(decl -> decl instanceof FunNode).forEach(declaration -> sb.append(declaration.codeGeneration()));

@@ -128,9 +128,11 @@ public class FunNode implements Node {
     public String codeGeneration() {
         StringBuilder sb = new StringBuilder();
         int n = 0;
-        for (ArgNode arg : signature.getArguments()) {
-            if (SLPUtils.checkIntType(arg.getType())) n+=4;
-            else n+=1;
+        if (signature.getArguments() != null) {
+            for (ArgNode arg : signature.getArguments()) {
+                if (SLPUtils.checkIntType(arg.getType())) n += 4;
+                else n += 1;
+            }
         }
 
         sb.append("; Begin function\n");

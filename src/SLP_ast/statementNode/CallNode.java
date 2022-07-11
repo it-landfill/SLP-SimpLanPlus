@@ -123,10 +123,12 @@ public class CallNode implements Node {
 
 		sb.append("; Begin function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
 		sb.append("push $fp\n");
-		for (int i = actualParams.size() - 1; i >= 0; i--) {
-			sb.append("; Saving actual parameter ").append(signature.getArguments().get(i).getArgName()).append("\n");
-			sb.append(actualParams.get(i).codeGeneration());
-			sb.append("push $t0\n");
+		if (actualParams != null) {
+			for (int i = actualParams.size() - 1; i >= 0; i--) {
+				sb.append("; Saving actual parameter ").append(signature.getArguments().get(i).getArgName()).append("\n");
+				sb.append(actualParams.get(i).codeGeneration());
+				sb.append("push $t0\n");
+			}
 		}
 		sb.append("jal ").append(signature.getLabel()).append("\n");
 		sb.append("; End function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
