@@ -8,7 +8,7 @@ public class Environment {
     private static int nestingLevel = -1;
 
     public Environment() {
-        this.offset = 1;
+        this.offset = 4;
     }
 
     public int getOffset() {
