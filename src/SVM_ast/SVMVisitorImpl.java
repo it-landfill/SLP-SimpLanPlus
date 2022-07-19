@@ -380,7 +380,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitLb(SVMParser.LbContext ctx) {
-		code[ip++] = SVMParser.LW;
+		code[ip++] = SVMParser.LB;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] =  Integer.parseInt(ctx.offset.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
@@ -389,7 +389,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitSb(SVMParser.SbContext ctx) {
-		code[ip++] = SVMParser.SW;
+		code[ip++] = SVMParser.SB;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] =  Integer.parseInt(ctx.offset.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());

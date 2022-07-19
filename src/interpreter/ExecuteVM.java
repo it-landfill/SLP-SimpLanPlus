@@ -123,9 +123,12 @@ public class ExecuteVM {
 				int bytecode = code[ip++]; // fetch
 				int rd,r1,r2, val;
 				switch (bytecode) {
-					case SVMParser.PUSH -> push();
-					case SVMParser.POP -> pop();
-					case SVMParser.TOP -> top();
+					case SVMParser.PUSHINT -> pushInt();
+					case SVMParser.POPINT -> popInt();
+					case SVMParser.TOPINT -> topInt();
+					case SVMParser.PUSHBOOL -> pushBool();
+					case SVMParser.POPBOOL -> popBool();
+					case SVMParser.TOPBOOL -> topBool();
 					case SVMParser.LI -> {
 						rd = code[ip++];
 						val = code[ip++];
@@ -140,21 +143,36 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						r2 = readReg(r2);
 
-						if (memory[val+r2] == -10000) {
+						if (memory[val+readReg(r2)] == -10000) { // FIXME: Questa condizione ha senso?
 							System.out.println("\nError: Null pointer exception");
 							return false;
 						}
-
-						writeReg(r1, memory[val+r2]); // FIXME: Rivedere logica save/load mem
+						loadInt(r2, val, r1);
 					}
 					case SVMParser.SW -> {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
+						saveInt(r2, val, r1);
+					}
+					case SVMParser.LB -> {
+						r1 = code[ip++];
+						val = code[ip++];
+						r2 = code[ip++];
+
+						if (memory[val+readReg(r2)] == -10000) { // FIXME: Questa condizione ha senso?
+							System.out.println("\nError: Null pointer exception");
+							return false;
+						}
+						loadBool(r2, val, r1);
+					}
+					case SVMParser.SB -> {
+						r1 = code[ip++];
+						val = code[ip++];
+						r2 = code[ip++];
 						r2 = readReg(r2);
-						memory[r2+val] = readReg(r1);
+						saveBool(r2, val, r1);
 					}
 					case SVMParser.ADD -> {
 						rd = code[ip++];
