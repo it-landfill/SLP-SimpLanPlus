@@ -69,9 +69,12 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		int i = -1;
 		while (++i<ip){
 			switch (code[i]) {
-				case    SVMParser.PUSH,
-						SVMParser.POP,
-						SVMParser.TOP,
+				case    SVMParser.PUSHINT,
+						SVMParser.POPINT,
+						SVMParser.TOPINT,
+						SVMParser.PUSHBOOL,
+						SVMParser.POPBOOL,
+						SVMParser.TOPBOOL,
 						SVMParser.JR,
 						SVMParser.PRINT -> i+=1;
 				case    SVMParser.LI,
@@ -129,22 +132,43 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitPush(SVMParser.PushContext ctx) {
-		code[ip++] = SVMParser.PUSH;
+	public Void visitPushInt(SVMParser.PushIntContext ctx) {
+		code[ip++] = SVMParser.PUSHINT;
 		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
 
 	@Override
-	public Void visitPop(SVMParser.PopContext ctx) {
-		code[ip++] = SVMParser.POP;
+	public Void visitPopInt(SVMParser.PopIntContext ctx) {
+		code[ip++] = SVMParser.POPINT;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		return null;
 	}
 
 	@Override
-	public Void visitTop(SVMParser.TopContext ctx) {
-		code[ip++] = SVMParser.TOP;
+	public Void visitTopInt(SVMParser.TopIntContext ctx) {
+		code[ip++] = SVMParser.TOPINT;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitPushBool(SVMParser.PushBoolContext ctx) {
+		code[ip++] = SVMParser.PUSHBOOL;
+		code[ip++] = regLabelToCode(ctx.src.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitPopBool(SVMParser.PopBoolContext ctx) {
+		code[ip++] = SVMParser.POPBOOL;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitTopBool(SVMParser.TopBoolContext ctx) {
+		code[ip++] = SVMParser.TOPBOOL;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		return null;
 	}

@@ -26,23 +26,41 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstruction(SVMParser.InstructionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SVMParser#push}.
+	 * Visit a parse tree produced by {@link SVMParser#pushInt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPush(SVMParser.PushContext ctx);
+	T visitPushInt(SVMParser.PushIntContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SVMParser#pop}.
+	 * Visit a parse tree produced by {@link SVMParser#popInt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPop(SVMParser.PopContext ctx);
+	T visitPopInt(SVMParser.PopIntContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SVMParser#top}.
+	 * Visit a parse tree produced by {@link SVMParser#topInt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTop(SVMParser.TopContext ctx);
+	T visitTopInt(SVMParser.TopIntContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#pushBool}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPushBool(SVMParser.PushBoolContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#popBool}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPopBool(SVMParser.PopBoolContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#topBool}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTopBool(SVMParser.TopBoolContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SVMParser#li}.
 	 * @param ctx the parse tree
