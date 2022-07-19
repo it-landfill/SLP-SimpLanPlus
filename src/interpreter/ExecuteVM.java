@@ -3,6 +3,7 @@ package interpreter;
 import SLP_ast.STentry;
 import SVM_parser.SVMParser;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 
@@ -13,10 +14,7 @@ public class ExecuteVM {
 
 	private final int[] code;
 
-	/*DOMANDA: Ha senso lavorare l'offset in type check con +1 o +4 in base al tipo anche se poi salvo tutto
-	 * su un array con celle di dimensione fissa?
-	 */
-	private final int[] memory = new int[MEMSIZE];
+	private final byte[] memory = new byte[MEMSIZE];
 
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
 
@@ -24,6 +22,14 @@ public class ExecuteVM {
 	private int sp = MEMSIZE-1, fp = MEMSIZE-1, ra = MEMSIZE-1;
 
 	private int hp = 0;
+
+	private static byte[] intToBytes(int i) {
+		return ByteBuffer.allocate(4).putInt(i).array();
+	}
+
+	private static int bytesToInt(byte[] b) {
+		return ByteBuffer.wrap(b).getInt();
+	}
 
 	public ExecuteVM(int[] code) {
 		this.code = code;
@@ -47,18 +53,60 @@ public class ExecuteVM {
 		}
 	}
 
-	private void pop() {
+	private void saveInt(int point, int off, int reg) {
+		int val = readReg(reg);
+		byte[] bytes = intToBytes(val);
+		int pos = readReg(point) + off;
+		System.arraycopy(bytes, 0, memory, pos, 4);
+	}
+
+	private void saveBool(int point, int off, int reg) {
+		int val = readReg(reg);
+		byte[] bytes = intToBytes(val);
+		int pos = readReg(point) + off;
+		memory[pos] = bytes[3];
+	}
+
+	private void loadInt(int point, int off, int reg) {
+		byte[] bytes = new byte[4];
+		int pos = readReg(point) + off;
+		System.arraycopy(memory, pos, bytes, 0, 4);
+		writeReg(reg, bytesToInt(bytes));
+	}
+
+	private void loadBool(int point, int off, int reg) {
+		byte byteVal = 0;
+		int pos = readReg(point) + off;
+		byteVal = memory[pos];
+		writeReg(reg, bytesToInt(new byte[] {0,0,0, byteVal}));
+	}
+
+	private void popInt() {
 		sp+=4;
-		writeReg(code[ip++], memory[sp]);
+		loadInt(sp, 0, code[ip++]);
 	}
 
-	private void top() {
-		writeReg(code[ip++], memory[sp+4]);
+	private void popBool() {
+		sp+=1;
+		loadBool(sp, 0, code[ip++]);
 	}
 
-	private void push() {
-		memory[sp] = readReg(code[ip++]);
+	private void topInt() {
+		loadInt(sp, 0, code[ip++]);
+	}
+
+	private void topBool() {
+		loadInt(sp, 0, code[ip++]);
+	}
+
+	private void pushInt() {
+		saveInt(sp, 0, code[ip++]);
 		sp-=4;
+	}
+
+	private void pushBool() {
+		saveBool(sp, 0, code[ip++]);
+		sp-=1;
 	}
 
 	/*
