@@ -18,6 +18,7 @@ public class CallNode implements Node {
 	private final String funcName;
 	private final ArrayList<Node> actualParams;
 	private boolean expNode;
+	private FunctionSingatureType signature;
 
 	public CallNode(String funcName, ArrayList<Node> params) {
 		this.funcName = funcName;
@@ -50,6 +51,46 @@ public class CallNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
+
+		if (entry == null) {
+			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
+		} else {
+			// Se il numero di args è -1, la entry è una variabile, non una funzione
+			if (!(entry.getType() instanceof FunctionSingatureType)) {
+				errors.add(new SemanticError("Fun " + funcName + " is not a function"));
+				return errors;
+			}
+
+			signature = (FunctionSingatureType) entry.getType();
+			// Controllo il numero di parametri attuali rispetto a quelli formali
+			ArrayList<ArgNode> formalParams = signature.getArguments();
+
+			if (actualParams != null) {
+				if (formalParams == null || formalParams.size() != actualParams.size()) {
+					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + (formalParams == null ? 0 : formalParams.size()) + ". Have " + actualParams.size()));
+				}
+			} else {
+				if (formalParams != null && formalParams.size() != 0) {
+					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + formalParams.size() + ". Have 0"));
+				}
+			}
+		}
+
+		// Se ci sono parametri controllo gli errori su questi
+		if (actualParams != null) {
+			for (Node n : actualParams) {
+				errors.addAll(n.checkSemantics(env, symbolTable));
+			}
+		}
+
+		return errors;
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
 
@@ -78,47 +119,21 @@ public class CallNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		//TODO
-		return "";
-	}
+		StringBuilder sb = new StringBuilder();
 
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		STentry entry = env.symbolTable.findFirstInSymbolTable(funcName);
-
-		if (entry == null) {
-			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
-		} else {
-			// Se il numero di args è -1, la entry è una variabile, non una funzione
-			if (!(entry.getType() instanceof FunctionSingatureType)) {
-				errors.add(new SemanticError("Fun " + funcName + " is not a function"));
-				return errors;
-			}
-
-			FunctionSingatureType signature = (FunctionSingatureType) entry.getType();
-			// Controllo il numero di parametri attuali rispetto a quelli formali
-			ArrayList<ArgNode> formalParams = signature.getArguments();
-
-			if (actualParams != null) {
-				if (formalParams == null || formalParams.size() != actualParams.size()) {
-					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + (formalParams == null ? 0 : formalParams.size()) + ". Have " + actualParams.size()));
-				}
-			} else {
-				if (formalParams != null && formalParams.size() != 0) {
-					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + formalParams.size() + ". Have 0"));
-				}
-			}
-		}
-
-		// Se ci sono parametri controllo gli errori su questi
+		sb.append("; Begin function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
+		sb.append("pushw $fp\n");
 		if (actualParams != null) {
-			for (Node n : actualParams) {
-				errors.addAll(n.checkSemantics(env));
+			for (int i = actualParams.size() - 1; i >= 0; i--) {
+				sb.append("; Saving actual parameter ").append(signature.getArguments().get(i).getArgName()).append("\n");
+				sb.append(actualParams.get(i).codeGeneration());
+				sb.append(SLPUtils.checkIntType(signature.getArguments().get(i).getType()) ? "pushw" : "pushb").append(" $t0\n");
 			}
 		}
+		sb.append("jal ").append(signature.getLabel()).append("\n");
+		sb.append("; End function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
 
-		return errors;
+		return sb.toString();
 	}
+
 }

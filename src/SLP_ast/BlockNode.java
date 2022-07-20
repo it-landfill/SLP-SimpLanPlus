@@ -1,5 +1,7 @@
 package SLP_ast;
 
+import SLP_ast.declarationNode.FunNode;
+import SLP_ast.declarationNode.VarNode;
 import SLP_ast.typeNode.TypeNode;
 import SLP_ast.typeNode.VoidTypeNode;
 import SLP_ast.typeNode.VoidableTypeNode;
@@ -9,12 +11,14 @@ import util.SemanticError;
 import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BlockNode implements Node {
 
 	private final ArrayList<Node> declarationList;
 	private final ArrayList<Node> statementList;
 	private final boolean isRoot;
+	private int nestingLevel;
 	private SymbolTableWrapper localSymbolTable;
 
 	public BlockNode(ArrayList<Node> declarations, ArrayList<Node> statements, boolean isRoot) {
@@ -39,9 +43,46 @@ public class BlockNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return checkSemantics(env, symbolTable, true);
+	}
+
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable, boolean newEnv) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+		Environment localEnv;
+
+		if (newEnv) {
+			localEnv = new Environment();
+			Environment.incrementNestingLevel();
+		} else {
+			localEnv = env;
+		}
+
+		nestingLevel = Environment.getNestingLevel();
+
+		if (declarationList != null) {
+			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
+		}
+
+		if (statementList != null) {
+			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(localEnv, symbolTable));
+		}
+
+		localSymbolTable = symbolTable.clone();
+
+		symbolTable.removeLevelFromSymbolTable(Environment.getNestingLevel());
+
+		if (newEnv) Environment.decrementNestingLevel();
+
+		return errors;
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode retType = new VoidTypeNode(), tmp, voidableType = null;
 		boolean isVoidable;
+
+		if (symbolTable != null) localSymbolTable.update(symbolTable);
 
 		for (Node decl : declarationList) {
 			decl.typeCheck(localSymbolTable);
@@ -71,7 +112,10 @@ public class BlockNode implements Node {
 				retType = tmp;
 			}
 
-		}
+		} //TODO: Return dovrebbe uscire dalla funzione
+
+		String unused = localSymbolTable.findUnused(nestingLevel);
+		if (!unused.equals("")) System.out.println(unused);
 
 		if (symbolTable != null) symbolTable.update(localSymbolTable);
 
@@ -81,32 +125,55 @@ public class BlockNode implements Node {
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
 	@Override
 	public String codeGeneration() {
+		return codeGeneration(true);
+	}
 
+	public String codeGeneration(boolean newEnv) {
 		StringBuilder sb = new StringBuilder();
-		declarationList.forEach(declaration -> sb.append(declaration.codeGeneration()));
+
+		int occupiedBytes = localSymbolTable.nestingLevelRequiredBytes(nestingLevel);
+		String blockLabel = SLPUtils.newLabel("block");
+
+		// push fp
+		// sp = sp - n (n = byte occupati dalle variabili al livello)
+		// move fp sp
+		if (newEnv) {
+			sb.append("; Begin environment\n");
+			sb.append("pushw $fp\n");
+			if (occupiedBytes > 0) sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
+			else sb.append("; subi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
+			sb.append("mov $fp $sp\n");
+		}
+
+		if (declarationList.stream().anyMatch(decl -> decl instanceof FunNode)) {
+			sb.append("jal ").append(blockLabel).append("\n");
+			// Divido le declaration in function e variable, eseguo prima tutte le codegen delle function e poi tutte le codegen delle variable
+			declarationList.stream().filter(decl -> decl instanceof FunNode).forEach(declaration -> sb.append(declaration.codeGeneration()));
+			sb.append(blockLabel).append(":\n");
+		}
+		declarationList.stream().filter(decl -> decl instanceof VarNode).forEach(declaration -> sb.append(declaration.codeGeneration()));
+
 		statementList.forEach(statement -> sb.append(statement.codeGeneration()));
+
+		if (newEnv) {
+			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
+			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
+			sb.append("popw $fp\n");
+			sb.append("; End environment\n");
+		}
+
+		if (isRoot) sb.append("halt\n");
+
 		return sb.toString();
 	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		env.nestingLevel++;
-
-		if (declarationList != null) {
-			for (Node n : declarationList) if (n != null) errors.addAll(n.checkSemantics(env));
-		}
-
-		if (statementList != null) {
-			for (Node n : statementList) if (n != null) errors.addAll(n.checkSemantics(env));
-		}
-
-		localSymbolTable = env.symbolTable.clone();
-
-		env.symbolTable.removeLevelFromSymbolTable(env.nestingLevel);
-		env.nestingLevel--;
-
-		return errors;
-	}
 }
+
+
+/* sp fp
+ * a
+ *
+ *
+ *
+ * b
+ * old_fp
+ */

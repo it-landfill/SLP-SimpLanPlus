@@ -5,6 +5,7 @@ import SLP_ast.STentry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SymbolTableWrapper {
     // Creazione di una Hash Table (la Symbol Table) avente come chiave una String e un ArrayDeque di STentry
@@ -116,13 +117,53 @@ public class SymbolTableWrapper {
     }
 
 
+    // Usata per aggiornare l'ambiente negli ITE
+    public void merge(SymbolTableWrapper st) {
+        symbolTable.forEach((k,v) -> {
+            STentry e1 = findFirstInSymbolTable(k);
+            STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
+            // Aggiorno l'effetto solo nei seguenti casi: _xD -> D, IxU | UxI -> U
+            if (e1.getEffect().compareTo(e2.getEffect())!=0) { //TODO: Controllare se rompe tutto
+                if (e2.getEffect() == STentry.Effects.DECLARED) e1.setEffect(STentry.Effects.DECLARED); // _xD -> D
+                else if ((e1.getEffect() == STentry.Effects.INITIALIZED && e2.getEffect() == STentry.Effects.USED) || (e1.getEffect() == STentry.Effects.USED && e2.getEffect() == STentry.Effects.INITIALIZED)) e1.setEffect(STentry.Effects.USED); // IxU | UxI -> U
+            }
+        });
+    }
+
+    // Usata per aggiornare l'ambiente nei blocchi
     public void update(SymbolTableWrapper st) {
         symbolTable.forEach((k,v) -> {
             STentry e1 = findFirstInSymbolTable(k);
             STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
-            // Aggiorno l'effetto solo se l'effetto 2 è maggiore dell'effetto 1
-            if (e1.getEffect().compareTo(e2.getEffect())<0) e1.setEffect(e2.getEffect());
+            if (e2 != null) {
+                if (e1.getEffect().compareTo(e2.getEffect()) < 0) {
+                    e1.setEffect(e2.getEffect());
+                }
+            }
         });
+    }
+
+    public int nestingLevelRequiredBytes(int nl) {
+        AtomicInteger bytes = new AtomicInteger();
+        symbolTable.forEach((k,v) -> {
+           STentry e = findInSymbolTable(k, nl);
+           if (e != null) {
+               if (SLPUtils.checkIntType(e.getType())) bytes.addAndGet(4);
+               else if (SLPUtils.checkBoolType(e.getType())) bytes.addAndGet(1);
+           }
+        });
+        return bytes.get();
+    }
+
+    public String findUnused(int nestinglevel) {
+        StringBuilder  sb = new StringBuilder();
+        symbolTable.forEach((k,v) -> {
+            STentry e = findInSymbolTable(k, nestinglevel);
+            if (e != null && (e.getEffect() == STentry.Effects.DECLARED || e.getEffect() == STentry.Effects.INITIALIZED)) {
+                sb.append("[WARNING] Variable ").append(e.getID()).append(" not used\n");
+            }
+        });
+        return sb.toString();
     }
 
 }

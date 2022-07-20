@@ -2,23 +2,44 @@ package util;
 
 public class Environment {
 
-    // Generazione della Symbol Table
-    public SymbolTableWrapper symbolTable;
-
     // Variabile utilizzata dall'interprete.
-    public int offset;
+    private int offset;
     // Livello di nesting dell'enviroment attuale
-    public int nestingLevel;
+    private static int nestingLevel = -1;
 
     public Environment() {
-        this.symbolTable = new SymbolTableWrapper();
-        this.offset = 0;
-        this.nestingLevel = -1;
+        this.offset = 1;
     }
 
-    public Environment(int offset, int nestingLevel) {
-        this.symbolTable = new SymbolTableWrapper();
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
         this.offset = offset;
-        this.nestingLevel = nestingLevel;
+    }
+
+    public void offsetAddInt() {
+        this.offset+=4;
+    }
+
+    public void offsetAddBool() {
+        this.offset+=1;
+    }
+
+    public static int getNestingLevel() {
+        return nestingLevel;
+    }
+
+    public static void setNestingLevel(int nl) {
+        nestingLevel = nl;
+    }
+
+    public static void incrementNestingLevel() {
+        nestingLevel++;
+    }
+
+    public static void decrementNestingLevel() {
+        nestingLevel--;
     }
 }

@@ -36,17 +36,17 @@ public class ReturnNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
-		//TODO
-		return "";
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		if (exp != null) {
-			return exp.checkSemantics(env);
+			return exp.checkSemantics(env, symbolTable);
 		} else {
 			return new ArrayList<>();
 		}
+	}
+
+	@Override
+	public String codeGeneration() {
+		if (exp != null) return exp.codeGeneration();
+		return "";
 	}
 }

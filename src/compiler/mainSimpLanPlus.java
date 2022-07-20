@@ -11,10 +11,7 @@ import interpreter.ExecuteVM;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import util.Environment;
-import util.SLPErrorParser;
-import util.SLPUtils;
-import util.SemanticError;
+import util.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -22,10 +19,10 @@ import java.util.ArrayList;
 
 public class mainSimpLanPlus {
 	public static void main(String[] args) throws Exception {
-		boolean runTypeCheck = true, runCodegen = true, runVM = false;
+		boolean runTypeCheck = true, runCodegen = true, runVM = true;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/Esercizio3/typecheck_4";
+		String fileName = "src/TestSimpLanPlus/prova";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.
@@ -56,8 +53,9 @@ public class mainSimpLanPlus {
 		// Semantic verification.
 		System.out.println("[INFO] Starting semantic verification.");
 		Environment env = new Environment();
+		SymbolTableWrapper st = new SymbolTableWrapper();
 		// Generation of an ArrayList that will contain all semantic errors.
-		ArrayList<SemanticError> err = ast.checkSemantics(env);
+		ArrayList<SemanticError> err = ast.checkSemantics(env, st);
 		// If errors have been identified in the semantic analysis phase, they are printed, a report
 		// file is generated, and the program stops.
 		if (err != null && err.size() > 0) {
@@ -99,7 +97,7 @@ public class mainSimpLanPlus {
 				CharStream svmInputFile = CharStreams.fromFileName(fileName + ".asm");
 
 				// Lexical verification.
-				System.out.println("[INFO] Starting lexical verification.");
+				System.out.println("[INFO] Starting asm code lexical verification.");
 				SVMLexer svmLexer = new SVMLexer(svmInputFile);
 				CommonTokenStream svmTokens = new CommonTokenStream(svmLexer);
 				SVMParser svmParser = new SVMParser(svmTokens);

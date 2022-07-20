@@ -29,6 +29,7 @@ public class VarNode implements Node {
      * Expression to be assigned to the variable
      */
     private final Node exp;
+    private STentry entry;
 
     public VarNode(String ID, TypeNode type, Node exp) {
         this.ID = ID;
@@ -49,6 +50,24 @@ public class VarNode implements Node {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+        ArrayList<SemanticError> errors = new ArrayList<>();
+        // Generation of the entry for the symbol table.
+
+        entry = new STentry(Environment.getNestingLevel(), type, env.getOffset(), ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
+
+        if (SLPUtils.checkIntType(type)) env.offsetAddInt();
+        else env.offsetAddBool();
+
+        // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
+        if (symbolTable.addToSymbolTable(entry))
+            errors.add(new SemanticError("Var " + ID + " already declared"));
+        // Semantic check of the expression (if any).
+        if (exp != null) errors.addAll(exp.checkSemantics(env, symbolTable));
+        return errors;
+    }
+
+    @Override
     public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 
         if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(symbolTable), type))) {
@@ -60,20 +79,18 @@ public class VarNode implements Node {
 
     @Override
     public String codeGeneration() {
+        if(exp != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("; Begin decl-assignment variable ").append(ID).append("\n");
+            sb.append(exp.codeGeneration());
+
+            sb.append(SLPUtils.checkIntType(type) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($fp)\n");
+
+            sb.append("; End decl-assignment variable ").append(ID).append("\n");
+
+            return sb.toString();
+        }
+
         return "";
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> errors = new ArrayList<>();
-        // Generation of the entry for the symbol table.
-
-        STentry entry = new STentry(env.nestingLevel, type, env.offset, ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
-        // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
-        if (env.symbolTable.addToSymbolTable(entry))
-            errors.add(new SemanticError("Var " + ID + " already declared"));
-        // Semantic check of the expression (if any).
-        if (exp != null) errors.addAll(exp.checkSemantics(env));
-        return errors;
     }
 }

@@ -1,6 +1,14 @@
 {
-    int a = 1;
-    if (a>0) {
-        a = 2;
-    } else a = 3;
+    int x = 1;
+
+    void f(int n){
+        if(n == 0){
+            print(x);
+        } else {
+            x = x * n;
+            f(n-1);
+        }
+    }
+
+    f(10);
 }

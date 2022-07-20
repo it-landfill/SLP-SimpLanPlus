@@ -36,15 +36,27 @@ public class LogicExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(left.codeGeneration());
+		sb.append("pushb $t0\n");
+		sb.append(right.codeGeneration());
+		sb.append("popb $t1\n");
+		switch(op) {
+			case "&&" -> sb.append("and");
+			case "||" -> sb.append("or");
+		}
+		sb.append(" $t0 $t0 $t1\n");
+
+		return sb.toString();
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
-		errors.addAll(left.checkSemantics(env));
-		errors.addAll(right.checkSemantics(env));
+		errors.addAll(left.checkSemantics(env, symbolTable));
+		errors.addAll(right.checkSemantics(env, symbolTable));
 
 		return errors;
 	}

@@ -3,7 +3,6 @@ package SLP_ast.expNode;
 import SLP_ast.Node;
 import SLP_ast.statementNode.CallNode;
 import SLP_ast.typeNode.TypeNode;
-import SLP_ast.typeNode.VoidTypeNode;
 import util.Environment;
 import util.SLPUtils;
 import util.SemanticError;
@@ -31,11 +30,11 @@ public class CallExpNode implements Node {
 
 	@Override
 	public String codeGeneration() {
-		return "";
+		return callFun.codeGeneration();
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return callFun.checkSemantics(env);
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return callFun.checkSemantics(env, symbolTable);
 	}
 }

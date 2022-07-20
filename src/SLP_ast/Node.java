@@ -20,6 +20,6 @@ public interface Node {
 
 	String codeGeneration();
 
-	ArrayList<SemanticError> checkSemantics(Environment env);
+	ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable);
 
 }  

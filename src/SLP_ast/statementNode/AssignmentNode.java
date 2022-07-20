@@ -17,6 +17,7 @@ public class AssignmentNode implements Node {
 	private STentry entry;
 	private final Node exp;
 	private int nestinglevel;
+	private int stOccupiedBytes;
 
 	public AssignmentNode(String ID, Node exp) {
 		this.ID = ID;
@@ -26,6 +27,24 @@ public class AssignmentNode implements Node {
 	@Override
 	public String toPrint(String indent) {
 		return indent + "assignment: " + ID + " " + exp.toPrint(indent);
+	}
+
+	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+		nestinglevel = Environment.getNestingLevel();
+		entry = symbolTable.findFirstInSymbolTable(ID);
+		if (entry == null) {
+			errors.add(new SemanticError("Var " + ID + " not declared."));
+		} else if(entry.getType() instanceof FunctionSingatureType) {
+			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
+		}
+
+		errors.addAll(exp.checkSemantics(env, symbolTable));
+
+		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
+
+		return errors;
 	}
 
 	@Override
@@ -48,27 +67,15 @@ public class AssignmentNode implements Node {
 	public String codeGeneration() {
 		StringBuilder out = new StringBuilder();
 
+		out.append("; Begin assignment variable ").append(ID).append("\n");
 		out.append(exp.codeGeneration());
-		out.append("move $t1 $fp\n"); //Domanda: FP o SP??????
-		out.append("lw $t1 0($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
-		out.append("sw $t0 ").append(entry.getOffset()).append("($t1)\n");
+		out.append("mov $t1 $fp\n");
+		out.append(("lw $t1 " + stOccupiedBytes+4 + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
+
+		out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+
+		out.append("; End assignment variable ").append(ID).append("\n");
 
 		return out.toString();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-		nestinglevel = env.nestingLevel;
-		entry = env.symbolTable.findFirstInSymbolTable(ID);
-		if (entry == null) {
-			errors.add(new SemanticError("Var " + ID + " not declared."));
-		} else if(entry.getType() instanceof FunctionSingatureType) {
-			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
-		}
-
-		errors.addAll(exp.checkSemantics(env));
-
-		return errors;
 	}
 }
