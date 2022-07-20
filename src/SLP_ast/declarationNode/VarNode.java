@@ -80,8 +80,15 @@ public class VarNode implements Node {
     @Override
     public String codeGeneration() {
         if(exp != null) {
-            return "; Begin decl-assignment variable " + ID + "\n" + exp.codeGeneration() +
-                    "sw $t0 " + entry.getOffset() + "($fp)\n" + "; End decl-assignment variable " + ID + "\n";
+            StringBuilder sb = new StringBuilder();
+            sb.append("; Begin decl-assignment variable ").append(ID).append("\n");
+            sb.append(exp.codeGeneration());
+
+            sb.append(SLPUtils.checkIntType(type) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($fp)\n");
+
+            sb.append("; End decl-assignment variable ").append(ID).append("\n");
+
+            return sb.toString();
         }
 
         return "";
