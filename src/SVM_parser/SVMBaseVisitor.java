@@ -34,21 +34,42 @@ public class SVMBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements SV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPush(SVMParser.PushContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPushInt(SVMParser.PushIntContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPop(SVMParser.PopContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPopInt(SVMParser.PopIntContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTop(SVMParser.TopContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTopInt(SVMParser.TopIntContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitPushBool(SVMParser.PushBoolContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitPopBool(SVMParser.PopBoolContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitTopBool(SVMParser.TopBoolContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -223,7 +244,14 @@ public class SVMBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements SV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrint(SVMParser.PrintContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrintw(SVMParser.PrintwContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitPrintb(SVMParser.PrintbContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

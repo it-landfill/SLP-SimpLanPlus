@@ -14,6 +14,7 @@ public class DerExpNode implements Node {
 	private final String ID;
 	private STentry entry;
 	private int nestingLevel;
+	private int stOccupiedBytes;
 
 	public DerExpNode(String ID) {
 		this.ID = ID;
@@ -33,6 +34,8 @@ public class DerExpNode implements Node {
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		}
+
+		stOccupiedBytes =  symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
 
 		return errors;
 	}
@@ -56,10 +59,13 @@ public class DerExpNode implements Node {
 	public String codeGeneration() {
 		StringBuilder out = new StringBuilder();
 
+
 		out.append("; Begin load variable ").append(ID).append("\n");
 		out.append("mov $t1 $fp\n");
-		out.append("lw $t1 4($t1)\n".repeat(nestingLevel - entry.getNestinglevel()));
-		out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
+		out.append(("lw $t1 " + stOccupiedBytes+4 + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
+
+		out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+
 		out.append("; End load variable ").append(ID).append("\n");
 
 		return out.toString();

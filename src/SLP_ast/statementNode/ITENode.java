@@ -66,6 +66,17 @@ public class ITENode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		errors.addAll(condition.checkSemantics(env, symbolTable));
+		errors.addAll(ifTrue.checkSemantics(env, symbolTable));
+		if (ifFalse != null) errors.addAll(ifFalse.checkSemantics(env, symbolTable));
+
+		return errors;
+	}
+
+	@Override
 	public String codeGeneration() {
 		StringBuilder sb = new StringBuilder();
 		String elseLabel = SLPUtils.newLabel("ifElse");
@@ -91,16 +102,5 @@ public class ITENode implements Node {
 		sb.append("; End ITE\n");
 
 		return sb.toString();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		errors.addAll(condition.checkSemantics(env, symbolTable));
-		errors.addAll(ifTrue.checkSemantics(env, symbolTable));
-		if (ifFalse != null) errors.addAll(ifFalse.checkSemantics(env, symbolTable));
-
-		return errors;
 	}
 }

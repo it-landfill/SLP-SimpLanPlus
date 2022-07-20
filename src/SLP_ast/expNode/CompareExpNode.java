@@ -40,9 +40,9 @@ public class CompareExpNode implements Node {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(left.codeGeneration());
-		sb.append("push $t0\n");
+		sb.append("pushw $t0\n");
 		sb.append(right.codeGeneration());
-		sb.append("pop $t1\n");
+		sb.append("popw $t1\n");
 		switch (op) {
 			case "<" -> sb.append("lt");
 			case "<=" -> sb.append("lte");

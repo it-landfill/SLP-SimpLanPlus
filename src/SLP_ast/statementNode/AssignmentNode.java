@@ -17,6 +17,7 @@ public class AssignmentNode implements Node {
 	private STentry entry;
 	private final Node exp;
 	private int nestinglevel;
+	private int stOccupiedBytes;
 
 	public AssignmentNode(String ID, Node exp) {
 		this.ID = ID;
@@ -40,6 +41,8 @@ public class AssignmentNode implements Node {
 		}
 
 		errors.addAll(exp.checkSemantics(env, symbolTable));
+
+		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
 
 		return errors;
 	}
@@ -67,8 +70,10 @@ public class AssignmentNode implements Node {
 		out.append("; Begin assignment variable ").append(ID).append("\n");
 		out.append(exp.codeGeneration());
 		out.append("mov $t1 $fp\n");
-		out.append("lw $t1 4($t1)\n".repeat(nestinglevel - entry.getNestinglevel()));
-		out.append("sw $t0 ").append(entry.getOffset()).append("($t1)\n");
+		out.append(("lw $t1 " + stOccupiedBytes+4 + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
+
+		out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+
 		out.append("; End assignment variable ").append(ID).append("\n");
 
 		return out.toString();

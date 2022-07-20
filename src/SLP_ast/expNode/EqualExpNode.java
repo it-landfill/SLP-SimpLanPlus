@@ -14,6 +14,7 @@ public class EqualExpNode implements Node {
 	private final Node left;
 	private final Node right;
 	private final String op;
+	private TypeNode type;
 
 	public EqualExpNode(Node left, Node right, String op) {
 		this.left = left;
@@ -33,17 +34,19 @@ public class EqualExpNode implements Node {
 		if (! SLPUtils.checkTypes(leftType, rightType)) {
 			throw new SLPUtils.TypeCheckError("Al eq (==) o neq (!=) non sono associati i tipi corretti.");
 		}
+		type = leftType;
 		return new BoolTypeNode();
 	}
 
 	@Override
 	public String codeGeneration() {
 		StringBuilder sb = new StringBuilder();
+		boolean isInt = SLPUtils.checkIntType(type);
 
 		sb.append(left.codeGeneration());
-		sb.append("push $t0\n");
+		sb.append(isInt ? "pushw" : "pushb").append(" $t0\n");
 		sb.append(right.codeGeneration());
-		sb.append("pop $t1\n");
+		sb.append(isInt ? "popw" : "popb").append(" $t1\n");
 		switch(op) {
 			case "==" -> sb.append("eq");
 			case "!=" -> sb.append("neq");

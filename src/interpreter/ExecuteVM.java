@@ -3,6 +3,7 @@ package interpreter;
 import SLP_ast.STentry;
 import SVM_parser.SVMParser;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 
@@ -13,10 +14,7 @@ public class ExecuteVM {
 
 	private final int[] code;
 
-	/*DOMANDA: Ha senso lavorare l'offset in type check con +1 o +4 in base al tipo anche se poi salvo tutto
-	 * su un array con celle di dimensione fissa?
-	 */
-	private final int[] memory = new int[MEMSIZE];
+	private final byte[] memory = new byte[MEMSIZE];
 
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
 
@@ -24,6 +22,14 @@ public class ExecuteVM {
 	private int sp = MEMSIZE-1, fp = MEMSIZE-1, ra = MEMSIZE-1;
 
 	private int hp = 0;
+
+	private static byte[] intToBytes(int i) {
+		return ByteBuffer.allocate(4).putInt(i).array();
+	}
+
+	private static int bytesToInt(byte[] b) {
+		return ByteBuffer.wrap(b).getInt();
+	}
 
 	public ExecuteVM(int[] code) {
 		this.code = code;
@@ -47,18 +53,100 @@ public class ExecuteVM {
 		}
 	}
 
-	private void pop() {
+	/*
+		[1, 2, 3, 4]
+
+		sp  ----
+		ra4
+		ra3
+		ra2
+		ra1 fp
+		-- 4
+		-- 3
+		-- 2
+		-- 1
+		old_fp
+
+		4, 3, 2, 1 >> 1, 2, 3, 4
+	 */
+
+	private void saveInt(int point, int off, int reg) {
+		int val = readReg(reg);
+		byte[] bytes = intToBytes(val);
+		int pos = readReg(point) + off;
+
+		System.arraycopy(bytes, 0, memory, pos, 4);
+	}
+
+	private void saveInt(int addr, int reg) {
+		int val = readReg(reg);
+		byte[] bytes = intToBytes(val);
+		System.arraycopy(bytes, 0, memory, addr, 4);
+	}
+
+	private void saveBool(int point, int off, int reg) {
+		int val = readReg(reg);
+		int pos = readReg(point) + off;
+		if (val != 0) memory[pos] = 1;
+		else memory[pos] = 0;
+	}
+
+	private void saveBool(int addr, int reg) {
+		int val = readReg(reg);
+		if (val != 0) memory[addr] = 1;
+		else memory[addr] = 0;
+	}
+
+	private void loadInt(int point, int off, int reg) {
+		byte[] bytes = new byte[4];
+		int pos = readReg(point) + off;
+		System.arraycopy(memory, pos, bytes, 0, 4);
+		writeReg(reg, bytesToInt(bytes));
+	}
+
+	private void loadInt(int addr, int reg) {
+		byte[] bytes = new byte[4];
+		System.arraycopy(memory, addr, bytes, 0, 4);
+		writeReg(reg, bytesToInt(bytes));
+	}
+
+	private void loadBool(int point, int off, int reg) { // TODO: Posso unificare la logica delle funzioni facendo chiamare ad una l'altra??
+		int pos = readReg(point) + off;
+		int val = memory[pos];
+		writeReg(reg, val);
+	}
+
+	private void loadBool(int addr, int reg) {
+		int val = memory[addr];
+		writeReg(reg, val);
+	}
+
+	private void popInt() {
+		loadInt(sp+1,code[ip++]);
 		sp+=4;
-		writeReg(code[ip++], memory[sp]);
 	}
 
-	private void top() {
-		writeReg(code[ip++], memory[sp+4]);
+	private void popBool() {
+		sp+=1;
+		loadBool(sp, code[ip++]);
 	}
 
-	private void push() {
-		memory[sp] = readReg(code[ip++]);
+	private void topInt() {
+		loadInt(sp+1, code[ip++]);
+	}
+
+	private void topBool() {
+		loadBool(sp+1, code[ip++]);
+	}
+
+	private void pushInt() {
+		saveInt(sp-3, code[ip++]);
 		sp-=4;
+	}
+
+	private void pushBool() {
+		saveBool(sp, code[ip++]);
+		sp-=1;
 	}
 
 	/*
@@ -75,9 +163,12 @@ public class ExecuteVM {
 				int bytecode = code[ip++]; // fetch
 				int rd,r1,r2, val;
 				switch (bytecode) {
-					case SVMParser.PUSH -> push();
-					case SVMParser.POP -> pop();
-					case SVMParser.TOP -> top();
+					case SVMParser.PUSHINT -> pushInt();
+					case SVMParser.POPINT -> popInt();
+					case SVMParser.TOPINT -> topInt();
+					case SVMParser.PUSHBOOL -> pushBool();
+					case SVMParser.POPBOOL -> popBool();
+					case SVMParser.TOPBOOL -> topBool();
 					case SVMParser.LI -> {
 						rd = code[ip++];
 						val = code[ip++];
@@ -92,21 +183,35 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						r2 = readReg(r2);
 
-						if (memory[val+r2] == -10000) {
+						if (memory[val+readReg(r2)] == -10000) { // FIXME: Questa condizione ha senso?
 							System.out.println("\nError: Null pointer exception");
 							return false;
 						}
-
-						writeReg(r1, memory[val+r2]); // FIXME: Rivedere logica save/load mem
+						loadInt(r2, val, r1);
 					}
 					case SVMParser.SW -> {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						r2 = readReg(r2);
-						memory[r2+val] = readReg(r1);
+						saveInt(r2, val, r1);
+					}
+					case SVMParser.LB -> {
+						r1 = code[ip++];
+						val = code[ip++];
+						r2 = code[ip++];
+
+						if (memory[val+readReg(r2)] == -10000) { // FIXME: Questa condizione ha senso?
+							System.out.println("\nError: Null pointer exception");
+							return false;
+						}
+						loadBool(r2, val, r1);
+					}
+					case SVMParser.SB -> {
+						r1 = code[ip++];
+						val = code[ip++];
+						r2 = code[ip++];
+						saveBool(r2, val, r1);
 					}
 					case SVMParser.ADD -> {
 						rd = code[ip++];
@@ -237,9 +342,13 @@ public class ExecuteVM {
 						r1 = readReg(r1);
 						writeReg(rd, -1*r1);
 					}
-					case SVMParser.PRINT -> {
+					case SVMParser.PRINTW -> {
 						rd = code[ip++];
 						System.out.println(readReg(rd));
+					}
+					case SVMParser.PRINTB -> {
+						rd = code[ip++];
+						System.out.println(readReg(rd) != 0 ? "true" : "false");
 					}
 					case SVMParser.JAL -> ip = code[ip];
 					case SVMParser.JR -> ip = readReg(code[ip]);

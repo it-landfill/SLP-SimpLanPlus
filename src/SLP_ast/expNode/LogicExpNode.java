@@ -39,9 +39,9 @@ public class LogicExpNode implements Node {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(left.codeGeneration());
-		sb.append("push $t0\n");
+		sb.append("pushb $t0\n");
 		sb.append(right.codeGeneration());
-		sb.append("pop $t1\n");
+		sb.append("popb $t1\n");
 		switch(op) {
 			case "&&" -> sb.append("and");
 			case "||" -> sb.append("or");

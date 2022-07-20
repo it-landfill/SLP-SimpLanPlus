@@ -139,17 +139,17 @@ public class FunNode implements Node {
         sb.append(signature.getLabel()).append(":\n");
 
         sb.append("mov $fp $sp\n");
-        sb.append("push $ra\n");
+        sb.append("pushw $ra\n");
 
         sb.append("; End function header\n");
 
         sb.append(block.codeGeneration(false)); //TODO: Gestire return value
 
         sb.append("; Begin function footer\n");
-        sb.append("pop $ra\n");
+        sb.append("popw $ra\n");
         if (n > 0) sb.append("addi $sp $sp ").append(n).append("\n");
         else sb.append("; addi $sp $sp ").append(n).append(" (Not needed since value is 0)\n");
-        sb.append("pop $fp\n");
+        sb.append("popw $fp\n");
         sb.append("jr $ra\n");
         sb.append("; End function\n");
 

@@ -139,7 +139,7 @@ public class BlockNode implements Node {
 		// move fp sp
 		if (newEnv) {
 			sb.append("; Begin environment\n");
-			sb.append("push $fp\n");
+			sb.append("pushw $fp\n");
 			if (occupiedBytes > 0) sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; subi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("mov $fp $sp\n");
@@ -158,7 +158,7 @@ public class BlockNode implements Node {
 		if (newEnv) {
 			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
-			sb.append("pop $fp\n");
+			sb.append("popw $fp\n");
 			sb.append("; End environment\n");
 		}
 

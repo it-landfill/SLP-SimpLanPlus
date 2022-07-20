@@ -17,9 +17,12 @@ public int lexicalErrors=0;
 assembly: instruction* ;
 
 instruction : label
-            | push
-            | pop
-            | top
+            | pushInt
+            | popInt
+            | topInt
+            | pushBool
+            | popBool
+            | topBool
             | li
             | mov
             | lw
@@ -44,22 +47,26 @@ instruction : label
             | or
             | not
             | neg
-            | print
+            | printw
+            | printb
             | jal
             | jr
             | beq
             | halt;
 
 // MEM
-push    : PUSH src=REG;
-pop     : POP dest=REG;
-top     : TOP dest=REG;
-li      : LI dest=REG n=NUMBER;
-mov     : MOV dest=REG src=REG;
-lw      : LW reg1=REG offset=NUMBER'('reg2=REG')';
-sw      : SW reg1=REG offset=NUMBER'('reg2=REG')';
-lb      : LB reg1=REG offset=NUMBER'('reg2=REG')';
-sb      : SW reg1=REG offset=NUMBER'('reg2=REG')';
+pushInt     : PUSHINT src=REG;
+popInt      : POPINT dest=REG;
+topInt      : TOPINT dest=REG;
+pushBool    : PUSHBOOL src=REG;
+popBool     : POPBOOL dest=REG;
+topBool     : TOPBOOL dest=REG;
+li          : LI dest=REG n=NUMBER;
+mov         : MOV dest=REG src=REG;
+lw          : LW reg1=REG offset=NUMBER'('reg2=REG')';
+sw          : SW reg1=REG offset=NUMBER'('reg2=REG')';
+lb          : LB reg1=REG offset=NUMBER'('reg2=REG')';
+sb          : SB reg1=REG offset=NUMBER'('reg2=REG')';
 
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
@@ -82,7 +89,8 @@ not     : NOT dest=REG src=REG;
 neg     : NEG dest=REG src=REG;
 
 // STM
-print   : PRINT src=REG;
+printw   : PRINTW src=REG;
+printb   : PRINTB src=REG;
 beq     : BEQ reg1=REG reg2=REG lab=LABEL;
 
 // Program
@@ -95,15 +103,18 @@ jr      : JR dest=REG;
  *------------------------------------------------------------------*/
 
 // MEM
-PUSH  	 : 'push' ; 	// pushes constant in the stack
-POP	 : 'pop' ; 	// pops from stack
-TOP : 'top' ;
-LI      : 'li';
-MOV     : 'mov';
-LW      : 'lw';
-SW      : 'sw';
-LB      : 'lb';
-SB      : 'sb';
+PUSHINT  	: 'pushw' ; 	// pushes constant in the stack
+POPINT	    : 'popw' ; 	// pops from stack
+TOPINT      : 'topw' ;
+PUSHBOOL  	: 'pushb' ; 	// pushes constant in the stack
+POPBOOL	    : 'popb' ; 	// pops from stack
+TOPBOOL     : 'topb' ;
+LI          : 'li';
+MOV         : 'mov';
+LW          : 'lw';
+SW          : 'sw';
+LB          : 'lb';
+SB          : 'sb';
 
 // EXP
 ADD	 : 'add' ;  	// add two values from the stack
@@ -126,7 +137,8 @@ NOT     : 'not' ;
 NEG     : 'neg' ;
 
 //STM
-PRINT	 : 'print' ;	// print top of stack
+PRINTW	 : 'printw' ;	// print top of stack
+PRINTB	 : 'printb' ;	// print top of stack
 BEQ      : 'beq' ;	// Break if equal w
 
 //Program

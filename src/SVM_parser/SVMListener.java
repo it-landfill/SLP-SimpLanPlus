@@ -31,35 +31,65 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitInstruction(SVMParser.InstructionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SVMParser#push}.
+	 * Enter a parse tree produced by {@link SVMParser#pushInt}.
 	 * @param ctx the parse tree
 	 */
-	void enterPush(SVMParser.PushContext ctx);
+	void enterPushInt(SVMParser.PushIntContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SVMParser#push}.
+	 * Exit a parse tree produced by {@link SVMParser#pushInt}.
 	 * @param ctx the parse tree
 	 */
-	void exitPush(SVMParser.PushContext ctx);
+	void exitPushInt(SVMParser.PushIntContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SVMParser#pop}.
+	 * Enter a parse tree produced by {@link SVMParser#popInt}.
 	 * @param ctx the parse tree
 	 */
-	void enterPop(SVMParser.PopContext ctx);
+	void enterPopInt(SVMParser.PopIntContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SVMParser#pop}.
+	 * Exit a parse tree produced by {@link SVMParser#popInt}.
 	 * @param ctx the parse tree
 	 */
-	void exitPop(SVMParser.PopContext ctx);
+	void exitPopInt(SVMParser.PopIntContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SVMParser#top}.
+	 * Enter a parse tree produced by {@link SVMParser#topInt}.
 	 * @param ctx the parse tree
 	 */
-	void enterTop(SVMParser.TopContext ctx);
+	void enterTopInt(SVMParser.TopIntContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SVMParser#top}.
+	 * Exit a parse tree produced by {@link SVMParser#topInt}.
 	 * @param ctx the parse tree
 	 */
-	void exitTop(SVMParser.TopContext ctx);
+	void exitTopInt(SVMParser.TopIntContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#pushBool}.
+	 * @param ctx the parse tree
+	 */
+	void enterPushBool(SVMParser.PushBoolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#pushBool}.
+	 * @param ctx the parse tree
+	 */
+	void exitPushBool(SVMParser.PushBoolContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#popBool}.
+	 * @param ctx the parse tree
+	 */
+	void enterPopBool(SVMParser.PopBoolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#popBool}.
+	 * @param ctx the parse tree
+	 */
+	void exitPopBool(SVMParser.PopBoolContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#topBool}.
+	 * @param ctx the parse tree
+	 */
+	void enterTopBool(SVMParser.TopBoolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#topBool}.
+	 * @param ctx the parse tree
+	 */
+	void exitTopBool(SVMParser.TopBoolContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SVMParser#li}.
 	 * @param ctx the parse tree
@@ -301,15 +331,25 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitNeg(SVMParser.NegContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SVMParser#print}.
+	 * Enter a parse tree produced by {@link SVMParser#printw}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrint(SVMParser.PrintContext ctx);
+	void enterPrintw(SVMParser.PrintwContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SVMParser#print}.
+	 * Exit a parse tree produced by {@link SVMParser#printw}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrint(SVMParser.PrintContext ctx);
+	void exitPrintw(SVMParser.PrintwContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#printb}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintb(SVMParser.PrintbContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#printb}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintb(SVMParser.PrintbContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SVMParser#beq}.
 	 * @param ctx the parse tree
