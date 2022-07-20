@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class PrintNode implements Node {
 	private final Node exp;
+	private TypeNode type;
 
 	public PrintNode(Node exp) {
 		this.exp = exp;
@@ -24,7 +25,7 @@ public class PrintNode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		exp.typeCheck(symbolTable);
+		type = exp.typeCheck(symbolTable);
 		return new VoidTypeNode();
 	}
 
@@ -36,7 +37,7 @@ public class PrintNode implements Node {
 	@Override
 	public String codeGeneration() {
 
-		return "; Print\n" + exp.codeGeneration() +
-				"print $t0\n";
+		return "; Print \n" + exp.codeGeneration() +
+				(SLPUtils.checkIntType(type) ? "printw" : "printb") + " $t0\n";
 	}
 }

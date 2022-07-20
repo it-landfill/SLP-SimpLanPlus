@@ -84,7 +84,7 @@ public class VarNode implements Node {
             sb.append("; Begin decl-assignment variable ").append(ID).append("\n");
             sb.append(exp.codeGeneration());
 
-            sb.append(SLPUtils.checkIntType(type) ? "sw" : "sb").append(" $t0").append(entry.getOffset()).append("($fp)\n");
+            sb.append(SLPUtils.checkIntType(type) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($fp)\n");
 
             sb.append("; End decl-assignment variable ").append(ID).append("\n");
 

@@ -72,7 +72,7 @@ public class AssignmentNode implements Node {
 		out.append("mov $t1 $fp\n");
 		out.append(("lw $t1 " + stOccupiedBytes+4 + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
 
-		out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0").append(entry.getOffset()).append("($t1)\n");
+		out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
 
 		out.append("; End assignment variable ").append(ID).append("\n");
 

@@ -60,11 +60,23 @@ public class ExecuteVM {
 		System.arraycopy(bytes, 0, memory, pos, 4);
 	}
 
-	private void saveBool(int point, int off, int reg) {
+	private void saveInt(int addr, int reg) {
 		int val = readReg(reg);
 		byte[] bytes = intToBytes(val);
+		System.arraycopy(bytes, 0, memory, addr, 4);
+	}
+
+	private void saveBool(int point, int off, int reg) {
+		int val = readReg(reg);
 		int pos = readReg(point) + off;
-		memory[pos] = bytes[3];
+		if (val != 0) memory[pos] = 1;
+		else memory[pos] = 0;
+	}
+
+	private void saveBool(int addr, int reg) {
+		int val = readReg(reg);
+		if (val != 0) memory[addr] = 1;
+		else memory[addr] = 0;
 	}
 
 	private void loadInt(int point, int off, int reg) {
@@ -74,38 +86,48 @@ public class ExecuteVM {
 		writeReg(reg, bytesToInt(bytes));
 	}
 
-	private void loadBool(int point, int off, int reg) {
-		byte byteVal = 0;
+	private void loadInt(int addr, int reg) {
+		byte[] bytes = new byte[4];
+		System.arraycopy(memory, addr, bytes, 0, 4);
+		writeReg(reg, bytesToInt(bytes));
+	}
+
+	private void loadBool(int point, int off, int reg) { // TODO: Posso unificare la logica delle funzioni facendo chiamare ad una l'altra??
 		int pos = readReg(point) + off;
-		byteVal = memory[pos];
-		writeReg(reg, bytesToInt(new byte[] {0,0,0, byteVal}));
+		int val = memory[pos];
+		writeReg(reg, val);
+	}
+
+	private void loadBool(int addr, int reg) {
+		int val = memory[addr];
+		writeReg(reg, val);
 	}
 
 	private void popInt() {
+		loadInt(sp+1,code[ip++]);
 		sp+=4;
-		loadInt(sp, 0, code[ip++]);
 	}
 
 	private void popBool() {
 		sp+=1;
-		loadBool(sp, 0, code[ip++]);
+		loadBool(sp, code[ip++]);
 	}
 
 	private void topInt() {
-		loadInt(sp, 0, code[ip++]);
+		loadInt(sp+1, code[ip++]);
 	}
 
 	private void topBool() {
-		loadInt(sp, 0, code[ip++]);
+		loadBool(sp+1, code[ip++]);
 	}
 
 	private void pushInt() {
-		saveInt(sp, 0, code[ip++]);
+		saveInt(sp-3, code[ip++]);
 		sp-=4;
 	}
 
 	private void pushBool() {
-		saveBool(sp, 0, code[ip++]);
+		saveBool(sp, code[ip++]);
 		sp-=1;
 	}
 
@@ -171,7 +193,6 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						r2 = readReg(r2);
 						saveBool(r2, val, r1);
 					}
 					case SVMParser.ADD -> {
@@ -303,9 +324,13 @@ public class ExecuteVM {
 						r1 = readReg(r1);
 						writeReg(rd, -1*r1);
 					}
-					case SVMParser.PRINT -> {
+					case SVMParser.PRINTW -> {
 						rd = code[ip++];
 						System.out.println(readReg(rd));
+					}
+					case SVMParser.PRINTB -> {
+						rd = code[ip++];
+						System.out.println(readReg(rd) == 1 ? "true" : "false");
 					}
 					case SVMParser.JAL -> ip = code[ip];
 					case SVMParser.JR -> ip = readReg(code[ip]);

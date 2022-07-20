@@ -47,7 +47,8 @@ instruction : label
             | or
             | not
             | neg
-            | print
+            | printw
+            | printb
             | jal
             | jr
             | beq
@@ -65,7 +66,7 @@ mov         : MOV dest=REG src=REG;
 lw          : LW reg1=REG offset=NUMBER'('reg2=REG')';
 sw          : SW reg1=REG offset=NUMBER'('reg2=REG')';
 lb          : LB reg1=REG offset=NUMBER'('reg2=REG')';
-sb          : SW reg1=REG offset=NUMBER'('reg2=REG')';
+sb          : SB reg1=REG offset=NUMBER'('reg2=REG')';
 
 // EXP
 add     : ADD dest=REG reg1=REG reg2=REG;
@@ -88,7 +89,8 @@ not     : NOT dest=REG src=REG;
 neg     : NEG dest=REG src=REG;
 
 // STM
-print   : PRINT src=REG;
+printw   : PRINTW src=REG;
+printb   : PRINTB src=REG;
 beq     : BEQ reg1=REG reg2=REG lab=LABEL;
 
 // Program
@@ -135,7 +137,8 @@ NOT     : 'not' ;
 NEG     : 'neg' ;
 
 //STM
-PRINT	 : 'print' ;	// print top of stack
+PRINTW	 : 'printw' ;	// print top of stack
+PRINTB	 : 'printb' ;	// print top of stack
 BEQ      : 'beq' ;	// Break if equal w
 
 //Program

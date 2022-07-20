@@ -403,13 +403,25 @@ public class SVMBaseListener implements SVMListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrint(SVMParser.PrintContext ctx) { }
+	@Override public void enterPrintw(SVMParser.PrintwContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrint(SVMParser.PrintContext ctx) { }
+	@Override public void exitPrintw(SVMParser.PrintwContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrintb(SVMParser.PrintbContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintb(SVMParser.PrintbContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

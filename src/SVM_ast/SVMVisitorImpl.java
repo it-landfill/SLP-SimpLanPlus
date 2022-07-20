@@ -76,7 +76,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 						SVMParser.POPBOOL,
 						SVMParser.TOPBOOL,
 						SVMParser.JR,
-						SVMParser.PRINT -> i+=1;
+						SVMParser.PRINTB,
+						SVMParser.PRINTW -> i+=1;
 				case    SVMParser.LI,
 						SVMParser.MOV,
 						SVMParser.NOT,
@@ -330,8 +331,15 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitPrint(SVMParser.PrintContext ctx) {
-		code[ip++] = SVMParser.PRINT;
+	public Void visitPrintw(SVMParser.PrintwContext ctx) {
+		code[ip++] = SVMParser.PRINTW;
+		code[ip++] = regLabelToCode(ctx.src.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitPrintb(SVMParser.PrintbContext ctx) {
+		code[ip++] = SVMParser.PRINTB;
 		code[ip++] = regLabelToCode(ctx.src.getText());
 		return null;
 	}
