@@ -58,8 +58,10 @@ public class DerExpNode implements Node {
 
 		out.append("; Begin load variable ").append(ID).append("\n");
 		out.append("mov $t1 $fp\n");
-		out.append("lw $t1 4($t1)\n".repeat(nestingLevel - entry.getNestinglevel()));
+		out.append("lw $t1 4($t1)\n".repeat(nestingLevel - entry.getNestinglevel())); //TODO: Controllare correttezza offset
+
 		out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0").append(entry.getOffset()).append("($t1)\n");
+
 		out.append("; End load variable ").append(ID).append("\n");
 
 		return out.toString();

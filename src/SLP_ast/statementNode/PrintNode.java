@@ -29,14 +29,14 @@ public class PrintNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return exp.checkSemantics(env, symbolTable);
+	}
+
+	@Override
 	public String codeGeneration() {
 
 		return "; Print\n" + exp.codeGeneration() +
 				"print $t0\n";
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		return exp.checkSemantics(env, symbolTable);
 	}
 }

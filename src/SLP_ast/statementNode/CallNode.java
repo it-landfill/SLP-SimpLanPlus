@@ -51,33 +51,6 @@ public class CallNode implements Node {
 	}
 
 	@Override
-	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
-
-		FunctionSingatureType signature = (FunctionSingatureType) entry.getType();
-
-		if (actualParams != null) {
-			ArrayList<ArgNode> formalParams = signature.getArguments();
-			Node pa;
-			ArgNode pf;
-			TypeNode ta, tf;
-			for (int i = 0; i < actualParams.size(); i++) {
-				pa = actualParams.get(i);
-				pf = formalParams.get(i);
-				ta = pa.typeCheck(symbolTable);
-				tf = pf.typeCheck(symbolTable);
-
-				if (pf.isByReference() && !(pa instanceof DerExpNode))
-					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.toPrint("") + " should be a variable (parameter is set as var in function declaration)");
-				if (!SLPUtils.checkTypes(ta, tf))
-					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.toPrint("") + " should be " + tf.toPrint("") + ", type found: " + ta.toPrint(""));
-			}
-		}
-
-		return (expNode ? signature.getReturnType() : new VoidTypeNode());
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
@@ -118,16 +91,43 @@ public class CallNode implements Node {
 	}
 
 	@Override
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
+
+		FunctionSingatureType signature = (FunctionSingatureType) entry.getType();
+
+		if (actualParams != null) {
+			ArrayList<ArgNode> formalParams = signature.getArguments();
+			Node pa;
+			ArgNode pf;
+			TypeNode ta, tf;
+			for (int i = 0; i < actualParams.size(); i++) {
+				pa = actualParams.get(i);
+				pf = formalParams.get(i);
+				ta = pa.typeCheck(symbolTable);
+				tf = pf.typeCheck(symbolTable);
+
+				if (pf.isByReference() && !(pa instanceof DerExpNode))
+					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.toPrint("") + " should be a variable (parameter is set as var in function declaration)");
+				if (!SLPUtils.checkTypes(ta, tf))
+					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.toPrint("") + " should be " + tf.toPrint("") + ", type found: " + ta.toPrint(""));
+			}
+		}
+
+		return (expNode ? signature.getReturnType() : new VoidTypeNode());
+	}
+
+	@Override
 	public String codeGeneration() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("; Begin function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
-		sb.append("push $fp\n");
+		sb.append("pushw $fp\n");
 		if (actualParams != null) {
 			for (int i = actualParams.size() - 1; i >= 0; i--) {
 				sb.append("; Saving actual parameter ").append(signature.getArguments().get(i).getArgName()).append("\n");
 				sb.append(actualParams.get(i).codeGeneration());
-				sb.append("push $t0\n");
+				sb.append(SLPUtils.checkIntType(signature.getArguments().get(i).getType()) ? "pushw" : "pushb").append(" $t0\n");
 			}
 		}
 		sb.append("jal ").append(signature.getLabel()).append("\n");
