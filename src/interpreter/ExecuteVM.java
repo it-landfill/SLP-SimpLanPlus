@@ -53,10 +53,28 @@ public class ExecuteVM {
 		}
 	}
 
+	/*
+		[1, 2, 3, 4]
+
+		sp  ----
+		ra4
+		ra3
+		ra2
+		ra1 fp
+		-- 4
+		-- 3
+		-- 2
+		-- 1
+		old_fp
+
+		4, 3, 2, 1 >> 1, 2, 3, 4
+	 */
+
 	private void saveInt(int point, int off, int reg) {
 		int val = readReg(reg);
 		byte[] bytes = intToBytes(val);
 		int pos = readReg(point) + off;
+
 		System.arraycopy(bytes, 0, memory, pos, 4);
 	}
 
@@ -330,7 +348,7 @@ public class ExecuteVM {
 					}
 					case SVMParser.PRINTB -> {
 						rd = code[ip++];
-						System.out.println(readReg(rd) == 1 ? "true" : "false");
+						System.out.println(readReg(rd) != 0 ? "true" : "false");
 					}
 					case SVMParser.JAL -> ip = code[ip];
 					case SVMParser.JR -> ip = readReg(code[ip]);
