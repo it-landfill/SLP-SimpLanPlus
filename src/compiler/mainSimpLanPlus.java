@@ -85,7 +85,7 @@ public class mainSimpLanPlus {
 
 		if (runCodegen) {
 			// CODE GENERATION
-			String code = ast.codeGeneration();
+			String code = ast.codeGeneration(null);
 			BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
 			out.write(code);
 			out.close();

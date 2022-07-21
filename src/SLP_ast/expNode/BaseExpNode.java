@@ -29,8 +29,8 @@ public class BaseExpNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
-		return exp.codeGeneration();
+	public String codeGeneration(String options) {
+		return exp.codeGeneration(options);
 	}
 
 	@Override

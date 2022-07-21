@@ -15,7 +15,7 @@ public abstract class TypeNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		return "";
 	}
 

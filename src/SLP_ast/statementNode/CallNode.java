@@ -118,16 +118,22 @@ public class CallNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("; Begin function call ").append(expNode ? "with return " : "").append(funcName).append("\n");
 		sb.append("pushw $fp\n");
 		if (actualParams != null) {
 			for (int i = actualParams.size() - 1; i >= 0; i--) {
-				sb.append("; Saving actual parameter ").append(signature.getArguments().get(i).getArgName()).append("\n");
-				sb.append(actualParams.get(i).codeGeneration());
-				sb.append(SLPUtils.checkIntType(signature.getArguments().get(i).getType()) ? "pushw" : "pushb").append(" $t0\n");
+				ArgNode arg = signature.getArguments().get(i);
+				sb.append("; Saving actual parameter ").append(arg.isByReference() ? "by reference " : "").append(arg.getArgName()).append("\n");
+				if (arg.isByReference()) {
+					sb.append(actualParams.get(i).codeGeneration("getAddress"));
+					sb.append("pushw $t0\n");
+				} else {
+					sb.append(actualParams.get(i).codeGeneration(options));
+					sb.append(SLPUtils.checkIntType(arg.getType()) ? "pushw" : "pushb").append(" $t0\n");
+				}
 			}
 		}
 		sb.append("jal ").append(signature.getLabel()).append("\n");

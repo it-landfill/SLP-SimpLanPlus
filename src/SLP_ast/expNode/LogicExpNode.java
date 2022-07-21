@@ -35,12 +35,12 @@ public class LogicExpNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(left.codeGeneration());
+		sb.append(left.codeGeneration(options));
 		sb.append("pushb $t0\n");
-		sb.append(right.codeGeneration());
+		sb.append(right.codeGeneration(options));
 		sb.append("popb $t1\n");
 		switch(op) {
 			case "&&" -> sb.append("and");

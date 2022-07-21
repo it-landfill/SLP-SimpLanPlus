@@ -45,8 +45,8 @@ public class ReturnNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
-		if (exp != null) return exp.codeGeneration();
+	public String codeGeneration(String options) {
+		if (exp != null) return exp.codeGeneration(options);
 		return "";
 	}
 }

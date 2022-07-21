@@ -88,7 +88,7 @@ public class FunNode implements Node {
         if (signature.getArguments() != null) {
             for (ArgNode a : signature.getArguments()) {
                 errors.addAll(a.checkSemantics(localEnv, localSymbolTable));
-                STentry tmp = new STentry(Environment.getNestingLevel(), a.getType(), localEnv.getOffset(), a.getArgName(), STentry.Effects.INITIALIZED);
+                STentry tmp = new STentry(Environment.getNestingLevel(), a.getType(), localEnv.getOffset(), a.getArgName(), STentry.Effects.INITIALIZED, a.isByReference());
                 if (SLPUtils.checkIntType(a.getType())) localEnv.offsetAddInt();
                 else localEnv.offsetAddBool();
                 if (localSymbolTable.addToSymbolTable(tmp))
@@ -125,7 +125,7 @@ public class FunNode implements Node {
     }
 
     @Override
-    public String codeGeneration() {
+    public String codeGeneration(String options) {
         StringBuilder sb = new StringBuilder();
         int n = 0;
         if (signature.getArguments() != null) {
