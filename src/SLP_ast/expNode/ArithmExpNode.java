@@ -49,7 +49,8 @@ public class ArithmExpNode implements Node {
 			case "*" -> sb.append("mult");
 			case "/" -> sb.append("div");
 		}
-		sb.append(" $t0 $t0 $t1\n");
+		// Inserisco priuma t1 e poi t0 perchè questo è l'ordine in cui sono stati definiti
+		sb.append(" $t0 $t1 $t0\n");
 
 		return sb.toString();
 	}

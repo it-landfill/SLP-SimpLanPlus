@@ -46,7 +46,7 @@ public class LogicExpNode implements Node {
 			case "&&" -> sb.append("and");
 			case "||" -> sb.append("or");
 		}
-		sb.append(" $t0 $t0 $t1\n");
+		sb.append(" $t0 $t1 $t0\n");
 
 		return sb.toString();
 	}

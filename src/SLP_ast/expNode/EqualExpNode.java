@@ -51,7 +51,7 @@ public class EqualExpNode implements Node {
 			case "==" -> sb.append("eq");
 			case "!=" -> sb.append("neq");
 		}
-		sb.append(" $t0 $t0 $t1\n");
+		sb.append(" $t0 $t1 $t0\n");
 
 		return sb.toString();
 	}
