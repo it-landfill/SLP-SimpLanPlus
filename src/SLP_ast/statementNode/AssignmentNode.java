@@ -64,16 +64,21 @@ public class AssignmentNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		StringBuilder out = new StringBuilder();
 
 		out.append("; Begin assignment variable ").append(ID).append("\n");
-		out.append(exp.codeGeneration());
+		out.append(exp.codeGeneration(options));
+
 		out.append("mov $t1 $fp\n");
-		out.append(("lw $t1 " + stOccupiedBytes+4 + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
+		out.append(("lw $t1 " + stOccupiedBytes + 4 + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
 
-		out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
-
+		if (entry.isReference()) {
+			out.append("lw $t1 ").append(entry.getOffset()).append("($t1)\n");
+			out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0 ").append("0($t1)\n");
+		} else {
+			out.append(SLPUtils.checkIntType(entry.getType()) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+		}
 		out.append("; End assignment variable ").append(ID).append("\n");
 
 		return out.toString();

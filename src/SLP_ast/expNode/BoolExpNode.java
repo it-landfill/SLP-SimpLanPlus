@@ -27,7 +27,7 @@ public class BoolExpNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		return "li $t0 " + (val ? "1" : "0") + "\n";
 	}
 

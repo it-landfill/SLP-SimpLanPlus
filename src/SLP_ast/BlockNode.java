@@ -11,7 +11,6 @@ import util.SemanticError;
 import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class BlockNode implements Node {
 
@@ -124,7 +123,7 @@ public class BlockNode implements Node {
 
 	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		return codeGeneration(true);
 	}
 
@@ -148,12 +147,12 @@ public class BlockNode implements Node {
 		if (declarationList.stream().anyMatch(decl -> decl instanceof FunNode)) {
 			sb.append("jal ").append(blockLabel).append("\n");
 			// Divido le declaration in function e variable, eseguo prima tutte le codegen delle function e poi tutte le codegen delle variable
-			declarationList.stream().filter(decl -> decl instanceof FunNode).forEach(declaration -> sb.append(declaration.codeGeneration()));
+			declarationList.stream().filter(decl -> decl instanceof FunNode).forEach(declaration -> sb.append(declaration.codeGeneration(null)));
 			sb.append(blockLabel).append(":\n");
 		}
-		declarationList.stream().filter(decl -> decl instanceof VarNode).forEach(declaration -> sb.append(declaration.codeGeneration()));
+		declarationList.stream().filter(decl -> decl instanceof VarNode).forEach(declaration -> sb.append(declaration.codeGeneration(null)));
 
-		statementList.forEach(statement -> sb.append(statement.codeGeneration()));
+		statementList.forEach(statement -> sb.append(statement.codeGeneration(null)));
 
 		if (newEnv) {
 			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");

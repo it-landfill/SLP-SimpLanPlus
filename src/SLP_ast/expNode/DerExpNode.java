@@ -56,15 +56,27 @@ public class DerExpNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		StringBuilder out = new StringBuilder();
 
-
 		out.append("; Begin load variable ").append(ID).append("\n");
-		out.append("mov $t1 $fp\n");
-		out.append(("lw $t1 " + stOccupiedBytes+4 + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
 
-		out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+		// Parte comune, risalgo la catena di fp
+		out.append("mov $t1 $fp\n");
+		out.append(("lw $t1 " + stOccupiedBytes + 4 + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
+
+		if (options != null && options.equalsIgnoreCase("getAddress")){
+			// Se la variabile in esame (entry) è già un puntatore, allora carico in $t0 l'indirizzo a cui punta il puntatore attuale
+			if (entry.isReference()) out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
+			// Altrimenti calcolo l'indirizzo a cui deve puntare e lo salvo in $t0
+			else out.append("addi $t0 $t1 ").append(entry.getOffset()).append("\n");
+		} else {
+			if (entry.isReference()) {
+				// Se la variabile in esame (entry) è un puntatore, carico in $t0 l'indirizzo a cui punta e, in seguito carico il valore contenuto nella cella puntata.
+				out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
+				out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 0($t0)\n");
+			} else out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+		}
 
 		out.append("; End load variable ").append(ID).append("\n");
 

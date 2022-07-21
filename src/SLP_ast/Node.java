@@ -18,7 +18,7 @@ public interface Node {
 	//  per una dichiarazione, "null"
 	TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError;
 
-	String codeGeneration();
+	String codeGeneration(String options);
 
 	ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable);
 

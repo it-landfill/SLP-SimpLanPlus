@@ -22,13 +22,23 @@ public class STentry {
 
     // TODO: COmment
     private Effects effect;
+    private final boolean isReference;
 
-    public STentry(int n, TypeNode t, int os, String ID, Effects effect) {
+    public STentry(int n, TypeNode t, int os, String ID, Effects effect, boolean isReference) {
         nl = n;
         type = t;
         offset = os;
         this.ID = ID;
         this.effect = effect;
+        this.isReference = isReference;
+    }
+
+    public STentry(int n, TypeNode t, int os, String ID, Effects effect) {
+        this(n, t, os, ID, effect, false);
+    }
+
+    public boolean isReference() {
+        return isReference;
     }
 
     public TypeNode getType() {
@@ -65,6 +75,6 @@ public class STentry {
     }
 
     public STentry clone() {
-        return new STentry(nl, type, offset, ID, effect);
+        return new STentry(nl, type, offset, ID, effect, isReference);
     }
 }  

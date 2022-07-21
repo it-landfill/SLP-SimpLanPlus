@@ -41,7 +41,7 @@ public class ArgNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		//TODO:
 		return "";
 	}

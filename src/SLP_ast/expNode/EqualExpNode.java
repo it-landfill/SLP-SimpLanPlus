@@ -39,13 +39,13 @@ public class EqualExpNode implements Node {
 	}
 
 	@Override
-	public String codeGeneration() {
+	public String codeGeneration(String options) {
 		StringBuilder sb = new StringBuilder();
 		boolean isInt = SLPUtils.checkIntType(type);
 
-		sb.append(left.codeGeneration());
+		sb.append(left.codeGeneration(options));
 		sb.append(isInt ? "pushw" : "pushb").append(" $t0\n");
-		sb.append(right.codeGeneration());
+		sb.append(right.codeGeneration(options));
 		sb.append(isInt ? "popw" : "popb").append(" $t1\n");
 		switch(op) {
 			case "==" -> sb.append("eq");
