@@ -183,9 +183,8 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-
-						if (memory[val+readReg(r2)] == -10000) { // FIXME: Questa condizione ha senso?
-							System.out.println("\nError: Null pointer exception");
+						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						loadInt(r2, val, r1);
@@ -194,17 +193,16 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
+						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						saveInt(r2, val, r1);
 					}
 					case SVMParser.LB -> {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-
-						if (memory[val+readReg(r2)] == -10000) { // FIXME: Questa condizione ha senso?
-							System.out.println("\nError: Null pointer exception");
-							return false;
-						}
 						loadBool(r2, val, r1);
 					}
 					case SVMParser.SB -> {
@@ -334,7 +332,6 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						r1 = readReg(r1);
 						writeReg(rd, (r1 == 0) ? 1 : 0);
-						t[rd] = (t[r1] == 1) ? 0 : 1;
 					}
 					case SVMParser.NEG -> {
 						rd = code[ip++];

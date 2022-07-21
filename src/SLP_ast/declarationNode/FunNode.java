@@ -130,7 +130,7 @@ public class FunNode implements Node {
         int n = 0;
         if (signature.getArguments() != null) {
             for (ArgNode arg : signature.getArguments()) {
-                if (SLPUtils.checkIntType(arg.getType())) n += 4;
+                if (SLPUtils.checkIntType(arg.getType()) || arg.isByReference()) n += 4;
                 else n += 1;
             }
         }
