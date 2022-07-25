@@ -154,7 +154,7 @@ public class FunNode implements Node {
         sb.append("jr $ra\n");
         sb.append("; End function\n");
 
-        return sb.toString().replaceAll("FOOTER_LABEL_PLACEHOLDER", signature.getLabel()+"_footer");
+        return sb.toString().replaceAll("(RETURN_CHAIN_PLACEHOLDER|BLOCK_CHAIN_PLACEHOLDER)", signature.getLabel()+"_footer");
     }
 }
 
