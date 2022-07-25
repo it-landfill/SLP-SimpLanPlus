@@ -142,6 +142,7 @@ public class BlockNode implements Node {
 			if (occupiedBytes > 0) sb.append("subi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; subi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("mov $fp $sp\n");
+			sb.append("; End environment header\n");
 		}
 
 		if (declarationList.stream().anyMatch(decl -> decl instanceof FunNode)) {
@@ -154,16 +155,25 @@ public class BlockNode implements Node {
 
 		statementList.forEach(statement -> sb.append(statement.codeGeneration(null)));
 
+
+		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER");
 		if (newEnv) {
+			sb.append("; Begin environment footer\n");
+			if (ret_placeholder) {
+				sb.append(blockLabel).append("_footer:\n");
+			}
 			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("popw $fp\n");
+			if (ret_placeholder) {
+				sb.append("jal BLOCK_CHAIN_PLACEHOLDER\n");
+			}
 			sb.append("; End environment\n");
 		}
 
 		if (isRoot) sb.append("halt\n");
-
-		return sb.toString();
+		if (newEnv && ret_placeholder) return sb.toString().replaceAll("RETURN_CHAIN_PLACEHOLDER", blockLabel+"_footer");
+		else return sb.toString();
 	}
 }
 
