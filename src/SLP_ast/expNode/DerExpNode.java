@@ -2,6 +2,7 @@ package SLP_ast.expNode;
 
 import SLP_ast.Node;
 import SLP_ast.STentry;
+import SLP_ast.typeNode.FunctionSingatureType;
 import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SLPUtils;
@@ -33,6 +34,8 @@ public class DerExpNode implements Node {
 		nestingLevel = Environment.getNestingLevel();
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
+		} else if (entry.getType() instanceof FunctionSingatureType) {
+			errors.add(new SemanticError("Var " + ID + " is a function"));
 		}
 
 		stOccupiedBytes =  symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
