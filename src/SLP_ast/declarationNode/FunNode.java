@@ -146,6 +146,7 @@ public class FunNode implements Node {
         sb.append(block.codeGeneration(false)); //TODO: Gestire return value
 
         sb.append("; Begin function footer\n");
+        sb.append(signature.getLabel()).append("_footer:\n");
         sb.append("popw $ra\n");
         if (n > 0) sb.append("addi $sp $sp ").append(n).append("\n");
         else sb.append("; addi $sp $sp ").append(n).append(" (Not needed since value is 0)\n");
@@ -153,7 +154,7 @@ public class FunNode implements Node {
         sb.append("jr $ra\n");
         sb.append("; End function\n");
 
-        return sb.toString();
+        return sb.toString().replaceAll("FOOTER_LABEL_PLACEHOLDER", signature.getLabel()+"_footer");
     }
 }
 

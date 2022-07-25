@@ -46,7 +46,11 @@ public class ReturnNode implements Node {
 
 	@Override
 	public String codeGeneration(String options) {
-		if (exp != null) return exp.codeGeneration(options);
-		return "";
+		StringBuilder out = new StringBuilder();
+		out.append("; Begin Return\n");
+		if (exp != null) out.append(exp.codeGeneration(options));
+		out.append("jal FOOTER_LABEL_PLACEHOLDER\n"); //TODO: Remove last jal of the function
+		out.append("; End Return\n");
+		return out.toString();
 	}
 }
