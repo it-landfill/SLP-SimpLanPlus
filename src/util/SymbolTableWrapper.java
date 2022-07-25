@@ -1,6 +1,7 @@
 package util;
 
 import SLP_ast.STentry;
+import SLP_ast.typeNode.FunctionSingatureType;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -164,6 +165,16 @@ public class SymbolTableWrapper {
             }
         });
         return sb.toString();
+    }
+
+    public void cloneFunctions(SymbolTableWrapper st){
+        st.symbolTable.forEach((k,v) -> {
+            for (STentry e : v){
+                if (e.getType() instanceof FunctionSingatureType) {
+                    addToSymbolTable(e);
+                }
+            }
+        });
     }
 
 }

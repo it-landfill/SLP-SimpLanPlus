@@ -72,6 +72,7 @@ public class FunNode implements Node {
         ArrayList<SemanticError> errors = new ArrayList<>();
         localEnv = new Environment(); //FIXME: Rivedere logica localEnv e localSymbolTable
         localSymbolTable = new SymbolTableWrapper();
+        localSymbolTable.cloneFunctions(symbolTable);
 
         // Generation of the entry for the symbol table.
         STentry entry = new STentry(Environment.getNestingLevel(), signature, -1, funcName, STentry.Effects.NONE);

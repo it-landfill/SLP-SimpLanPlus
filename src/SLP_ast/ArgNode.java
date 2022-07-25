@@ -28,7 +28,7 @@ public class ArgNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "arg: " + type.toPrint(indent) + argName + " by reference: " + byReference;
+		return indent + "arg: " + type.toPrint(indent) + " " + argName + " by reference: " + byReference;
 	}
 
 	public TypeNode getType() {
