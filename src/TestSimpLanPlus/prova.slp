@@ -1,7 +1,12 @@
 {
-    void a(int b) {
-        print b;
+    void a() {
+        print 1;
     }
 
-    print a;
+    void b() {
+        print 2;
+        a();
+    }
+
+    b();
 }
