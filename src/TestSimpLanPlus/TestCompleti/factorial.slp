@@ -4,16 +4,71 @@
         else return n*fact(n-1);
     }
 
-    // Il primo risultato stampato è quello desiderato, il secondo è quello calcolato dal programma.
-    // I due devono ovviamente coincidere
-    print(1);
-    print(fact(1));
-    print(2);
-    print(fact(2));
-    print(6);
-    print(fact(3));
-    print(24);
-    print(fact(4));
-    print(120);
-    print(fact(5));
+    // Se i test risultano corretti il programma stampa true, altrimenti stampa:
+    // valore input
+    // valore atteso
+    // valore ottenuto
+
+    int res;
+    int val;
+    int correct;
+    int errorCount = 0;
+
+    val = 1;
+    correct = 1;
+    res = fact(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 2;
+    correct = 2;
+    res = fact(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 3;
+    correct = 6;
+    res = fact(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 4;
+    correct = 24;
+    res = fact(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 5;
+    correct = 120;
+    res = fact(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    if (errorCount == 0) print(true);
+    else print(false);
 }
