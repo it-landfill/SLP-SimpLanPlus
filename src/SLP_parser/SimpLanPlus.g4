@@ -38,7 +38,7 @@ exp	    : LPAR exp RPAR				                        #baseExp
 	    | MINUS exp					                        #negExp
 	    | NOT exp                                           #notExp
 	    | ID						                        #derExp
-	    | left=exp op=(PROD | DIV)              right=exp   #arithmExp
+	    | left=exp op=(PROD | DIV | MOD)        right=exp   #arithmExp
 	    | left=exp op=(PLUS | MINUS)            right=exp   #arithmExp
 	    | left=exp op=(LT | LTE | GT | GTE)     right=exp   #compareExp
 	    | left=exp op=(EQ| NEQ)                 right=exp   #equalExp
@@ -69,6 +69,7 @@ ASSIGN: '=';
 NOT: '!';
 PROD: '*';
 DIV: '/';
+MOD: '%';
 PLUS: '+';
 MINUS: '-';
 LT: '<';

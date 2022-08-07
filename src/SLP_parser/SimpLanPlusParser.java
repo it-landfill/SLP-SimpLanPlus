@@ -18,10 +18,10 @@ public class SimpLanPlusParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		IF=1, ELSE=2, VAR=3, RETURN=4, PRINT=5, LPAR=6, RPAR=7, LCPAR=8, RCPAR=9, 
-		COMMA=10, SEMIC=11, ASSIGN=12, NOT=13, PROD=14, DIV=15, PLUS=16, MINUS=17, 
-		LT=18, GT=19, LTE=20, GTE=21, EQ=22, NEQ=23, AND=24, OR=25, INTEGER=26, 
-		BOOLEAN=27, VOID=28, BOOL=29, ID=30, NUMBER=31, WS=32, LINECOMMENTS=33, 
-		BLOCKCOMMENTS=34;
+		COMMA=10, SEMIC=11, ASSIGN=12, NOT=13, PROD=14, DIV=15, MOD=16, PLUS=17, 
+		MINUS=18, LT=19, GT=20, LTE=21, GTE=22, EQ=23, NEQ=24, AND=25, OR=26, 
+		INTEGER=27, BOOLEAN=28, VOID=29, BOOL=30, ID=31, NUMBER=32, WS=33, LINECOMMENTS=34, 
+		BLOCKCOMMENTS=35;
 	public static final int
 		RULE_program = 0, RULE_block = 1, RULE_statement = 2, RULE_declaration = 3, 
 		RULE_decFun = 4, RULE_decVar = 5, RULE_type = 6, RULE_arg = 7, RULE_assignment = 8, 
@@ -37,8 +37,8 @@ public class SimpLanPlusParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'if'", "'else'", "'var'", "'return'", "'print'", "'('", "')'", 
-			"'{'", "'}'", "','", "';'", "'='", "'!'", "'*'", "'/'", "'+'", "'-'", 
-			"'<'", "'>'", "'<='", "'>='", "'=='", null, "'&&'", "'||'", "'int'", 
+			"'{'", "'}'", "','", "';'", "'='", "'!'", "'*'", "'/'", "'%'", "'+'", 
+			"'-'", "'<'", "'>'", "'<='", "'>='", "'=='", null, "'&&'", "'||'", "'int'", 
 			"'bool'", "'void'"
 		};
 	}
@@ -46,9 +46,9 @@ public class SimpLanPlusParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, "IF", "ELSE", "VAR", "RETURN", "PRINT", "LPAR", "RPAR", "LCPAR", 
-			"RCPAR", "COMMA", "SEMIC", "ASSIGN", "NOT", "PROD", "DIV", "PLUS", "MINUS", 
-			"LT", "GT", "LTE", "GTE", "EQ", "NEQ", "AND", "OR", "INTEGER", "BOOLEAN", 
-			"VOID", "BOOL", "ID", "NUMBER", "WS", "LINECOMMENTS", "BLOCKCOMMENTS"
+			"RCPAR", "COMMA", "SEMIC", "ASSIGN", "NOT", "PROD", "DIV", "MOD", "PLUS", 
+			"MINUS", "LT", "GT", "LTE", "GTE", "EQ", "NEQ", "AND", "OR", "INTEGER", 
+			"BOOLEAN", "VOID", "BOOL", "ID", "NUMBER", "WS", "LINECOMMENTS", "BLOCKCOMMENTS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1239,6 +1239,7 @@ public class SimpLanPlusParser extends Parser {
 		}
 		public TerminalNode PROD() { return getToken(SimpLanPlusParser.PROD, 0); }
 		public TerminalNode DIV() { return getToken(SimpLanPlusParser.DIV, 0); }
+		public TerminalNode MOD() { return getToken(SimpLanPlusParser.MOD, 0); }
 		public TerminalNode PLUS() { return getToken(SimpLanPlusParser.PLUS, 0); }
 		public TerminalNode MINUS() { return getToken(SimpLanPlusParser.MINUS, 0); }
 		public ArithmExpContext(ExpContext ctx) { copyFrom(ctx); }
@@ -1418,7 +1419,7 @@ public class SimpLanPlusParser extends Parser {
 						setState(164);
 						((ArithmExpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==PROD || _la==DIV) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PROD) | (1L << DIV) | (1L << MOD))) != 0)) ) {
 							((ArithmExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1568,7 +1569,7 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\"\u00bb\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001#\u00bb\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -1596,8 +1597,8 @@ public class SimpLanPlusParser extends Parser {
 		"\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0005\r\u00b6"+
 		"\b\r\n\r\f\r\u00b9\t\r\u0001\r\u0000\u0001\u001a\u000e\u0000\u0002\u0004"+
 		"\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u0000\u0005\u0001"+
-		"\u0000\u001a\u001b\u0001\u0000\u000e\u000f\u0001\u0000\u0010\u0011\u0001"+
-		"\u0000\u0012\u0015\u0001\u0000\u0016\u0017\u00cb\u0000\u001c\u0001\u0000"+
+		"\u0000\u001b\u001c\u0001\u0000\u000e\u0010\u0001\u0000\u0011\u0012\u0001"+
+		"\u0000\u0013\u0016\u0001\u0000\u0017\u0018\u00cb\u0000\u001c\u0001\u0000"+
 		"\u0000\u0000\u0002,\u0001\u0000\u0000\u0000\u0004I\u0001\u0000\u0000\u0000"+
 		"\u0006M\u0001\u0000\u0000\u0000\bQ\u0001\u0000\u0000\u0000\nb\u0001\u0000"+
 		"\u0000\u0000\fj\u0001\u0000\u0000\u0000\u000em\u0001\u0000\u0000\u0000"+
@@ -1626,21 +1627,21 @@ public class SimpLanPlusParser extends Parser {
 		"\u0000\u0000IE\u0001\u0000\u0000\u0000IH\u0001\u0000\u0000\u0000J\u0005"+
 		"\u0001\u0000\u0000\u0000KN\u0003\b\u0004\u0000LN\u0003\n\u0005\u0000M"+
 		"K\u0001\u0000\u0000\u0000ML\u0001\u0000\u0000\u0000N\u0007\u0001\u0000"+
-		"\u0000\u0000OR\u0003\f\u0006\u0000PR\u0005\u001c\u0000\u0000QO\u0001\u0000"+
+		"\u0000\u0000OR\u0003\f\u0006\u0000PR\u0005\u001d\u0000\u0000QO\u0001\u0000"+
 		"\u0000\u0000QP\u0001\u0000\u0000\u0000RS\u0001\u0000\u0000\u0000ST\u0005"+
-		"\u001e\u0000\u0000T]\u0005\u0006\u0000\u0000UZ\u0003\u000e\u0007\u0000"+
+		"\u001f\u0000\u0000T]\u0005\u0006\u0000\u0000UZ\u0003\u000e\u0007\u0000"+
 		"VW\u0005\n\u0000\u0000WY\u0003\u000e\u0007\u0000XV\u0001\u0000\u0000\u0000"+
 		"Y\\\u0001\u0000\u0000\u0000ZX\u0001\u0000\u0000\u0000Z[\u0001\u0000\u0000"+
 		"\u0000[^\u0001\u0000\u0000\u0000\\Z\u0001\u0000\u0000\u0000]U\u0001\u0000"+
 		"\u0000\u0000]^\u0001\u0000\u0000\u0000^_\u0001\u0000\u0000\u0000_`\u0005"+
 		"\u0007\u0000\u0000`a\u0003\u0002\u0001\u0000a\t\u0001\u0000\u0000\u0000"+
-		"bc\u0003\f\u0006\u0000cf\u0005\u001e\u0000\u0000de\u0005\f\u0000\u0000"+
+		"bc\u0003\f\u0006\u0000cf\u0005\u001f\u0000\u0000de\u0005\f\u0000\u0000"+
 		"eg\u0003\u001a\r\u0000fd\u0001\u0000\u0000\u0000fg\u0001\u0000\u0000\u0000"+
 		"gh\u0001\u0000\u0000\u0000hi\u0005\u000b\u0000\u0000i\u000b\u0001\u0000"+
 		"\u0000\u0000jk\u0007\u0000\u0000\u0000k\r\u0001\u0000\u0000\u0000ln\u0005"+
 		"\u0003\u0000\u0000ml\u0001\u0000\u0000\u0000mn\u0001\u0000\u0000\u0000"+
-		"no\u0001\u0000\u0000\u0000op\u0003\f\u0006\u0000pq\u0005\u001e\u0000\u0000"+
-		"q\u000f\u0001\u0000\u0000\u0000rs\u0005\u001e\u0000\u0000st\u0005\f\u0000"+
+		"no\u0001\u0000\u0000\u0000op\u0003\f\u0006\u0000pq\u0005\u001f\u0000\u0000"+
+		"q\u000f\u0001\u0000\u0000\u0000rs\u0005\u001f\u0000\u0000st\u0005\f\u0000"+
 		"\u0000tu\u0003\u001a\r\u0000u\u0011\u0001\u0000\u0000\u0000vw\u0005\u0005"+
 		"\u0000\u0000wx\u0003\u001a\r\u0000x\u0013\u0001\u0000\u0000\u0000y{\u0005"+
 		"\u0004\u0000\u0000z|\u0003\u001a\r\u0000{z\u0001\u0000\u0000\u0000{|\u0001"+
@@ -1649,7 +1650,7 @@ public class SimpLanPlusParser extends Parser {
 		"\u0080\u0081\u0005\u0007\u0000\u0000\u0081\u0084\u0003\u0004\u0002\u0000"+
 		"\u0082\u0083\u0005\u0002\u0000\u0000\u0083\u0085\u0003\u0004\u0002\u0000"+
 		"\u0084\u0082\u0001\u0000\u0000\u0000\u0084\u0085\u0001\u0000\u0000\u0000"+
-		"\u0085\u0017\u0001\u0000\u0000\u0000\u0086\u0087\u0005\u001e\u0000\u0000"+
+		"\u0085\u0017\u0001\u0000\u0000\u0000\u0086\u0087\u0005\u001f\u0000\u0000"+
 		"\u0087\u0090\u0005\u0006\u0000\u0000\u0088\u008d\u0003\u001a\r\u0000\u0089"+
 		"\u008a\u0005\n\u0000\u0000\u008a\u008c\u0003\u001a\r\u0000\u008b\u0089"+
 		"\u0001\u0000\u0000\u0000\u008c\u008f\u0001\u0000\u0000\u0000\u008d\u008b"+
@@ -1660,28 +1661,28 @@ public class SimpLanPlusParser extends Parser {
 		"\u0001\u0000\u0000\u0000\u0094\u0095\u0006\r\uffff\uffff\u0000\u0095\u0096"+
 		"\u0005\u0006\u0000\u0000\u0096\u0097\u0003\u001a\r\u0000\u0097\u0098\u0005"+
 		"\u0007\u0000\u0000\u0098\u00a2\u0001\u0000\u0000\u0000\u0099\u009a\u0005"+
-		"\u0011\u0000\u0000\u009a\u00a2\u0003\u001a\r\f\u009b\u009c\u0005\r\u0000"+
-		"\u0000\u009c\u00a2\u0003\u001a\r\u000b\u009d\u00a2\u0005\u001e\u0000\u0000"+
-		"\u009e\u00a2\u0003\u0018\f\u0000\u009f\u00a2\u0005\u001d\u0000\u0000\u00a0"+
-		"\u00a2\u0005\u001f\u0000\u0000\u00a1\u0094\u0001\u0000\u0000\u0000\u00a1"+
-		"\u0099\u0001\u0000\u0000\u0000\u00a1\u009b\u0001\u0000\u0000\u0000\u00a1"+
-		"\u009d\u0001\u0000\u0000\u0000\u00a1\u009e\u0001\u0000\u0000\u0000\u00a1"+
-		"\u009f\u0001\u0000\u0000\u0000\u00a1\u00a0\u0001\u0000\u0000\u0000\u00a2"+
-		"\u00b7\u0001\u0000\u0000\u0000\u00a3\u00a4\n\t\u0000\u0000\u00a4\u00a5"+
-		"\u0007\u0001\u0000\u0000\u00a5\u00b6\u0003\u001a\r\n\u00a6\u00a7\n\b\u0000"+
-		"\u0000\u00a7\u00a8\u0007\u0002\u0000\u0000\u00a8\u00b6\u0003\u001a\r\t"+
-		"\u00a9\u00aa\n\u0007\u0000\u0000\u00aa\u00ab\u0007\u0003\u0000\u0000\u00ab"+
-		"\u00b6\u0003\u001a\r\b\u00ac\u00ad\n\u0006\u0000\u0000\u00ad\u00ae\u0007"+
-		"\u0004\u0000\u0000\u00ae\u00b6\u0003\u001a\r\u0007\u00af\u00b0\n\u0005"+
-		"\u0000\u0000\u00b0\u00b1\u0005\u0018\u0000\u0000\u00b1\u00b6\u0003\u001a"+
-		"\r\u0006\u00b2\u00b3\n\u0004\u0000\u0000\u00b3\u00b4\u0005\u0019\u0000"+
-		"\u0000\u00b4\u00b6\u0003\u001a\r\u0005\u00b5\u00a3\u0001\u0000\u0000\u0000"+
-		"\u00b5\u00a6\u0001\u0000\u0000\u0000\u00b5\u00a9\u0001\u0000\u0000\u0000"+
-		"\u00b5\u00ac\u0001\u0000\u0000\u0000\u00b5\u00af\u0001\u0000\u0000\u0000"+
-		"\u00b5\u00b2\u0001\u0000\u0000\u0000\u00b6\u00b9\u0001\u0000\u0000\u0000"+
-		"\u00b7\u00b5\u0001\u0000\u0000\u0000\u00b7\u00b8\u0001\u0000\u0000\u0000"+
-		"\u00b8\u001b\u0001\u0000\u0000\u0000\u00b9\u00b7\u0001\u0000\u0000\u0000"+
-		"\u0012 &06IMQZ]fm{\u0084\u008d\u0090\u00a1\u00b5\u00b7";
+		"\u0012\u0000\u0000\u009a\u00a2\u0003\u001a\r\f\u009b\u009c\u0005\r\u0000"+
+		"\u0000\u009c\u00a2\u0003\u001a\r\u000b\u009d\u00a2\u0005\u001f\u0000\u0000"+
+		"\u009e\u00a2\u0003\u0018\f\u0000\u009f\u00a2\u0005\u001e\u0000\u0000\u00a0"+
+		"\u00a2\u0005 \u0000\u0000\u00a1\u0094\u0001\u0000\u0000\u0000\u00a1\u0099"+
+		"\u0001\u0000\u0000\u0000\u00a1\u009b\u0001\u0000\u0000\u0000\u00a1\u009d"+
+		"\u0001\u0000\u0000\u0000\u00a1\u009e\u0001\u0000\u0000\u0000\u00a1\u009f"+
+		"\u0001\u0000\u0000\u0000\u00a1\u00a0\u0001\u0000\u0000\u0000\u00a2\u00b7"+
+		"\u0001\u0000\u0000\u0000\u00a3\u00a4\n\t\u0000\u0000\u00a4\u00a5\u0007"+
+		"\u0001\u0000\u0000\u00a5\u00b6\u0003\u001a\r\n\u00a6\u00a7\n\b\u0000\u0000"+
+		"\u00a7\u00a8\u0007\u0002\u0000\u0000\u00a8\u00b6\u0003\u001a\r\t\u00a9"+
+		"\u00aa\n\u0007\u0000\u0000\u00aa\u00ab\u0007\u0003\u0000\u0000\u00ab\u00b6"+
+		"\u0003\u001a\r\b\u00ac\u00ad\n\u0006\u0000\u0000\u00ad\u00ae\u0007\u0004"+
+		"\u0000\u0000\u00ae\u00b6\u0003\u001a\r\u0007\u00af\u00b0\n\u0005\u0000"+
+		"\u0000\u00b0\u00b1\u0005\u0019\u0000\u0000\u00b1\u00b6\u0003\u001a\r\u0006"+
+		"\u00b2\u00b3\n\u0004\u0000\u0000\u00b3\u00b4\u0005\u001a\u0000\u0000\u00b4"+
+		"\u00b6\u0003\u001a\r\u0005\u00b5\u00a3\u0001\u0000\u0000\u0000\u00b5\u00a6"+
+		"\u0001\u0000\u0000\u0000\u00b5\u00a9\u0001\u0000\u0000\u0000\u00b5\u00ac"+
+		"\u0001\u0000\u0000\u0000\u00b5\u00af\u0001\u0000\u0000\u0000\u00b5\u00b2"+
+		"\u0001\u0000\u0000\u0000\u00b6\u00b9\u0001\u0000\u0000\u0000\u00b7\u00b5"+
+		"\u0001\u0000\u0000\u0000\u00b7\u00b8\u0001\u0000\u0000\u0000\u00b8\u001b"+
+		"\u0001\u0000\u0000\u0000\u00b9\u00b7\u0001\u0000\u0000\u0000\u0012 &0"+
+		"6IMQZ]fm{\u0084\u008d\u0090\u00a1\u00b5\u00b7";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
