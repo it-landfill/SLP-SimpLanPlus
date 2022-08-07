@@ -6,49 +6,59 @@
     }
 
     int res;
+    int val;
     int correct;
-    int correctCount = 0;
+    int errorCount = 0;
 
-    // La prima stampa è il risultato della funzione, la seconda è il confronto tra il risultato ottenuto e quello atteso.
-    // Se tutti i booleani sono true, il codice funziona
+    // Se i test risultano corretti il programma stampa true, altrimenti stampa:
+    // valore input
+    // valore atteso
+    // valore ottenuto
 
-    res = fib(5);
+    val = 5;
     correct = 5;
-    print(res);
+    res = fib(val);
 
-    if (res == correct) correctCount = correctCount +1;
-    else {
-        print(-1);
+    if (res != correct) {
+        print(val);
         print(correct);
+        print(res);
+        errorCount = errorCount + 1;
     }
 
-    res = fib(12);
+    val = 12;
     correct = 144;
-    print(res);
-    if (res == correct) correctCount = correctCount +1;
-    else {
-        print(-1);
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
         print(correct);
+        print(res);
+        errorCount = errorCount + 1;
     }
 
-    res = fib(24);
-    correct = 46369;
-    print(res);
-    if (res == correct) correctCount = correctCount +1;
-    else {
-        print(-1);
+    val = 24;
+    correct = 46368;
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
         print(correct);
+        print(res);
+        errorCount = errorCount + 1;
     }
 
-    res = fib(25);
+    val = 25;
     correct = 75025;
-    print(res);
-    if (res == correct) correctCount = correctCount +1;
-    else {
-        print(-1);
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
         print(correct);
+        print(res);
+        errorCount = errorCount + 1;
     }
 
-    if (correctCount == 5) print(true);
+    if (errorCount == 0) print(true);
     else print(false);
 }

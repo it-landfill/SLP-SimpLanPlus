@@ -1,6 +1,6 @@
 ; Begin environment
 pushw $fp
-subi $sp $sp 12
+subi $sp $sp 16
 mov $fp $sp
 ; End environment header
 jal block_1
@@ -73,32 +73,34 @@ popw $fp
 jr $ra
 ; End function
 block_1:
-; Begin decl-assignment variable correctCount
+; Begin decl-assignment variable errorCount
 li $t0 0
-sw $t0 9($fp)
-; End decl-assignment variable correctCount
+sw $t0 13($fp)
+; End decl-assignment variable errorCount
+; Begin assignment variable val
+li $t0 5
+mov $t1 $fp
+sw $t0 5($t1)
+; End assignment variable val
+; Begin assignment variable correct
+li $t0 5
+mov $t1 $fp
+sw $t0 9($t1)
+; End assignment variable correct
 ; Begin assignment variable res
 ; Begin function call with return fib
 pushw $fp
 ; Saving actual parameter n
-li $t0 5
+; Begin load variable val
+mov $t1 $fp
+lw $t0 5($t1)
+; End load variable val
 pushw $t0
 jal fib_0
 ; End function call with return fib
 mov $t1 $fp
 sw $t0 1($t1)
 ; End assignment variable res
-; Begin assignment variable correct
-li $t0 5
-mov $t1 $fp
-sw $t0 5($t1)
-; End assignment variable correct
-; Print 
-; Begin load variable res
-mov $t1 $fp
-lw $t0 1($t1)
-; End load variable res
-printw $t0
 ; Begin ITE
 ; Begin load variable res
 mov $t1 $fp
@@ -107,70 +109,82 @@ lw $t0 1($t1)
 pushw $t0
 ; Begin load variable correct
 mov $t1 $fp
-lw $t0 5($t1)
+lw $t0 9($t1)
 ; End load variable correct
 popw $t1
-eq $t0 $t1 $t0
+neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_5
-; Begin assignment variable correctCount
-; Begin load variable correctCount
-mov $t1 $fp
-lw $t0 9($t1)
-; End load variable correctCount
-pushw $t0
-li $t0 1
-popw $t1
-add $t0 $t1 $t0
-mov $t1 $fp
-sw $t0 9($t1)
-; End assignment variable correctCount
-jal ifEnd_6
-ifElse_5:
+beq $t0 $t1 ifEnd_6
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
 mov $fp $sp
 ; End environment header
 ; Print 
-li $t0 1
-neg $t0 $t0
+; Begin load variable val
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 5($t1)
+; End load variable val
 printw $t0
 ; Print 
 ; Begin load variable correct
 mov $t1 $fp
-lw $t1 4($t1)
-lw $t0 5($t1)
+lw $t1 1($t1)
+lw $t0 9($t1)
 ; End load variable correct
 printw $t0
+; Print 
+; Begin load variable res
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 1($t1)
+; End load variable res
+printw $t0
+; Begin assignment variable errorCount
+; Begin load variable errorCount
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 13($t1)
+; End load variable errorCount
+pushw $t0
+li $t0 1
+popw $t1
+add $t0 $t1 $t0
+mov $t1 $fp
+lw $t1 1($t1)
+sw $t0 13($t1)
+; End assignment variable errorCount
 ; Begin environment footer
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
 ifEnd_6:
 ; End ITE
+; Begin assignment variable val
+li $t0 12
+mov $t1 $fp
+sw $t0 5($t1)
+; End assignment variable val
+; Begin assignment variable correct
+li $t0 144
+mov $t1 $fp
+sw $t0 9($t1)
+; End assignment variable correct
 ; Begin assignment variable res
 ; Begin function call with return fib
 pushw $fp
 ; Saving actual parameter n
-li $t0 12
+; Begin load variable val
+mov $t1 $fp
+lw $t0 5($t1)
+; End load variable val
 pushw $t0
 jal fib_0
 ; End function call with return fib
 mov $t1 $fp
 sw $t0 1($t1)
 ; End assignment variable res
-; Begin assignment variable correct
-li $t0 144
-mov $t1 $fp
-sw $t0 5($t1)
-; End assignment variable correct
-; Print 
-; Begin load variable res
-mov $t1 $fp
-lw $t0 1($t1)
-; End load variable res
-printw $t0
 ; Begin ITE
 ; Begin load variable res
 mov $t1 $fp
@@ -179,70 +193,82 @@ lw $t0 1($t1)
 pushw $t0
 ; Begin load variable correct
 mov $t1 $fp
-lw $t0 5($t1)
+lw $t0 9($t1)
 ; End load variable correct
 popw $t1
-eq $t0 $t1 $t0
+neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_8
-; Begin assignment variable correctCount
-; Begin load variable correctCount
-mov $t1 $fp
-lw $t0 9($t1)
-; End load variable correctCount
-pushw $t0
-li $t0 1
-popw $t1
-add $t0 $t1 $t0
-mov $t1 $fp
-sw $t0 9($t1)
-; End assignment variable correctCount
-jal ifEnd_9
-ifElse_8:
+beq $t0 $t1 ifEnd_9
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
 mov $fp $sp
 ; End environment header
 ; Print 
-li $t0 1
-neg $t0 $t0
+; Begin load variable val
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 5($t1)
+; End load variable val
 printw $t0
 ; Print 
 ; Begin load variable correct
 mov $t1 $fp
-lw $t1 4($t1)
-lw $t0 5($t1)
+lw $t1 1($t1)
+lw $t0 9($t1)
 ; End load variable correct
 printw $t0
+; Print 
+; Begin load variable res
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 1($t1)
+; End load variable res
+printw $t0
+; Begin assignment variable errorCount
+; Begin load variable errorCount
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 13($t1)
+; End load variable errorCount
+pushw $t0
+li $t0 1
+popw $t1
+add $t0 $t1 $t0
+mov $t1 $fp
+lw $t1 1($t1)
+sw $t0 13($t1)
+; End assignment variable errorCount
 ; Begin environment footer
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
 ifEnd_9:
 ; End ITE
+; Begin assignment variable val
+li $t0 24
+mov $t1 $fp
+sw $t0 5($t1)
+; End assignment variable val
+; Begin assignment variable correct
+li $t0 46368
+mov $t1 $fp
+sw $t0 9($t1)
+; End assignment variable correct
 ; Begin assignment variable res
 ; Begin function call with return fib
 pushw $fp
 ; Saving actual parameter n
-li $t0 24
+; Begin load variable val
+mov $t1 $fp
+lw $t0 5($t1)
+; End load variable val
 pushw $t0
 jal fib_0
 ; End function call with return fib
 mov $t1 $fp
 sw $t0 1($t1)
 ; End assignment variable res
-; Begin assignment variable correct
-li $t0 46369
-mov $t1 $fp
-sw $t0 5($t1)
-; End assignment variable correct
-; Print 
-; Begin load variable res
-mov $t1 $fp
-lw $t0 1($t1)
-; End load variable res
-printw $t0
 ; Begin ITE
 ; Begin load variable res
 mov $t1 $fp
@@ -251,70 +277,82 @@ lw $t0 1($t1)
 pushw $t0
 ; Begin load variable correct
 mov $t1 $fp
-lw $t0 5($t1)
+lw $t0 9($t1)
 ; End load variable correct
 popw $t1
-eq $t0 $t1 $t0
+neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_11
-; Begin assignment variable correctCount
-; Begin load variable correctCount
-mov $t1 $fp
-lw $t0 9($t1)
-; End load variable correctCount
-pushw $t0
-li $t0 1
-popw $t1
-add $t0 $t1 $t0
-mov $t1 $fp
-sw $t0 9($t1)
-; End assignment variable correctCount
-jal ifEnd_12
-ifElse_11:
+beq $t0 $t1 ifEnd_12
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
 mov $fp $sp
 ; End environment header
 ; Print 
-li $t0 1
-neg $t0 $t0
+; Begin load variable val
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 5($t1)
+; End load variable val
 printw $t0
 ; Print 
 ; Begin load variable correct
 mov $t1 $fp
-lw $t1 4($t1)
-lw $t0 5($t1)
+lw $t1 1($t1)
+lw $t0 9($t1)
 ; End load variable correct
 printw $t0
+; Print 
+; Begin load variable res
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 1($t1)
+; End load variable res
+printw $t0
+; Begin assignment variable errorCount
+; Begin load variable errorCount
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 13($t1)
+; End load variable errorCount
+pushw $t0
+li $t0 1
+popw $t1
+add $t0 $t1 $t0
+mov $t1 $fp
+lw $t1 1($t1)
+sw $t0 13($t1)
+; End assignment variable errorCount
 ; Begin environment footer
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
 ifEnd_12:
 ; End ITE
+; Begin assignment variable val
+li $t0 25
+mov $t1 $fp
+sw $t0 5($t1)
+; End assignment variable val
+; Begin assignment variable correct
+li $t0 75025
+mov $t1 $fp
+sw $t0 9($t1)
+; End assignment variable correct
 ; Begin assignment variable res
 ; Begin function call with return fib
 pushw $fp
 ; Saving actual parameter n
-li $t0 25
+; Begin load variable val
+mov $t1 $fp
+lw $t0 5($t1)
+; End load variable val
 pushw $t0
 jal fib_0
 ; End function call with return fib
 mov $t1 $fp
 sw $t0 1($t1)
 ; End assignment variable res
-; Begin assignment variable correct
-li $t0 75025
-mov $t1 $fp
-sw $t0 5($t1)
-; End assignment variable correct
-; Print 
-; Begin load variable res
-mov $t1 $fp
-lw $t0 1($t1)
-; End load variable res
-printw $t0
 ; Begin ITE
 ; Begin load variable res
 mov $t1 $fp
@@ -323,42 +361,52 @@ lw $t0 1($t1)
 pushw $t0
 ; Begin load variable correct
 mov $t1 $fp
-lw $t0 5($t1)
+lw $t0 9($t1)
 ; End load variable correct
 popw $t1
-eq $t0 $t1 $t0
+neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_14
-; Begin assignment variable correctCount
-; Begin load variable correctCount
-mov $t1 $fp
-lw $t0 9($t1)
-; End load variable correctCount
-pushw $t0
-li $t0 1
-popw $t1
-add $t0 $t1 $t0
-mov $t1 $fp
-sw $t0 9($t1)
-; End assignment variable correctCount
-jal ifEnd_15
-ifElse_14:
+beq $t0 $t1 ifEnd_15
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
 mov $fp $sp
 ; End environment header
 ; Print 
-li $t0 1
-neg $t0 $t0
+; Begin load variable val
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 5($t1)
+; End load variable val
 printw $t0
 ; Print 
 ; Begin load variable correct
 mov $t1 $fp
-lw $t1 4($t1)
-lw $t0 5($t1)
+lw $t1 1($t1)
+lw $t0 9($t1)
 ; End load variable correct
 printw $t0
+; Print 
+; Begin load variable res
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 1($t1)
+; End load variable res
+printw $t0
+; Begin assignment variable errorCount
+; Begin load variable errorCount
+mov $t1 $fp
+lw $t1 1($t1)
+lw $t0 13($t1)
+; End load variable errorCount
+pushw $t0
+li $t0 1
+popw $t1
+add $t0 $t1 $t0
+mov $t1 $fp
+lw $t1 1($t1)
+sw $t0 13($t1)
+; End assignment variable errorCount
 ; Begin environment footer
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
@@ -366,12 +414,12 @@ popw $fp
 ifEnd_15:
 ; End ITE
 ; Begin ITE
-; Begin load variable correctCount
+; Begin load variable errorCount
 mov $t1 $fp
-lw $t0 9($t1)
-; End load variable correctCount
+lw $t0 13($t1)
+; End load variable errorCount
 pushw $t0
-li $t0 5
+li $t0 0
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
@@ -387,7 +435,7 @@ printb $t0
 ifEnd_18:
 ; End ITE
 ; Begin environment footer
-addi $sp $sp 12
+addi $sp $sp 16
 popw $fp
 ; End environment
 halt

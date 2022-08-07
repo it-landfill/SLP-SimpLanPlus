@@ -203,12 +203,20 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
+						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						loadBool(r2, val, r1);
 					}
 					case SVMParser.SB -> {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
+						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						saveBool(r2, val, r1);
 					}
 					case SVMParser.ADD -> {
