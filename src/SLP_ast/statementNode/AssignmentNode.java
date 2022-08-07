@@ -71,7 +71,7 @@ public class AssignmentNode implements Node {
 		out.append(exp.codeGeneration(options));
 
 		out.append("mov $t1 $fp\n");
-		out.append(("lw $t1 " + stOccupiedBytes + 4 + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
+		out.append(("lw $t1 " + (stOccupiedBytes + 4) + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
 
 		if (entry.isReference()) {
 			out.append("lw $t1 ").append(entry.getOffset()).append("($t1)\n");
