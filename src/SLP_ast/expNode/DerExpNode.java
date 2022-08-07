@@ -66,7 +66,7 @@ public class DerExpNode implements Node {
 
 		// Parte comune, risalgo la catena di fp
 		out.append("mov $t1 $fp\n");
-		out.append(("lw $t1 " + (stOccupiedBytes + 4) + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
+		out.append(("lw $t1 " + (stOccupiedBytes + 1) + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
 
 		if (options != null && options.equalsIgnoreCase("getAddress")){
 			// Se la variabile in esame (entry) è già un puntatore, allora carico in $t0 l'indirizzo a cui punta il puntatore attuale
