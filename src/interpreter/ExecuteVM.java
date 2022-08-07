@@ -279,6 +279,21 @@ public class ExecuteVM {
 						r1 = readReg(r1);
 						writeReg(rd, r1/val);
 					}
+					case SVMParser.MOD -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						r2 = code[ip++];
+						r1 = readReg(r1);
+						r2 = readReg(r2);
+						writeReg(rd, r1%r2);
+					}
+					case SVMParser.MODI -> {
+						rd = code[ip++];
+						r1 = code[ip++];
+						val = code[ip++];
+						r1 = readReg(r1);
+						writeReg(rd, r1%val);
+					}
 					case SVMParser.LT -> {
 						rd = code[ip++];
 						r1 = code[ip++];
