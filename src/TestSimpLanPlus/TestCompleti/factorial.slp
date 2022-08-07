@@ -1,0 +1,19 @@
+{
+    int fact(int n){
+        if (n==1) return 1;
+        else return n*fact(n-1);
+    }
+
+    // Il primo risultato stampato è quello desiderato, il secondo è quello calcolato dal programma.
+    // I due devono ovviamente coincidere
+    print(1);
+    print(fact(1));
+    print(2);
+    print(fact(2));
+    print(6);
+    print(fact(3));
+    print(24);
+    print(fact(4));
+    print(120);
+    print(fact(5));
+}
