@@ -231,6 +231,26 @@ public interface SVMListener extends ParseTreeListener {
 	 */
 	void exitDivi(SVMParser.DiviContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SVMParser#mod}.
+	 * @param ctx the parse tree
+	 */
+	void enterMod(SVMParser.ModContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#mod}.
+	 * @param ctx the parse tree
+	 */
+	void exitMod(SVMParser.ModContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SVMParser#modi}.
+	 * @param ctx the parse tree
+	 */
+	void enterModi(SVMParser.ModiContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SVMParser#modi}.
+	 * @param ctx the parse tree
+	 */
+	void exitModi(SVMParser.ModiContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SVMParser#lt}.
 	 * @param ctx the parse tree
 	 */

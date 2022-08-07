@@ -37,6 +37,8 @@ instruction : label
             | multi
             | div
             | divi
+            | mod
+            | modi
             | lt
             | lte
             | gt
@@ -77,6 +79,8 @@ mult    : MULT dest=REG reg1=REG reg2=REG;
 multi   : MULTI dest=REG reg1=REG val=NUMBER;
 div     : DIV dest=REG reg1=REG reg2=REG;
 divi    : DIVI dest=REG reg1=REG val=NUMBER;
+mod     : MOD dest=REG reg1=REG reg2=REG;
+modi    : MODI dest=REG reg1=REG val=NUMBER;
 lt      : LT dest=REG reg1=REG reg2=REG;
 lte     : LTE dest=REG reg1=REG reg2=REG;
 gt      : GT dest=REG reg1=REG reg2=REG;
@@ -125,6 +129,8 @@ MULT	 : 'mult' ;  	// add two values from the stack
 MULTI	: 'multi' ;
 DIV	 : 'div' ;	// add two values from the stack
 DIVI : 'divi' ;
+MOD	  : 'mod';
+MODI  : 'modi' ;
 LT        : 'lt' ; // Lower than
 LTE       : 'lte' ; // Lower than or equal
 GT        : 'gt' ; // Greater than
