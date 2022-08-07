@@ -1,0 +1,32 @@
+{
+
+    // ATTENZIONE: Questo codice di test richiede l'operatore % che non è implementato
+    // di default in SLP
+
+    void mcm1Aux(int n1, int n2, int i, var int gcd) {
+        if (i> n1 || i> n2) return;
+        if (n1 % i == 0 && n2 % i == 0) gcd = i;
+        mcm1Aux(n1, n2, i+1, gcd);
+    }
+
+    int mcm1(int n1, int n2){
+        int gcd = 0;
+        if (n1 == n2) return n1;
+        mcm1Aux(n1, n2, 1, gcd);
+        return (n1*n2/gcd);
+    }
+
+    int mcm2Aux(int n1, int n2, int max) {
+        if (max % n1 == 0 && max % n2 == 0) return max;
+        return mcm2Aux(n1, n2, max+1);
+    }
+
+    int mcm2(int n1, int n2) {
+        if (n1 == n2) return n1;
+        if (n1 >= n2) return mcm2Aux(n1, n2, n1);
+        else return mcm2Aux(n1, n2, n2);
+    }
+
+    print(mcm1(72,120));
+    print(mcm2(72,120));
+}

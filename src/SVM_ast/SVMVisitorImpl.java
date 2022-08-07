@@ -89,6 +89,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 						SVMParser.MULT,
 						SVMParser.MULTI,
 						SVMParser.DIV,
+						SVMParser.MOD,
+						SVMParser.MODI,
 						SVMParser.LW,
 						SVMParser.SW,
 						SVMParser.LB,
@@ -240,6 +242,24 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	@Override
 	public Void visitDivi(SVMParser.DiviContext ctx) {
 		code[ip++] = SVMParser.DIVI;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = Integer.parseInt(ctx.val.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitMod(SVMParser.ModContext ctx) {
+		code[ip++] = SVMParser.MOD;
+		code[ip++] = regLabelToCode(ctx.dest.getText());
+		code[ip++] = regLabelToCode(ctx.reg1.getText());
+		code[ip++] = regLabelToCode(ctx.reg2.getText());
+		return null;
+	}
+
+	@Override
+	public Void visitModi(SVMParser.ModiContext ctx) {
+		code[ip++] = SVMParser.MODI;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] = Integer.parseInt(ctx.val.getText());
