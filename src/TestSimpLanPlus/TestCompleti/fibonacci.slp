@@ -1,0 +1,54 @@
+{
+
+    int fib(int n){
+        if (n<=1) return n;
+        else return fib(n-1) + fib(n-2);
+    }
+
+    int res;
+    int correct;
+    int correctCount = 0;
+
+    // La prima stampa è il risultato della funzione, la seconda è il confronto tra il risultato ottenuto e quello atteso.
+    // Se tutti i booleani sono true, il codice funziona
+
+    res = fib(5);
+    correct = 5;
+    print(res);
+
+    if (res == correct) correctCount = correctCount +1;
+    else {
+        print(-1);
+        print(correct);
+    }
+
+    res = fib(12);
+    correct = 144;
+    print(res);
+    if (res == correct) correctCount = correctCount +1;
+    else {
+        print(-1);
+        print(correct);
+    }
+
+    res = fib(24);
+    correct = 46369;
+    print(res);
+    if (res == correct) correctCount = correctCount +1;
+    else {
+        print(-1);
+        print(correct);
+    }
+
+    res = fib(25);
+    correct = 75025;
+    print(res);
+    if (res == correct) correctCount = correctCount +1;
+    else {
+        print(-1);
+        print(correct);
+    }
+
+    if (correctCount == 5) print(true);
+    else print(false);
+}
