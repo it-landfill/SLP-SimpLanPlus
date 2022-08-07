@@ -48,6 +48,7 @@ public class ArithmExpNode implements Node {
 			case "-" -> sb.append("sub");
 			case "*" -> sb.append("mult");
 			case "/" -> sb.append("div");
+			case "%" -> sb.append("mod"); //TODO: VA AGGIUNTO A DOCUMENTAZIONE TYPE CHECK
 		}
 		// Inserisco priuma t1 e poi t0 perchè questo è l'ordine in cui sono stati definiti
 		sb.append(" $t0 $t1 $t0\n");
