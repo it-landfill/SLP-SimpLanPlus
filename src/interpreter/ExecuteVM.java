@@ -1,11 +1,8 @@
 package interpreter;
 
-import SLP_ast.STentry;
 import SVM_parser.SVMParser;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayDeque;
-import java.util.HashMap;
 
 public class ExecuteVM {
 
@@ -20,8 +17,6 @@ public class ExecuteVM {
 
 	private int ip = 0;
 	private int sp = MEMSIZE-1, fp = MEMSIZE-1, ra = MEMSIZE-1;
-
-	private int hp = 0;
 
 	private static byte[] intToBytes(int i) {
 		return ByteBuffer.allocate(4).putInt(i).array();
@@ -150,12 +145,12 @@ public class ExecuteVM {
 	}
 
 	/*
-	* Le seguenti operazioni non sono implementate poichè convertite in altre operazioni in SVMVisitorImpl
+	* Le seguenti operazioni non sono implementate poiché convertite in altre operazioni in SVMVisitorImpl
 	* neq -> eq + not
 	* */
 	public boolean evaluate() {
 		while ( true ) {
-			if(hp+1>=sp) {
+			if(sp==0) {
 				System.out.println("\nError: Out of memory");
 				return false;
 			}
@@ -270,6 +265,10 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						r1 = readReg(r1);
 						r2 = readReg(r2);
+						if (r2 == 0) {
+							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						writeReg(rd, r1/r2);
 					}
 					case SVMParser.DIVI -> {
@@ -277,6 +276,10 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r1 = readReg(r1);
+						if (val == 0) {
+							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						writeReg(rd, r1/val);
 					}
 					case SVMParser.MOD -> {
@@ -285,6 +288,10 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						r1 = readReg(r1);
 						r2 = readReg(r2);
+						if (r2 == 0) {
+							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						writeReg(rd, r1%r2);
 					}
 					case SVMParser.MODI -> {
@@ -292,6 +299,10 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r1 = readReg(r1);
+						if (val == 0) {
+							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							return false;
+						}
 						writeReg(rd, r1%val);
 					}
 					case SVMParser.LT -> {
