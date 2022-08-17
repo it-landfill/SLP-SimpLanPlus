@@ -3,7 +3,7 @@ pushw $fp
 subi $sp $sp 16
 mov $fp $sp
 ; End environment header
-jal block_1
+jal block_0
 ; Begin function
 fact_0:
 mov $fp $sp
@@ -19,13 +19,13 @@ li $t0 1
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_3
+beq $t0 $t1 ifElse_0
 ; Begin Return
 li $t0 1
 jal fact_0_footer
 ; End Return
-jal ifEnd_4
-ifElse_3:
+jal ifEnd_0
+ifElse_0:
 ; Begin Return
 ; Begin load variable n
 mov $t1 $fp
@@ -50,7 +50,7 @@ popw $t1
 mult $t0 $t1 $t0
 jal fact_0_footer
 ; End Return
-ifEnd_4:
+ifEnd_0:
 ; End ITE
 ; Begin function footer
 fact_0_footer:
@@ -59,7 +59,7 @@ addi $sp $sp 4
 popw $fp
 jr $ra
 ; End function
-block_1:
+block_0:
 ; Begin decl-assignment variable errorCount
 li $t0 0
 sw $t0 13($fp)
@@ -101,7 +101,7 @@ lw $t0 9($t1)
 popw $t1
 neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_6
+beq $t0 $t1 ifEnd_1
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
@@ -146,7 +146,7 @@ sw $t0 13($t1)
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
-ifEnd_6:
+ifEnd_1:
 ; End ITE
 ; Begin assignment variable val
 li $t0 2
@@ -185,7 +185,7 @@ lw $t0 9($t1)
 popw $t1
 neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_9
+beq $t0 $t1 ifEnd_2
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
@@ -230,7 +230,7 @@ sw $t0 13($t1)
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
-ifEnd_9:
+ifEnd_2:
 ; End ITE
 ; Begin assignment variable val
 li $t0 3
@@ -269,7 +269,7 @@ lw $t0 9($t1)
 popw $t1
 neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_12
+beq $t0 $t1 ifEnd_3
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
@@ -314,7 +314,7 @@ sw $t0 13($t1)
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
-ifEnd_12:
+ifEnd_3:
 ; End ITE
 ; Begin assignment variable val
 li $t0 4
@@ -353,7 +353,7 @@ lw $t0 9($t1)
 popw $t1
 neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_15
+beq $t0 $t1 ifEnd_4
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
@@ -398,7 +398,7 @@ sw $t0 13($t1)
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
-ifEnd_15:
+ifEnd_4:
 ; End ITE
 ; Begin assignment variable val
 li $t0 5
@@ -437,7 +437,7 @@ lw $t0 9($t1)
 popw $t1
 neq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_18
+beq $t0 $t1 ifEnd_5
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
@@ -482,7 +482,7 @@ sw $t0 13($t1)
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
 ; End environment
-ifEnd_18:
+ifEnd_5:
 ; End ITE
 ; Begin ITE
 ; Begin load variable errorCount
@@ -494,16 +494,16 @@ li $t0 0
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_20
+beq $t0 $t1 ifElse_6
 ; Print 
 li $t0 1
 printb $t0
-jal ifEnd_21
-ifElse_20:
+jal ifEnd_6
+ifElse_6:
 ; Print 
 li $t0 0
 printb $t0
-ifEnd_21:
+ifEnd_6:
 ; End ITE
 ; Begin environment footer
 addi $sp $sp 16

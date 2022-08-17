@@ -3,7 +3,7 @@ pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
 mov $fp $sp
 ; End environment header
-jal block_4
+jal block_0
 ; Begin function
 mcm1Aux_0:
 mov $fp $sp
@@ -36,11 +36,11 @@ gt $t0 $t1 $t0
 popb $t1
 or $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_7
+beq $t0 $t1 ifEnd_0
 ; Begin Return
 jal mcm1Aux_0_footer
 ; End Return
-ifEnd_7:
+ifEnd_0:
 ; End ITE
 ; Begin ITE
 ; Begin load variable n1
@@ -77,7 +77,7 @@ eq $t0 $t1 $t0
 popb $t1
 and $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_9
+beq $t0 $t1 ifEnd_1
 ; Begin assignment variable gcd
 ; Begin load variable i
 mov $t1 $fp
@@ -87,7 +87,7 @@ mov $t1 $fp
 lw $t1 13($t1)
 sw $t0 0($t1)
 ; End assignment variable gcd
-ifEnd_9:
+ifEnd_1:
 ; End ITE
 ; Begin function call mcm1Aux
 pushw $fp
@@ -129,7 +129,7 @@ popw $fp
 jr $ra
 ; End function
 ; Begin function
-mcm1_1:
+mcm1_0:
 mov $fp $sp
 pushw $ra
 ; End function header
@@ -150,15 +150,15 @@ lw $t0 5($t1)
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_12
+beq $t0 $t1 ifEnd_2
 ; Begin Return
 ; Begin load variable n1
 mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
-jal mcm1_1_footer
+jal mcm1_0_footer
 ; End Return
-ifEnd_12:
+ifEnd_2:
 ; End ITE
 ; Begin function call mcm1Aux
 pushw $fp
@@ -204,17 +204,17 @@ lw $t0 9($t1)
 ; End load variable gcd
 popw $t1
 div $t0 $t1 $t0
-jal mcm1_1_footer
+jal mcm1_0_footer
 ; End Return
 ; Begin function footer
-mcm1_1_footer:
+mcm1_0_footer:
 popw $ra
 addi $sp $sp 8
 popw $fp
 jr $ra
 ; End function
 ; Begin function
-mcm2Aux_2:
+mcm2Aux_0:
 mov $fp $sp
 pushw $ra
 ; End function header
@@ -253,15 +253,15 @@ eq $t0 $t1 $t0
 popb $t1
 and $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_15
+beq $t0 $t1 ifEnd_3
 ; Begin Return
 ; Begin load variable max
 mov $t1 $fp
 lw $t0 9($t1)
 ; End load variable max
-jal mcm2Aux_2_footer
+jal mcm2Aux_0_footer
 ; End Return
-ifEnd_15:
+ifEnd_3:
 ; End ITE
 ; Begin Return
 ; Begin function call with return mcm2Aux
@@ -288,19 +288,19 @@ mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
 pushw $t0
-jal mcm2Aux_2
+jal mcm2Aux_0
 ; End function call with return mcm2Aux
-jal mcm2Aux_2_footer
+jal mcm2Aux_0_footer
 ; End Return
 ; Begin function footer
-mcm2Aux_2_footer:
+mcm2Aux_0_footer:
 popw $ra
 addi $sp $sp 12
 popw $fp
 jr $ra
 ; End function
 ; Begin function
-mcm2_3:
+mcm2_0:
 mov $fp $sp
 pushw $ra
 ; End function header
@@ -317,15 +317,15 @@ lw $t0 5($t1)
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_18
+beq $t0 $t1 ifEnd_4
 ; Begin Return
 ; Begin load variable n1
 mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
-jal mcm2_3_footer
+jal mcm2_0_footer
 ; End Return
-ifEnd_18:
+ifEnd_4:
 ; End ITE
 ; Begin ITE
 ; Begin load variable n1
@@ -340,7 +340,7 @@ lw $t0 5($t1)
 popw $t1
 gte $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_19
+beq $t0 $t1 ifElse_5
 ; Begin Return
 ; Begin function call with return mcm2Aux
 pushw $fp
@@ -362,12 +362,12 @@ mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
 pushw $t0
-jal mcm2Aux_2
+jal mcm2Aux_0
 ; End function call with return mcm2Aux
-jal mcm2_3_footer
+jal mcm2_0_footer
 ; End Return
-jal ifEnd_20
-ifElse_19:
+jal ifEnd_5
+ifElse_5:
 ; Begin Return
 ; Begin function call with return mcm2Aux
 pushw $fp
@@ -389,20 +389,20 @@ mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
 pushw $t0
-jal mcm2Aux_2
+jal mcm2Aux_0
 ; End function call with return mcm2Aux
-jal mcm2_3_footer
+jal mcm2_0_footer
 ; End Return
-ifEnd_20:
+ifEnd_5:
 ; End ITE
 ; Begin function footer
-mcm2_3_footer:
+mcm2_0_footer:
 popw $ra
 addi $sp $sp 8
 popw $fp
 jr $ra
 ; End function
-block_4:
+block_0:
 ; Print 
 ; Begin function call with return mcm1
 pushw $fp
@@ -412,7 +412,7 @@ pushw $t0
 ; Saving actual parameter n1
 li $t0 72
 pushw $t0
-jal mcm1_1
+jal mcm1_0
 ; End function call with return mcm1
 printw $t0
 ; Print 
@@ -422,9 +422,9 @@ pushw $fp
 li $t0 120
 pushw $t0
 ; Saving actual parameter n1
-li $t0 72
+li $t0 2
 pushw $t0
-jal mcm2_3
+jal mcm2_0
 ; End function call with return mcm2
 printw $t0
 ; Begin environment footer

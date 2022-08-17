@@ -20,6 +20,6 @@
     int res = -1;
 
     print(mcd1(24,30));
-    mcd2(24,30, res);
+    mcd2(24,31, res);
     print(res);
 }

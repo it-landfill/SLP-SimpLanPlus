@@ -3,7 +3,7 @@ pushw $fp
 subi $sp $sp 4
 mov $fp $sp
 ; End environment header
-jal block_2
+jal block_0
 ; Begin function
 mcd1_0:
 mov $fp $sp
@@ -22,7 +22,7 @@ lw $t0 5($t1)
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifEnd_5
+beq $t0 $t1 ifEnd_0
 ; Begin Return
 ; Begin load variable n1
 mov $t1 $fp
@@ -30,7 +30,7 @@ lw $t0 1($t1)
 ; End load variable n1
 jal mcd1_0_footer
 ; End Return
-ifEnd_5:
+ifEnd_0:
 ; End ITE
 ; Begin ITE
 ; Begin load variable n1
@@ -45,7 +45,7 @@ lw $t0 5($t1)
 popw $t1
 lt $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_6
+beq $t0 $t1 ifElse_1
 ; Begin Return
 ; Begin function call with return mcd1
 pushw $fp
@@ -72,8 +72,8 @@ jal mcd1_0
 ; End function call with return mcd1
 jal mcd1_0_footer
 ; End Return
-jal ifEnd_7
-ifElse_6:
+jal ifEnd_1
+ifElse_1:
 ; Begin Return
 ; Begin function call with return mcd1
 pushw $fp
@@ -100,7 +100,7 @@ jal mcd1_0
 ; End function call with return mcd1
 jal mcd1_0_footer
 ; End Return
-ifEnd_7:
+ifEnd_1:
 ; End ITE
 ; Begin function footer
 mcd1_0_footer:
@@ -110,7 +110,7 @@ popw $fp
 jr $ra
 ; End function
 ; Begin function
-mcd2_1:
+mcd2_0:
 mov $fp $sp
 pushw $ra
 ; End function header
@@ -127,7 +127,7 @@ lw $t0 5($t1)
 popw $t1
 eq $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_9
+beq $t0 $t1 ifElse_2
 ; Begin environment
 pushw $fp
 ; subi $sp $sp 0 (Not needed since value is 0)
@@ -145,16 +145,16 @@ lw $t1 9($t1)
 sw $t0 0($t1)
 ; End assignment variable res
 ; Begin Return
-jal block_11_footer
+jal block_3_footer
 ; End Return
 ; Begin environment footer
-block_11_footer:
+block_3_footer:
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
-jal mcd2_1_footer
+jal mcd2_0_footer
 ; End environment
-jal ifEnd_10
-ifElse_9:
+jal ifEnd_2
+ifElse_2:
 ; Begin ITE
 ; Begin load variable n1
 mov $t1 $fp
@@ -168,7 +168,7 @@ lw $t0 5($t1)
 popw $t1
 lt $t0 $t1 $t0
 li $t1 0
-beq $t0 $t1 ifElse_12
+beq $t0 $t1 ifElse_3
 ; Begin function call mcd2
 pushw $fp
 ; Saving actual parameter by reference res
@@ -196,10 +196,10 @@ mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
 pushw $t0
-jal mcd2_1
+jal mcd2_0
 ; End function call mcd2
-jal ifEnd_13
-ifElse_12:
+jal ifEnd_3
+ifElse_3:
 ; Begin function call mcd2
 pushw $fp
 ; Saving actual parameter by reference res
@@ -227,20 +227,20 @@ lw $t0 5($t1)
 popw $t1
 sub $t0 $t1 $t0
 pushw $t0
-jal mcd2_1
+jal mcd2_0
 ; End function call mcd2
-ifEnd_13:
+ifEnd_3:
 ; End ITE
-ifEnd_10:
+ifEnd_2:
 ; End ITE
 ; Begin function footer
-mcd2_1_footer:
+mcd2_0_footer:
 popw $ra
 addi $sp $sp 12
 popw $fp
 jr $ra
 ; End function
-block_2:
+block_0:
 ; Begin decl-assignment variable res
 li $t0 1
 neg $t0 $t0
@@ -267,12 +267,12 @@ addi $t0 $t1 1
 ; End load variable res
 pushw $t0
 ; Saving actual parameter n2
-li $t0 30
+li $t0 31
 pushw $t0
 ; Saving actual parameter n1
 li $t0 24
 pushw $t0
-jal mcd2_1
+jal mcd2_0
 ; End function call mcd2
 ; Print 
 ; Begin load variable res
