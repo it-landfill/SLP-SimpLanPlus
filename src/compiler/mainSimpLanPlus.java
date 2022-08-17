@@ -108,9 +108,11 @@ public class mainSimpLanPlus {
 				if (svmLexer.lexicalErrors > 0 || svmParser.getNumberOfSyntaxErrors() > 0) System.exit(1);
 
 
-				System.out.println("Starting Virtual Machine...");
+				System.out.println("[INFO] Starting Virtual Machine...");
 				ExecuteVM vm = new ExecuteVM(svmVisitor.code);
+				System.out.println("\n[INFO] Program Output:");
 				vm.evaluate();
+				System.out.println("[INFO] End Program Output");
 			}
 		}
 	}

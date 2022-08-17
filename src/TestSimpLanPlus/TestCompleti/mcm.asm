@@ -422,7 +422,7 @@ pushw $fp
 li $t0 120
 pushw $t0
 ; Saving actual parameter n1
-li $t0 2
+li $t0 72
 pushw $t0
 jal mcm2_0
 ; End function call with return mcm2

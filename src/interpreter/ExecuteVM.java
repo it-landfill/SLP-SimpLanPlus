@@ -143,11 +143,15 @@ public class ExecuteVM {
 	 * neq -> eq + not
 	 * */
 	public boolean evaluate() {
+		int maxSP = MEMSIZE - 1;
+		long startTime = System.currentTimeMillis();
+
 		while (true) {
 			if (sp == 0) {
 				outOfMemoryError();
 				return false;
 			} else {
+				maxSP = Math.min(maxSP, sp);
 				int bytecode = code[ip++]; // fetch
 				int rd, r1, r2, val;
 				switch (bytecode) {
@@ -156,6 +160,7 @@ public class ExecuteVM {
 							outOfMemoryError("PushInt");
 							return false;
 						}
+
 					}
 					case SVMParser.POPINT -> {
 						if (!popInt()) {
@@ -415,8 +420,12 @@ public class ExecuteVM {
 						if (r1 == r2) ip = rd;
 					}
 					case SVMParser.HALT -> {
-						//to print the result
-						System.out.println("\nEnd program.");
+						long endTime = System.currentTimeMillis();
+						int usedMem = MEMSIZE-maxSP+1;
+						double usedPercent = (usedMem / (double)MEMSIZE)*100;
+						System.out.println("\n[INFO] Program terminated correctly.");
+						System.out.println("[INFO] Your program used " + usedMem + "/" + MEMSIZE + " bytes of memory. (" + usedPercent + " %)");
+						System.out.println("[INFO] Your program took ~" + (endTime - startTime) + " ms to complete.");
 						return true;
 					}
 					default -> {

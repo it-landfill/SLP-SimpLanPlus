@@ -28,5 +28,5 @@
     }
 
     print(mcm1(72,120));
-    print(mcm2(2,120));
+    print(mcm2(72,120));
 }
