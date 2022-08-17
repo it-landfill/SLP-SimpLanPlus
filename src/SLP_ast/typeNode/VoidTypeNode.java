@@ -9,10 +9,8 @@ import java.util.ArrayList;
 
 public class VoidTypeNode extends TypeNode {
 
-	public VoidTypeNode() {
+	@Override
+	public String toString() {
+		return "void";
 	}
-
-
-
-
 }

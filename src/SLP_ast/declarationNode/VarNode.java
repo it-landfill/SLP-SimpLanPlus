@@ -17,80 +17,78 @@ import java.util.ArrayList;
  * such as type, variable identifier, and the value.
  */
 public class VarNode implements Node {
-    /**
-     * Variable name.
-     */
-    private final String ID;
-    /**
-     * Variable type.
-     */
-    private final TypeNode type;
-    /**
-     * Expression to be assigned to the variable
-     */
-    private final Node exp;
-    private STentry entry;
+	/**
+	 * Variable name.
+	 */
+	private final String ID;
+	/**
+	 * Variable type.
+	 */
+	private final TypeNode type;
+	/**
+	 * Expression to be assigned to the variable
+	 */
+	private final Node exp;
+	private STentry entry;
 
-    public VarNode(String ID, TypeNode type, Node exp) {
-        this.ID = ID;
-        this.type = type;
-        this.exp = exp;
-    }
+	public VarNode(String ID, TypeNode type, Node exp) {
+		this.ID = ID;
+		this.type = type;
+		this.exp = exp;
+	}
 
-    public VarNode(String ID, TypeNode type) {
-        this(ID, type, null);
-    }
+	public VarNode(String ID, TypeNode type) {
+		this(ID, type, null);
+	}
 
-    @Override
-    public String toPrint(String indent) {
-        StringBuilder out = new StringBuilder();
-        out.append(indent).append("var: ").append(type.toPrint(indent)).append(" ").append(ID);
-        if (exp != null) out.append(" ").append(exp.toPrint(indent));
-        return out.toString();
-    }
+	@Override
+	public String toPrint(String indent) {
+		StringBuilder out = new StringBuilder();
+		out.append(indent).append("var: ").append(type.toPrint(indent)).append(" ").append(ID);
+		if (exp != null) out.append(" ").append(exp.toPrint(indent));
+		return out.toString();
+	}
 
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-        ArrayList<SemanticError> errors = new ArrayList<>();
-        // Generation of the entry for the symbol table.
+	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+		// Generation of the entry for the symbol table.
 
-        entry = new STentry(Environment.getNestingLevel(), type, env.getOffset(), ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
+		entry = new STentry(Environment.getNestingLevel(), type, env.getOffset(), ID, (exp == null ? STentry.Effects.DECLARED : STentry.Effects.INITIALIZED));
 
-        if (SLPUtils.checkIntType(type)) env.offsetAddInt();
-        else env.offsetAddBool();
+		if (SLPUtils.checkIntType(type)) env.offsetAddInt();
+		else env.offsetAddBool();
 
-        // Attempt to add the entry to the symbol table. In case of failure, an error is reported.
-        if (symbolTable.addToSymbolTable(entry))
-            errors.add(new SemanticError("Var " + ID + " already declared"));
-        // Semantic check of the expression (if any).
-        if (exp != null) errors.addAll(exp.checkSemantics(env, symbolTable));
-        return errors;
-    }
+		// Attempt to add the entry to the symbol table. In case of failure, an error is reported.
+		if (symbolTable.addToSymbolTable(entry)) errors.add(new SemanticError("Var " + ID + " already declared."));
+		// Semantic check of the expression (if any).
+		if (exp != null) errors.addAll(exp.checkSemantics(env, symbolTable));
+		return errors;
+	}
 
-    @Override
-    public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+	@Override
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 
-        if (exp != null && !(SLPUtils.checkTypes(exp.typeCheck(symbolTable), type))) {
-            throw new SLPUtils.TypeCheckError("L'espressione con cui si intende inizializzare la variabile " + ID + " non  è del tipo corretto." );
+        if (exp != null) {
+            TypeNode expType = exp.typeCheck(symbolTable);
+            if (!(SLPUtils.checkTypes(expType, type))) {
+                throw new SLPUtils.TypeCheckError("The variable " + ID + " you’re assigning to is of a different type than the expression in the assignment. Expected " + type + ", got " + expType + ".");
+            }
         }
 
-        return new VoidTypeNode();
-    }
+		return new VoidTypeNode();
+	}
 
-    @Override
-    public String codeGeneration(String options) {
-        if(exp != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("; Begin decl-assignment variable ").append(ID).append("\n");
-            sb.append(exp.codeGeneration(options));
+	@Override
+	public String codeGeneration(String options) {
+		if (exp != null) {
 
-            sb.append(SLPUtils.checkIntType(type) ? "sw" : "sb").append(" $t0 ").append(entry.getOffset()).append("($fp)\n");
+            return "; Begin decl-assignment variable " + ID + "\n" +
+                    exp.codeGeneration(options) +
+                    (SLPUtils.checkIntType(type) ? "sw" : "sb") + " $t0 " + entry.getOffset() + "($fp)\n" +
+                    "; End decl-assignment variable " + ID + "\n";
+		}
 
-            sb.append("; End decl-assignment variable ").append(ID).append("\n");
-
-            return sb.toString();
-        }
-
-        return "";
-    }
+		return "";
+	}
 }

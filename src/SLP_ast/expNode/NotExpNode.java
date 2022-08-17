@@ -25,8 +25,9 @@ public class NotExpNode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		if (!(SLPUtils.checkBoolType(exp.typeCheck(symbolTable)))) {
-			throw new SLPUtils.TypeCheckError("Al not (!) non è associato un tipo boolean.");
+		TypeNode type = exp.typeCheck(symbolTable);
+		if (!SLPUtils.checkBoolType(type)) {
+			throw new SLPUtils.TypeCheckError("Bool expression expected, got" + type);
 		}
 		return new BoolTypeNode();
 	}
