@@ -35,7 +35,7 @@ public class SLPUtils {
 		//TODO: Cosa succede se esistono già delle label? funziona l'incremento?
 		String label = (baseLabel.equals("")?"label":baseLabel);
 
-		int counter = labelCount.getOrDefault(label, 0);
+		int counter = labelCount.getOrDefault(label, -1);
 		counter++;
 		labelCount.put(label, counter);
 
