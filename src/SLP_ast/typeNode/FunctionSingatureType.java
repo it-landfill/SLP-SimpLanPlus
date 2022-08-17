@@ -35,4 +35,9 @@ public class FunctionSingatureType extends TypeNode {
 	public TypeNode getReturnType() {
 		return returnType;
 	}
+
+	@Override
+	public String toString() {
+		return "function signature ("+returnType+")";
+	}
 }

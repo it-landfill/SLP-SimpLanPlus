@@ -95,7 +95,7 @@ public class BlockNode implements Node {
 				if (voidableType != null) {
 					TypeNode tmpType = ((VoidableTypeNode) tmp).getAlternativeType();
 					if (!SLPUtils.checkTypes(tmpType, voidableType))
-						throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + retType.toPrint("") + "  Type2: " + tmp.toPrint(""));
+						throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + retType + "  Type2: " + tmp);
 				} else {
 					voidableType = ((VoidableTypeNode) tmp).getAlternativeType();
 					tmp = voidableType;
@@ -103,15 +103,15 @@ public class BlockNode implements Node {
 			} else isVoidable = false;
 
 			if (!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(retType) && !SLPUtils.checkVoidType(tmp))
-				throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + retType.toPrint("") + "  Type2: " + tmp.toPrint(""));
+				throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + retType + "  Type2: " + tmp);
 			if (voidableType != null && !SLPUtils.checkTypes(voidableType, tmp) && !SLPUtils.checkVoidType(tmp))
-				throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + voidableType.toPrint("") + "  Type2: " + tmp.toPrint(""));
+				throw new SLPUtils.TypeCheckError("The types of the statements are not coherent. Type1: " + voidableType + "  Type2: " + tmp);
 
 			if (!SLPUtils.checkTypes(retType, tmp) && !SLPUtils.checkVoidType(tmp) && !isVoidable) {
 				retType = tmp;
 			}
 
-		} //TODO: Return dovrebbe uscire dalla funzione
+		}
 
 		String unused = localSymbolTable.findUnused(nestingLevel);
 		if (!unused.equals("")) System.out.println(unused);
@@ -172,17 +172,8 @@ public class BlockNode implements Node {
 		}
 
 		if (isRoot) sb.append("halt\n");
-		if (newEnv && ret_placeholder) return sb.toString().replaceAll("RETURN_CHAIN_PLACEHOLDER", blockLabel+"_footer");
+		if (newEnv && ret_placeholder)
+			return sb.toString().replaceAll("RETURN_CHAIN_PLACEHOLDER", blockLabel + "_footer");
 		else return sb.toString();
 	}
 }
-
-
-/* sp fp
- * a
- *
- *
- *
- * b
- * old_fp
- */

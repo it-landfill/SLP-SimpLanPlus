@@ -33,38 +33,6 @@ public class ITENode implements Node {
 		return out.toString();
 	}
 
-
-	@Override
-	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		TypeNode thenType;
-
-		// Controllo che la condizione dell'if sia bool
-		if(!SLPUtils.checkBoolType(condition.typeCheck(symbolTable))) {
-			throw new SLPUtils.TypeCheckError("Alla condizione dell'If non è associato un tipo boolean.");
-		}
-		SymbolTableWrapper symbolTableElse = symbolTable.clone();
-
-		// Calcolo il tipo del branch then
-		thenType = ifTrue.typeCheck(symbolTable);
-
-
-		// Se esiste else, calcolo tipo dell'else
-		if (ifFalse != null){
-			TypeNode elseType = ifFalse.typeCheck(symbolTableElse);
-			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
-			// Se lo è, il type check ritornerà void, altrimenti errore.
-			if(!SLPUtils.checkTypes(thenType, elseType)){
-				if(SLPUtils.checkVoidType(thenType)) thenType = new VoidableTypeNode(elseType);
-				else if(SLPUtils.checkVoidType(elseType)) thenType = new VoidableTypeNode(thenType);
-				else throw new SLPUtils.TypeCheckError("Nella condizione dell'If, il ramo else ha tipo diverso rispetto al ramo then.");
-			}
-
-			symbolTable.merge(symbolTableElse);
-		}
-
-		return thenType;
-	}
-
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
@@ -75,6 +43,38 @@ public class ITENode implements Node {
 
 		return errors;
 	}
+
+	@Override
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
+		// Controllo che la condizione dell'if sia bool
+		TypeNode conditionType = condition.typeCheck(symbolTable);
+		if (!SLPUtils.checkBoolType(conditionType)) {
+			throw new SLPUtils.TypeCheckError("Bool expression expected in if-condition. Got " + conditionType + ".");
+		}
+		SymbolTableWrapper symbolTableElse = symbolTable.clone();
+
+		// Calcolo il tipo del branch then
+		TypeNode thenType = ifTrue.typeCheck(symbolTable);
+
+
+		// Se esiste else, calcolo tipo dell'else
+		if (ifFalse != null) {
+			TypeNode elseType = ifFalse.typeCheck(symbolTableElse);
+			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
+			// Se lo è, il type check ritornerà void, altrimenti errore.
+			if (!SLPUtils.checkTypes(thenType, elseType)) {
+				if (SLPUtils.checkVoidType(thenType)) thenType = new VoidableTypeNode(elseType);
+				else if (SLPUtils.checkVoidType(elseType)) thenType = new VoidableTypeNode(thenType);
+				else
+					throw new SLPUtils.TypeCheckError("Type mismatch between \"branchThen\" and \"branchElse\". Got \" if(bool) { " + thenType + " } else { " + elseType + " }.");
+			}
+
+			symbolTable.merge(symbolTableElse);
+		}
+
+		return thenType;
+	}
+
 
 	@Override
 	public String codeGeneration(String options) {

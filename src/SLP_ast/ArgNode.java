@@ -31,6 +31,11 @@ public class ArgNode implements Node {
 		return indent + "arg: " + type.toPrint(indent) + " " + argName + " by reference: " + byReference;
 	}
 
+	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return type.checkSemantics(env, symbolTable);
+	}
+
 	public TypeNode getType() {
 		return type;
 	}
@@ -42,12 +47,8 @@ public class ArgNode implements Node {
 
 	@Override
 	public String codeGeneration(String options) {
-		//TODO:
 		return "";
 	}
 
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		return type.checkSemantics(env, symbolTable);
-	}
+
 }

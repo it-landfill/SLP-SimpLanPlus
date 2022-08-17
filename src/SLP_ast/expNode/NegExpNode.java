@@ -25,8 +25,9 @@ public class NegExpNode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		if (!SLPUtils.checkIntType(exp.typeCheck(symbolTable))) {
-			throw new SLPUtils.TypeCheckError("Al neg (-) non è associato un tipo integer.");
+		TypeNode type = exp.typeCheck(symbolTable);
+		if (!SLPUtils.checkIntType(type)) {
+			throw new SLPUtils.TypeCheckError("Int expression expected, got " + type);
 		}
 		return new IntTypeNode();
 	}

@@ -11,4 +11,9 @@ public class VoidableTypeNode extends VoidTypeNode{
 	public TypeNode getAlternativeType() {
 		return alternativeType;
 	}
+
+	@Override
+	public String toString() {
+		return "voidable("+alternativeType+")";
+	}
 }

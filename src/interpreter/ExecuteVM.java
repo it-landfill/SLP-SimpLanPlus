@@ -16,7 +16,11 @@ public class ExecuteVM {
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
 
 	private int ip = 0;
-	private int sp = MEMSIZE-1, fp = MEMSIZE-1, ra = MEMSIZE-1;
+	private int sp = MEMSIZE - 1, fp = MEMSIZE - 1, ra = MEMSIZE - 1;
+
+	public ExecuteVM(int[] code) {
+		this.code = code;
+	}
 
 	private static byte[] intToBytes(int i) {
 		return ByteBuffer.allocate(4).putInt(i).array();
@@ -24,10 +28,6 @@ public class ExecuteVM {
 
 	private static int bytesToInt(byte[] b) {
 		return ByteBuffer.wrap(b).getInt();
-	}
-
-	public ExecuteVM(int[] code) {
-		this.code = code;
 	}
 
 	private int readReg(int reg) {
@@ -48,29 +48,9 @@ public class ExecuteVM {
 		}
 	}
 
-	/*
-		[1, 2, 3, 4]
-
-		sp  ----
-		ra4
-		ra3
-		ra2
-		ra1 fp
-		-- 4
-		-- 3
-		-- 2
-		-- 1
-		old_fp
-
-		4, 3, 2, 1 >> 1, 2, 3, 4
-	 */
-
 	private void saveInt(int point, int off, int reg) {
-		int val = readReg(reg);
-		byte[] bytes = intToBytes(val);
 		int pos = readReg(point) + off;
-
-		System.arraycopy(bytes, 0, memory, pos, 4);
+		saveInt(pos, reg);
 	}
 
 	private void saveInt(int addr, int reg) {
@@ -80,10 +60,8 @@ public class ExecuteVM {
 	}
 
 	private void saveBool(int point, int off, int reg) {
-		int val = readReg(reg);
 		int pos = readReg(point) + off;
-		if (val != 0) memory[pos] = 1;
-		else memory[pos] = 0;
+		saveBool(pos, reg);
 	}
 
 	private void saveBool(int addr, int reg) {
@@ -93,10 +71,8 @@ public class ExecuteVM {
 	}
 
 	private void loadInt(int point, int off, int reg) {
-		byte[] bytes = new byte[4];
 		int pos = readReg(point) + off;
-		System.arraycopy(memory, pos, bytes, 0, 4);
-		writeReg(reg, bytesToInt(bytes));
+		loadInt(pos, reg);
 	}
 
 	private void loadInt(int addr, int reg) {
@@ -105,10 +81,9 @@ public class ExecuteVM {
 		writeReg(reg, bytesToInt(bytes));
 	}
 
-	private void loadBool(int point, int off, int reg) { // TODO: Posso unificare la logica delle funzioni facendo chiamare ad una l'altra??
+	private void loadBool(int point, int off, int reg) {
 		int pos = readReg(point) + off;
-		int val = memory[pos];
-		writeReg(reg, val);
+		loadBool(pos, reg);
 	}
 
 	private void loadBool(int addr, int reg) {
@@ -117,46 +92,45 @@ public class ExecuteVM {
 	}
 
 	private void popInt() {
-		loadInt(sp+1,code[ip++]);
-		sp+=4;
+		loadInt(sp + 1, code[ip++]);
+		sp += 4;
 	}
 
 	private void popBool() {
-		sp+=1;
+		sp += 1;
 		loadBool(sp, code[ip++]);
 	}
 
 	private void topInt() {
-		loadInt(sp+1, code[ip++]);
+		loadInt(sp + 1, code[ip++]);
 	}
 
 	private void topBool() {
-		loadBool(sp+1, code[ip++]);
+		loadBool(sp + 1, code[ip++]);
 	}
 
 	private void pushInt() {
-		saveInt(sp-3, code[ip++]);
-		sp-=4;
+		saveInt(sp - 3, code[ip++]);
+		sp -= 4;
 	}
 
 	private void pushBool() {
 		saveBool(sp, code[ip++]);
-		sp-=1;
+		sp -= 1;
 	}
 
 	/*
-	* Le seguenti operazioni non sono implementate poiché convertite in altre operazioni in SVMVisitorImpl
-	* neq -> eq + not
-	* */
+	 * Le seguenti operazioni non sono implementate poiché convertite in altre operazioni in SVMVisitorImpl
+	 * neq -> eq + not
+	 * */
 	public boolean evaluate() {
-		while ( true ) {
-			if(sp==0) {
-				System.out.println("\nError: Out of memory");
+		while (true) {
+			if (sp == 0) {
+				System.out.println("\nError: Out of memory.");
 				return false;
-			}
-			else {
+			} else {
 				int bytecode = code[ip++]; // fetch
-				int rd,r1,r2, val;
+				int rd, r1, r2, val;
 				switch (bytecode) {
 					case SVMParser.PUSHINT -> pushInt();
 					case SVMParser.POPINT -> popInt();
@@ -178,7 +152,7 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
 							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
@@ -188,7 +162,7 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
 							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
@@ -198,7 +172,7 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
 							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
@@ -208,7 +182,7 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val+readReg(r2) >= ExecuteVM.MEMSIZE) {
+						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
 							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
@@ -220,14 +194,14 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						r1 = readReg(r1);
 						r2 = readReg(r2);
-						writeReg(rd, r1+r2);
+						writeReg(rd, r1 + r2);
 					}
 					case SVMParser.ADDI -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						val = code[ip++];
 						r1 = readReg(r1);
-						writeReg(rd, r1+val);
+						writeReg(rd, r1 + val);
 					}
 					case SVMParser.SUB -> {
 						rd = code[ip++];
@@ -235,14 +209,14 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						r1 = readReg(r1);
 						r2 = readReg(r2);
-						writeReg(rd, r1-r2); //FIXME: Come gestisco negativi?
+						writeReg(rd, r1 - r2);
 					}
 					case SVMParser.SUBI -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						val = code[ip++];
 						r1 = readReg(r1);
-						writeReg(rd, r1-val);
+						writeReg(rd, r1 - val);
 					}
 					case SVMParser.MULT -> {
 						rd = code[ip++];
@@ -250,14 +224,14 @@ public class ExecuteVM {
 						r2 = code[ip++];
 						r1 = readReg(r1);
 						r2 = readReg(r2);
-						writeReg(rd, r1*r2);
+						writeReg(rd, r1 * r2);
 					}
 					case SVMParser.MULTI -> {
 						rd = code[ip++];
 						r1 = code[ip++];
 						val = code[ip++];
 						r1 = readReg(r1);
-						writeReg(rd, r1*val);
+						writeReg(rd, r1 * val);
 					}
 					case SVMParser.DIV -> {
 						rd = code[ip++];
@@ -269,7 +243,7 @@ public class ExecuteVM {
 							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
-						writeReg(rd, r1/r2);
+						writeReg(rd, r1 / r2);
 					}
 					case SVMParser.DIVI -> {
 						rd = code[ip++];
@@ -280,7 +254,7 @@ public class ExecuteVM {
 							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
-						writeReg(rd, r1/val);
+						writeReg(rd, r1 / val);
 					}
 					case SVMParser.MOD -> {
 						rd = code[ip++];
@@ -292,7 +266,7 @@ public class ExecuteVM {
 							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
-						writeReg(rd, r1%r2);
+						writeReg(rd, r1 % r2);
 					}
 					case SVMParser.MODI -> {
 						rd = code[ip++];
@@ -303,7 +277,7 @@ public class ExecuteVM {
 							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
-						writeReg(rd, r1%val);
+						writeReg(rd, r1 % val);
 					}
 					case SVMParser.LT -> {
 						rd = code[ip++];
@@ -371,7 +345,7 @@ public class ExecuteVM {
 						rd = code[ip++];
 						r1 = code[ip++];
 						r1 = readReg(r1);
-						writeReg(rd, -1*r1);
+						writeReg(rd, -1 * r1);
 					}
 					case SVMParser.PRINTW -> {
 						rd = code[ip++];
@@ -393,11 +367,11 @@ public class ExecuteVM {
 					}
 					case SVMParser.HALT -> {
 						//to print the result
-						System.out.println("\nEnd program");
+						System.out.println("\nEnd program.");
 						return true;
 					}
 					default -> {
-						System.out.println("[ERROR] Not a valid instruction " + bytecode + " at position " + ip + ".Terminating");
+						System.out.println("[ERROR] Not a valid instruction " + bytecode + " at position " + ip + ".\nAborting execution...");
 						return false;
 					}
 				}

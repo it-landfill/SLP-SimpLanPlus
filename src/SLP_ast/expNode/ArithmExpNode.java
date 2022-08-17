@@ -23,14 +23,25 @@ public class ArithmExpNode implements Node {
 
 	@Override
 	public String toPrint(String indent) {
-		return indent + "AritmExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent)+"\n";
+		return indent + "AritmExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent) + "\n";
+	}
+
+	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		errors.addAll(left.checkSemantics(env, symbolTable));
+		errors.addAll(right.checkSemantics(env, symbolTable));
+
+		return errors;
 	}
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		if (! ( SLPUtils.checkIntType(left.typeCheck(symbolTable)) &&
-				SLPUtils.checkIntType(right.typeCheck(symbolTable)) ) ) {
-			throw new SLPUtils.TypeCheckError("Un termine dell'operazione aritmetica (+, -, *, /) non è di tipo corretto.");
+		TypeNode leftType = left.typeCheck(symbolTable);
+		TypeNode rightType = right.typeCheck(symbolTable);
+		if (!(SLPUtils.checkIntType(leftType) && SLPUtils.checkIntType(rightType))) {
+			throw new SLPUtils.TypeCheckError("Int expression expected for arithmetic operators. Got " + leftType + op + rightType + ".");
 		}
 		return new IntTypeNode();
 	}
@@ -43,7 +54,7 @@ public class ArithmExpNode implements Node {
 		sb.append("pushw $t0\n");
 		sb.append(right.codeGeneration(options));
 		sb.append("popw $t1\n");
-		switch(op) {
+		switch (op) {
 			case "+" -> sb.append("add");
 			case "-" -> sb.append("sub");
 			case "*" -> sb.append("mult");
@@ -54,15 +65,5 @@ public class ArithmExpNode implements Node {
 		sb.append(" $t0 $t1 $t0\n");
 
 		return sb.toString();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		errors.addAll(left.checkSemantics(env, symbolTable));
-		errors.addAll(right.checkSemantics(env, symbolTable));
-
-		return errors;
 	}
 }

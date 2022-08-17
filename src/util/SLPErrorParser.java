@@ -31,6 +31,9 @@ public class SLPErrorParser extends BaseErrorListener {
         return !syntaxErrors.isEmpty();
     }
 
+    //TODO: Comment
+    public int count() {return syntaxErrors.size();}
+
     /**
      * @param recognizer
      * @param offendingSymbol    Symbol that generated the error

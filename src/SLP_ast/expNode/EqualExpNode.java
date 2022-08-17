@@ -31,8 +31,8 @@ public class EqualExpNode implements Node {
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode leftType = left.typeCheck(symbolTable);
 		TypeNode rightType = right.typeCheck(symbolTable);
-		if (! SLPUtils.checkTypes(leftType, rightType)) {
-			throw new SLPUtils.TypeCheckError("Al eq (==) o neq (!=) non sono associati i tipi corretti.");
+		if (!SLPUtils.checkTypes(leftType, rightType)) {
+			throw new SLPUtils.TypeCheckError("Type mismatch between \"arg1\" and \"arg2\". Got " + leftType + op + rightType + ".");
 		}
 		type = leftType;
 		return new BoolTypeNode();
@@ -47,7 +47,7 @@ public class EqualExpNode implements Node {
 		sb.append(isInt ? "pushw" : "pushb").append(" $t0\n");
 		sb.append(right.codeGeneration(options));
 		sb.append(isInt ? "popw" : "popb").append(" $t1\n");
-		switch(op) {
+		switch (op) {
 			case "==" -> sb.append("eq");
 			case "!=" -> sb.append("neq");
 		}

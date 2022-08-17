@@ -43,10 +43,10 @@ public class mainSimpLanPlus {
 		// If errors have been identified in the lexical analysis phase, they are printed, a report
 		// file is generated, and the program stops.
 		if (errHandler.hasMessages()) {
-			System.out.println("[ERROR] There were some errors while parsing the program.");
+			System.out.println("[WARN] You had " + errHandler.count() + " errors while parsing the program:");
 			System.out.println(errHandler);
 			errHandler.dumpToFile(fileName);
-			System.out.println("[ERROR] Program parsing failed");
+			System.out.println("[ERROR] Program parsing failed.");
 			return;
 		}
 		System.out.println("[INFO] No lexical error found.");
@@ -59,18 +59,15 @@ public class mainSimpLanPlus {
 		// If errors have been identified in the semantic analysis phase, they are printed, a report
 		// file is generated, and the program stops.
 		if (err != null && err.size() > 0) {
-			System.out.println("You had " + err.size() + " semantic errors:");
+			System.out.println("[WARN] You had " + err.size() + " semantic errors:");
 			for (SemanticError e : err)
 				System.out.println("\t" + e);
-			System.out.println("[ERROR] Program parsing failed");
+			System.out.println("[ERROR] Program parsing failed.");
 			return;
 		}
 		System.out.println("[INFO] No semantic error found.");
 
-		System.out.println("[SUCCESS] Program parsing completed");
-
-		System.out.println("Visualizing AST...");
-		System.out.println(ast.toPrint(""));
+		System.out.println("[SUCCESS] Program parsing completed.");
 
 		if (runTypeCheck) {
 			System.out.println("[INFO] Starting type check.");

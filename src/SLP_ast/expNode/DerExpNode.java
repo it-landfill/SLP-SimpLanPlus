@@ -35,10 +35,10 @@ public class DerExpNode implements Node {
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} else if (entry.getType() instanceof FunctionSingatureType) {
-			errors.add(new SemanticError("Var " + ID + " is a function"));
+			errors.add(new SemanticError("Var " + ID + " is a function."));
 		}
 
-		stOccupiedBytes =  symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
+		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
 
 		return errors;
 	}
@@ -47,12 +47,11 @@ public class DerExpNode implements Node {
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel()); // Mi serve perchè copio le symbolTable
 		if (entry == null) {
-			System.out.println("L'ID richiamato non risulta essere dichiarato.");
-			throw new SLPUtils.TypeCheckError("L'ID richiamato (" + ID + ") non risulta essere dichiarato.");
+			throw new SLPUtils.TypeCheckError("Variable not declared: " + ID + ".");
 		}
 
 		if (entry.getEffect() == STentry.Effects.DECLARED || entry.getEffect() == STentry.Effects.NONE) {
-			throw new SLPUtils.TypeCheckError("L'ID richiamato (" + ID + ") non risulta essere inizializzato.");
+			throw new SLPUtils.TypeCheckError("Variable not initialized: " + ID + ".");
 		} else if (entry.getEffect() != STentry.Effects.USED) entry.setEffect(STentry.Effects.USED);
 
 		return entry.getType();
@@ -68,17 +67,18 @@ public class DerExpNode implements Node {
 		out.append("mov $t1 $fp\n");
 		out.append(("lw $t1 " + (stOccupiedBytes + 1) + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
 
-		if (options != null && options.equalsIgnoreCase("getAddress")){
+		if (options != null && options.equalsIgnoreCase("getAddress")) {
 			// Se la variabile in esame (entry) è già un puntatore, allora carico in $t0 l'indirizzo a cui punta il puntatore attuale
 			if (entry.isReference()) out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
-			// Altrimenti calcolo l'indirizzo a cui deve puntare e lo salvo in $t0
+				// Altrimenti calcolo l'indirizzo a cui deve puntare e lo salvo in $t0
 			else out.append("addi $t0 $t1 ").append(entry.getOffset()).append("\n");
 		} else {
 			if (entry.isReference()) {
 				// Se la variabile in esame (entry) è un puntatore, carico in $t0 l'indirizzo a cui punta e, in seguito carico il valore contenuto nella cella puntata.
 				out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
 				out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 0($t0)\n");
-			} else out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+			} else
+				out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
 		}
 
 		out.append("; End load variable ").append(ID).append("\n");

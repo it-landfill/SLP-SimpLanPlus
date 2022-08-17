@@ -27,10 +27,21 @@ public class CompareExpNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		errors.addAll(left.checkSemantics(env, symbolTable));
+		errors.addAll(right.checkSemantics(env, symbolTable));
+
+		return errors;
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		if (!(SLPUtils.checkIntType(left.typeCheck(symbolTable)) &&
-				SLPUtils.checkIntType(right.typeCheck(symbolTable)))) {
-			throw new SLPUtils.TypeCheckError("Un termine dell'operazione logica (>=, <=, >, <) non è di tipo corretto.");
+		TypeNode leftType = left.typeCheck(symbolTable);
+		TypeNode rightType = right.typeCheck(symbolTable);
+		if (!(SLPUtils.checkIntType(leftType) && SLPUtils.checkIntType(rightType))) {
+			throw new SLPUtils.TypeCheckError("Int expression expected for compare operators. Got " + leftType + op + rightType + ".");
 		}
 		return new BoolTypeNode();
 	}
@@ -52,15 +63,5 @@ public class CompareExpNode implements Node {
 		sb.append(" $t0 $t1 $t0\n");
 
 		return sb.toString();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		errors.addAll(left.checkSemantics(env, symbolTable));
-		errors.addAll(right.checkSemantics(env, symbolTable));
-
-		return errors;
 	}
 }

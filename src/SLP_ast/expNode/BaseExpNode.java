@@ -9,8 +9,6 @@ import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
-// Potrebbe essere eliminato come nodo. (secondo Ale)
-
 public class BaseExpNode implements Node {
 	private final Node exp;
 

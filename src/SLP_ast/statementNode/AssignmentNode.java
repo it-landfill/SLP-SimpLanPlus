@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class AssignmentNode implements Node {
 	private final String ID;
-	private STentry entry;
 	private final Node exp;
+	private STentry entry;
 	private int nestinglevel;
 	private int stOccupiedBytes;
 
@@ -36,7 +36,7 @@ public class AssignmentNode implements Node {
 		entry = symbolTable.findFirstInSymbolTable(ID);
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
-		} else if(entry.getType() instanceof FunctionSingatureType) {
+		} else if (entry.getType() instanceof FunctionSingatureType) {
 			errors.add(new SemanticError(ID + " is a function, not a variable. You can't assign value to a function."));
 		}
 
@@ -51,13 +51,14 @@ public class AssignmentNode implements Node {
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel()); // Mi serve perchè copio le symbolTable
 		if (entry == null) {
-			throw new SLPUtils.TypeCheckError("L'ID richiamato non risulta essere dichiarato.");
+			throw new SLPUtils.TypeCheckError("Variable not declared: " + ID + ".");
 		}
 
-		if (!(SLPUtils.checkTypes(exp.typeCheck(symbolTable), entry.getType()))) {
-			throw new SLPUtils.TypeCheckError("Al asgm (=) non sono associati i tipi corretti.");
+		TypeNode expType = exp.typeCheck(symbolTable);
+		TypeNode entryType = entry.getType();
+		if (!(SLPUtils.checkTypes(expType, entryType))) {
+			throw new SLPUtils.TypeCheckError("The variable " + ID + " you’re assigning to is of a different type than the expression in the assignment. Expected " + entryType + ", got " + expType + ".");
 		}
-
 		if (entry.getEffect() == STentry.Effects.DECLARED) entry.setEffect(STentry.Effects.INITIALIZED);
 
 		return new VoidTypeNode();

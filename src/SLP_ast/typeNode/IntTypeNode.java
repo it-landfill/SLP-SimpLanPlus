@@ -14,4 +14,8 @@ public class IntTypeNode extends TypeNode {
 		return indent + "type: integer";
 	}
 
+	@Override
+	public String toString() {
+		return "int";
+	}
 }

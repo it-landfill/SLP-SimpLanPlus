@@ -57,11 +57,11 @@ public class CallNode implements Node {
 		STentry entry = symbolTable.findFirstInSymbolTable(funcName);
 
 		if (entry == null) {
-			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope"));
+			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope."));
 		} else {
 			// Se il numero di args è -1, la entry è una variabile, non una funzione
 			if (!(entry.getType() instanceof FunctionSingatureType)) {
-				errors.add(new SemanticError("Fun " + funcName + " is not a function"));
+				errors.add(new SemanticError("Fun " + funcName + " is not a function."));
 				return errors;
 			}
 
@@ -71,11 +71,11 @@ public class CallNode implements Node {
 
 			if (actualParams != null) {
 				if (formalParams == null || formalParams.size() != actualParams.size()) {
-					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + (formalParams == null ? 0 : formalParams.size()) + ". Have " + actualParams.size()));
+					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + (formalParams == null ? 0 : formalParams.size()) + ". Have " + actualParams.size() + "."));
 				}
 			} else {
 				if (formalParams != null && formalParams.size() != 0) {
-					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + formalParams.size() + ". Have 0"));
+					errors.add(new SemanticError("Parameter number for " + funcName + " does not match. Expected " + formalParams.size() + ". Have 0."));
 				}
 			}
 		}
@@ -108,9 +108,9 @@ public class CallNode implements Node {
 				tf = pf.typeCheck(symbolTable);
 
 				if (pf.isByReference() && !(pa instanceof DerExpNode))
-					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.toPrint("") + " should be a variable (parameter is set as var in function declaration)");
+					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.getArgName() + " should be a variable (parameter is set as var in function declaration).");
 				if (!SLPUtils.checkTypes(ta, tf))
-					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.toPrint("") + " should be " + tf.toPrint("") + ", type found: " + ta.toPrint(""));
+					throw new SLPUtils.TypeCheckError("In function call " + entry.getID() + ", parameter " + pf.getArgName() + " should be " + tf + ", type found: " + ta + ".");
 			}
 		}
 
