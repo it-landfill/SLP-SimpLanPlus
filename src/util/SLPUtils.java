@@ -30,9 +30,6 @@ public class SLPUtils {
 	}
 
 	public static String newLabel(String baseLabel) {
-
-		//TODO: Va testato, è possibile he vengano generate più label con lo stesso nome?
-		//TODO: Cosa succede se esistono già delle label? funziona l'incremento?
 		String label = (baseLabel.equals("")?"label":baseLabel);
 
 		int counter = labelCount.getOrDefault(label, -1);
