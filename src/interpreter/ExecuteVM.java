@@ -48,75 +48,94 @@ public class ExecuteVM {
 		}
 	}
 
-	private void saveInt(int point, int off, int reg) {
+	private boolean saveInt(int point, int off, int reg) {
 		int pos = readReg(point) + off;
-		saveInt(pos, reg);
+		return saveInt(pos, reg);
 	}
 
-	private void saveInt(int addr, int reg) {
+	private boolean saveInt(int addr, int reg) {
+		if (addr + 3 >= MEMSIZE || addr < 0) return false;
 		int val = readReg(reg);
 		byte[] bytes = intToBytes(val);
 		System.arraycopy(bytes, 0, memory, addr, 4);
+		return true;
 	}
 
-	private void saveBool(int point, int off, int reg) {
+	private boolean saveBool(int point, int off, int reg) {
 		int pos = readReg(point) + off;
-		saveBool(pos, reg);
+		return saveBool(pos, reg);
 	}
 
-	private void saveBool(int addr, int reg) {
+	private boolean saveBool(int addr, int reg) {
 		int val = readReg(reg);
+		if (addr >= MEMSIZE || addr < 0) return false;
 		if (val != 0) memory[addr] = 1;
 		else memory[addr] = 0;
+		return true;
 	}
 
-	private void loadInt(int point, int off, int reg) {
+	private boolean loadInt(int point, int off, int reg) {
 		int pos = readReg(point) + off;
-		loadInt(pos, reg);
+		return loadInt(pos, reg);
 	}
 
-	private void loadInt(int addr, int reg) {
+	private boolean loadInt(int addr, int reg) {
+		if (addr + 3 >= MEMSIZE || addr < 0) return false;
 		byte[] bytes = new byte[4];
 		System.arraycopy(memory, addr, bytes, 0, 4);
 		writeReg(reg, bytesToInt(bytes));
+		return true;
 	}
 
-	private void loadBool(int point, int off, int reg) {
+	private boolean loadBool(int point, int off, int reg) {
 		int pos = readReg(point) + off;
-		loadBool(pos, reg);
+		return loadBool(pos, reg);
 	}
 
-	private void loadBool(int addr, int reg) {
+	private boolean loadBool(int addr, int reg) {
+		if (addr >= MEMSIZE || addr < 0) return false;
 		int val = memory[addr];
 		writeReg(reg, val);
+		return true;
 	}
 
-	private void popInt() {
-		loadInt(sp + 1, code[ip++]);
+	private boolean popInt() {
+		boolean ret = loadInt(sp + 1, code[ip++]);
 		sp += 4;
+		return ret;
 	}
 
-	private void popBool() {
+	private boolean popBool() {
 		sp += 1;
-		loadBool(sp, code[ip++]);
+		return loadBool(sp, code[ip++]);
 	}
 
-	private void topInt() {
-		loadInt(sp + 1, code[ip++]);
+	private boolean topInt() {
+		return loadInt(sp + 1, code[ip++]);
 	}
 
-	private void topBool() {
-		loadBool(sp + 1, code[ip++]);
+	private boolean topBool() {
+		return loadBool(sp + 1, code[ip++]);
 	}
 
-	private void pushInt() {
-		saveInt(sp - 3, code[ip++]);
+	private boolean pushInt() {
+		boolean ret = saveInt(sp - 3, code[ip++]);
 		sp -= 4;
+		return ret;
 	}
 
-	private void pushBool() {
-		saveBool(sp, code[ip++]);
+	private boolean pushBool() {
+		boolean ret = saveBool(sp, code[ip++]);
 		sp -= 1;
+		return ret;
+	}
+
+	private void outOfMemoryError(String msg) {
+		System.out.println("\n[ERROR] Out of memory" + (msg.equals("") ? "." : " with instruction " + msg + "."));
+	}
+
+	private void outOfMemoryError() {
+		outOfMemoryError("");
 	}
 
 	/*
@@ -124,20 +143,55 @@ public class ExecuteVM {
 	 * neq -> eq + not
 	 * */
 	public boolean evaluate() {
+		int maxSP = MEMSIZE - 1;
+		long startTime = System.currentTimeMillis();
+
 		while (true) {
 			if (sp == 0) {
-				System.out.println("\nError: Out of memory.");
+				outOfMemoryError();
 				return false;
 			} else {
+				maxSP = Math.min(maxSP, sp);
 				int bytecode = code[ip++]; // fetch
 				int rd, r1, r2, val;
 				switch (bytecode) {
-					case SVMParser.PUSHINT -> pushInt();
-					case SVMParser.POPINT -> popInt();
-					case SVMParser.TOPINT -> topInt();
-					case SVMParser.PUSHBOOL -> pushBool();
-					case SVMParser.POPBOOL -> popBool();
-					case SVMParser.TOPBOOL -> topBool();
+					case SVMParser.PUSHINT -> {
+						if (!pushInt()) {
+							outOfMemoryError("PushInt");
+							return false;
+						}
+
+					}
+					case SVMParser.POPINT -> {
+						if (!popInt()) {
+							outOfMemoryError("PopInt");
+							return false;
+						}
+					}
+					case SVMParser.TOPINT -> {
+						if (!topInt()) {
+							outOfMemoryError("TopInt");
+							return false;
+						}
+					}
+					case SVMParser.PUSHBOOL -> {
+						if (!pushBool()) {
+							outOfMemoryError("PushBool");
+							return false;
+						}
+					}
+					case SVMParser.POPBOOL -> {
+						if (!popBool()) {
+							outOfMemoryError("PopBool");
+							return false;
+						}
+					}
+					case SVMParser.TOPBOOL -> {
+						if (!topBool()) {
+							outOfMemoryError("TopBool");
+							return false;
+						}
+					}
 					case SVMParser.LI -> {
 						rd = code[ip++];
 						val = code[ip++];
@@ -152,8 +206,8 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
-							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+						if (val + readReg(r2) + 3 >= ExecuteVM.MEMSIZE || val + readReg(r2) < 0) {
+							System.out.println("\n[ERROR] Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						loadInt(r2, val, r1);
@@ -162,8 +216,8 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
-							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+						if (val + readReg(r2) + 3 >= ExecuteVM.MEMSIZE || val + readReg(r2) < 0) {
+							System.out.println("\n[ERROR] Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						saveInt(r2, val, r1);
@@ -172,8 +226,8 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
-							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+						if (val + readReg(r2) >= ExecuteVM.MEMSIZE || val + readReg(r2) < 0) {
+							System.out.println("\n[ERROR] Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						loadBool(r2, val, r1);
@@ -182,8 +236,8 @@ public class ExecuteVM {
 						r1 = code[ip++];
 						val = code[ip++];
 						r2 = code[ip++];
-						if (val + readReg(r2) >= ExecuteVM.MEMSIZE) {
-							System.out.println("\nError: Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
+						if (val + readReg(r2) >= ExecuteVM.MEMSIZE || val + readReg(r2) < 0) {
+							System.out.println("\n[ERROR] Trying to access memory address out of range. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						saveBool(r2, val, r1);
@@ -240,7 +294,7 @@ public class ExecuteVM {
 						r1 = readReg(r1);
 						r2 = readReg(r2);
 						if (r2 == 0) {
-							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							System.out.println("\n[ERROR] Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						writeReg(rd, r1 / r2);
@@ -251,7 +305,7 @@ public class ExecuteVM {
 						val = code[ip++];
 						r1 = readReg(r1);
 						if (val == 0) {
-							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							System.out.println("\n[ERROR] Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						writeReg(rd, r1 / val);
@@ -263,7 +317,7 @@ public class ExecuteVM {
 						r1 = readReg(r1);
 						r2 = readReg(r2);
 						if (r2 == 0) {
-							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							System.out.println("\n[ERROR] Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						writeReg(rd, r1 % r2);
@@ -274,7 +328,7 @@ public class ExecuteVM {
 						val = code[ip++];
 						r1 = readReg(r1);
 						if (val == 0) {
-							System.out.println("\nError: Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
+							System.out.println("\n[ERROR] Trying to divide by zero. IP: " + ip + " Bytecode: " + bytecode);
 							return false;
 						}
 						writeReg(rd, r1 % val);
@@ -366,8 +420,12 @@ public class ExecuteVM {
 						if (r1 == r2) ip = rd;
 					}
 					case SVMParser.HALT -> {
-						//to print the result
-						System.out.println("\nEnd program.");
+						long endTime = System.currentTimeMillis();
+						int usedMem = MEMSIZE-maxSP+1;
+						double usedPercent = (usedMem / (double)MEMSIZE)*100;
+						System.out.println("\n[INFO] Program terminated correctly.");
+						System.out.println("[INFO] Your program used " + usedMem + "/" + MEMSIZE + " bytes of memory. (" + usedPercent + " %)");
+						System.out.println("[INFO] Your program took ~" + (endTime - startTime) + " ms to complete.");
 						return true;
 					}
 					default -> {
