@@ -112,7 +112,6 @@ public class mainSimpLanPlus {
 				ExecuteVM vm = new ExecuteVM(svmVisitor.code);
 				System.out.println("\n[INFO] Program Output:");
 				vm.evaluate();
-				System.out.println("[INFO] End Program Output");
 			}
 		}
 	}
