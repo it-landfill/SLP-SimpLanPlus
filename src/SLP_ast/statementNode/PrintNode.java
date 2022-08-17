@@ -37,7 +37,6 @@ public class PrintNode implements Node {
 	@Override
 	public String codeGeneration(String options) {
 
-		return "; Print \n" + exp.codeGeneration(options) +
-				(SLPUtils.checkIntType(type) ? "printw" : "printb") + " $t0\n";
+		return "; Print \n" + exp.codeGeneration(options) + (SLPUtils.checkIntType(type) ? "printw" : "printb") + " $t0\n";
 	}
 }
