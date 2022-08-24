@@ -1,0 +1,11 @@
+{
+    int goldbach(){
+        {
+            {
+                return 0;
+            }
+        }
+    }
+
+    goldbach();
+}

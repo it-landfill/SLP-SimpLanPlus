@@ -22,7 +22,7 @@ public class mainSimpLanPlus {
 		boolean runTypeCheck = true, runCodegen = true, runVM = true;
 
 		// Relative path to the file WITHOUT EXTENSION
-		String fileName = "src/TestSimpLanPlus/prova";
+		String fileName = "src/TestSimpLanPlus/TestCompleti/goldbach";
 		// File loading.
 		CharStream inputFile = CharStreams.fromFileName(fileName + ".slp");
 		// Generation of the error handler object useful for managing lexical errors.

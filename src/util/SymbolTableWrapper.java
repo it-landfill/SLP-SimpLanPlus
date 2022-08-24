@@ -124,7 +124,7 @@ public class SymbolTableWrapper {
             STentry e1 = findFirstInSymbolTable(k);
             STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
             // Aggiorno l'effetto solo nei seguenti casi: _xD -> D, IxU | UxI -> U
-            if (e1.getEffect().compareTo(e2.getEffect())!=0) { //TODO: Controllare se rompe tutto
+            if (e1.getEffect().compareTo(e2.getEffect())!=0) {
                 if (e2.getEffect() == STentry.Effects.DECLARED) e1.setEffect(STentry.Effects.DECLARED); // _xD -> D
                 else if ((e1.getEffect() == STentry.Effects.INITIALIZED && e2.getEffect() == STentry.Effects.USED) || (e1.getEffect() == STentry.Effects.USED && e2.getEffect() == STentry.Effects.INITIALIZED)) e1.setEffect(STentry.Effects.USED); // IxU | UxI -> U
             }
