@@ -155,25 +155,26 @@ public class BlockNode implements Node {
 
 		statementList.forEach(statement -> sb.append(statement.codeGeneration(null)));
 
-
-		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER");
+		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER") || sb.toString().contains("BLOCK_CHAIN_PLACEHOLDER");;
 		if (newEnv) {
 			sb.append("; Begin environment footer\n");
 			if (ret_placeholder) {
 				sb.append(blockLabel).append("_footer:\n");
 			}
+
+			if (ret_placeholder) {
+				SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)",blockLabel + "_footer");
+			}
+
 			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("popw $fp\n");
-			if (ret_placeholder) {
-				sb.append("jal BLOCK_CHAIN_PLACEHOLDER\n");
-			}
+			if (ret_placeholder) sb.append("jal BLOCK_CHAIN_PLACEHOLDER\n");
+
 			sb.append("; End environment\n");
 		}
 
 		if (isRoot) sb.append("halt\n");
-		if (newEnv && ret_placeholder)
-			return sb.toString().replaceAll("RETURN_CHAIN_PLACEHOLDER", blockLabel + "_footer");
-		else return sb.toString();
+		return sb.toString();
 	}
 }
