@@ -28,6 +28,8 @@ beq $t0 $t1 ifEnd_0
 mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
+; Set the return register to true
+li $ret 1
 jal mcd1_0_footer
 ; End Return
 ifEnd_0:
@@ -70,6 +72,8 @@ lw $t0 1($t1)
 pushw $t0
 jal mcd1_0
 ; End function call with return mcd1
+; Set the return register to true
+li $ret 1
 jal mcd1_0_footer
 ; End Return
 jal ifEnd_1
@@ -98,6 +102,8 @@ sub $t0 $t1 $t0
 pushw $t0
 jal mcd1_0
 ; End function call with return mcd1
+; Set the return register to true
+li $ret 1
 jal mcd1_0_footer
 ; End Return
 ifEnd_1:
@@ -107,6 +113,7 @@ mcd1_0_footer:
 popw $ra
 addi $sp $sp 8
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 ; Begin function
@@ -145,13 +152,18 @@ lw $t1 9($t1)
 sw $t0 0($t1)
 ; End assignment variable res
 ; Begin Return
+; Set the return register to true
+li $ret 1
 jal block_3_footer
 ; End Return
 ; Begin environment footer
 block_3_footer:
 ; addi $sp $sp 0 (Not needed since value is 0)
 popw $fp
+li $t1 0
+beq $ret $t1 block_3_ret
 jal mcd2_0_footer
+block_3_ret:
 ; End environment
 jal ifEnd_2
 ifElse_2:
@@ -238,6 +250,7 @@ mcd2_0_footer:
 popw $ra
 addi $sp $sp 12
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 block_0:

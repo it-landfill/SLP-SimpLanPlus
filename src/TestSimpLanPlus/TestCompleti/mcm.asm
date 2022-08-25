@@ -38,6 +38,8 @@ or $t0 $t1 $t0
 li $t1 0
 beq $t0 $t1 ifEnd_0
 ; Begin Return
+; Set the return register to true
+li $ret 1
 jal mcm1Aux_0_footer
 ; End Return
 ifEnd_0:
@@ -126,6 +128,7 @@ mcm1Aux_0_footer:
 popw $ra
 addi $sp $sp 16
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 ; Begin function
@@ -156,6 +159,8 @@ beq $t0 $t1 ifEnd_2
 mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
+; Set the return register to true
+li $ret 1
 jal mcm1_0_footer
 ; End Return
 ifEnd_2:
@@ -204,6 +209,8 @@ lw $t0 9($t1)
 ; End load variable gcd
 popw $t1
 div $t0 $t1 $t0
+; Set the return register to true
+li $ret 1
 jal mcm1_0_footer
 ; End Return
 ; Begin function footer
@@ -211,6 +218,7 @@ mcm1_0_footer:
 popw $ra
 addi $sp $sp 8
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 ; Begin function
@@ -259,6 +267,8 @@ beq $t0 $t1 ifEnd_3
 mov $t1 $fp
 lw $t0 9($t1)
 ; End load variable max
+; Set the return register to true
+li $ret 1
 jal mcm2Aux_0_footer
 ; End Return
 ifEnd_3:
@@ -290,6 +300,8 @@ lw $t0 1($t1)
 pushw $t0
 jal mcm2Aux_0
 ; End function call with return mcm2Aux
+; Set the return register to true
+li $ret 1
 jal mcm2Aux_0_footer
 ; End Return
 ; Begin function footer
@@ -297,6 +309,7 @@ mcm2Aux_0_footer:
 popw $ra
 addi $sp $sp 12
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 ; Begin function
@@ -323,6 +336,8 @@ beq $t0 $t1 ifEnd_4
 mov $t1 $fp
 lw $t0 1($t1)
 ; End load variable n1
+; Set the return register to true
+li $ret 1
 jal mcm2_0_footer
 ; End Return
 ifEnd_4:
@@ -364,6 +379,8 @@ lw $t0 1($t1)
 pushw $t0
 jal mcm2Aux_0
 ; End function call with return mcm2Aux
+; Set the return register to true
+li $ret 1
 jal mcm2_0_footer
 ; End Return
 jal ifEnd_5
@@ -391,6 +408,8 @@ lw $t0 1($t1)
 pushw $t0
 jal mcm2Aux_0
 ; End function call with return mcm2Aux
+; Set the return register to true
+li $ret 1
 jal mcm2_0_footer
 ; End Return
 ifEnd_5:
@@ -400,6 +419,7 @@ mcm2_0_footer:
 popw $ra
 addi $sp $sp 8
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 block_0:

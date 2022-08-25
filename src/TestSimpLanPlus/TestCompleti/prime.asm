@@ -25,6 +25,8 @@ li $t1 0
 beq $t0 $t1 ifEnd_0
 ; Begin Return
 li $t0 1
+; Set the return register to true
+li $ret 1
 jal isPrimeAux_0_footer
 ; End Return
 ifEnd_0:
@@ -49,6 +51,8 @@ li $t1 0
 beq $t0 $t1 ifEnd_1
 ; Begin Return
 li $t0 0
+; Set the return register to true
+li $ret 1
 jal isPrimeAux_0_footer
 ; End Return
 ifEnd_1:
@@ -74,6 +78,8 @@ lw $t0 1($t1)
 pushw $t0
 jal isPrimeAux_0
 ; End function call with return isPrimeAux
+; Set the return register to true
+li $ret 1
 jal isPrimeAux_0_footer
 ; End Return
 ; Begin function footer
@@ -81,6 +87,7 @@ isPrimeAux_0_footer:
 popw $ra
 addi $sp $sp 8
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 ; Begin function
@@ -102,6 +109,8 @@ lw $t0 1($t1)
 pushw $t0
 jal isPrimeAux_0
 ; End function call with return isPrimeAux
+; Set the return register to true
+li $ret 1
 jal isPrime_0_footer
 ; End Return
 ; Begin function footer
@@ -109,6 +118,7 @@ isPrime_0_footer:
 popw $ra
 addi $sp $sp 4
 popw $fp
+li $ret 0
 jr $ra
 ; End function
 block_0:
