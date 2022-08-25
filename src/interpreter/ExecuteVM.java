@@ -15,7 +15,7 @@ public class ExecuteVM {
 
 	private final int[] t = new int[10]; // Implemento solo i registri t0 - t9
 
-	private int ip = 0;
+	private int ip = 0, ret = 0;
 	private int sp = MEMSIZE - 1, fp = MEMSIZE - 1, ra = MEMSIZE - 1;
 
 	public ExecuteVM(int[] code) {
@@ -35,6 +35,7 @@ public class ExecuteVM {
 		if (reg == -2) return sp;
 		if (reg == -3) return ra;
 		if (reg == -4) return ip;
+		if (reg == -5) return ret;
 		return t[reg];
 	}
 
@@ -44,6 +45,7 @@ public class ExecuteVM {
 			case -2 -> sp = val;
 			case -3 -> ra = val;
 			case -4 -> ip = val;
+			case -5 -> ret = val;
 			default -> t[reg] = val;
 		}
 	}

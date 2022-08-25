@@ -155,7 +155,7 @@ SYMBOLS : '_';
 LABEL   : STRING(STRING|NUMBER|SYMBOLS)*;
 
 fragment DIGIT  : '0'..'9';
-REG : '$'('t'DIGIT|'ra'|'sp'|'fp');
+REG : '$'('t'DIGIT|'ra'|'sp'|'fp'|'ret');
 
 fragment CHAR : ('a'..'z'|'A'..'Z');
 STRING : CHAR+;

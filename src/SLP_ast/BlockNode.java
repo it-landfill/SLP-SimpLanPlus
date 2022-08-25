@@ -160,16 +160,18 @@ public class BlockNode implements Node {
 			sb.append("; Begin environment footer\n");
 			if (ret_placeholder) {
 				sb.append(blockLabel).append("_footer:\n");
-			}
-
-			if (ret_placeholder) {
 				SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)",blockLabel + "_footer");
 			}
 
 			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("popw $fp\n");
-			if (ret_placeholder) sb.append("jal BLOCK_CHAIN_PLACEHOLDER\n");
+			if (ret_placeholder) {
+				sb.append("li $t1 0\n");
+				sb.append("beq $ret $t1 ").append(blockLabel).append("_ret\n");
+				sb.append("jal BLOCK_CHAIN_PLACEHOLDER\n");
+				sb.append(blockLabel).append("_ret:\n");
+			}
 
 			sb.append("; End environment\n");
 		}

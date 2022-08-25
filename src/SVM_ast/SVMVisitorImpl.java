@@ -125,6 +125,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		if (label.equals("$sp")) return -2;
 		if (label.equals("$ra")) return -3;
 		if (label.equals("$ip")) return -4;
+		if (label.equals("$ret")) return -5;
 		return Integer.parseInt(String.valueOf(label.charAt(2)));
 	}
 

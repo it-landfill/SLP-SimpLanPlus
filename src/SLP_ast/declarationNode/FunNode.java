@@ -156,6 +156,12 @@ public class FunNode implements Node {
 		sb.append("jr $ra\n");
 		sb.append("; End function\n");
 
-		return sb.toString().replaceAll("(RETURN_CHAIN_PLACEHOLDER|BLOCK_CHAIN_PLACEHOLDER)", signature.getLabel() + "_footer");
+		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER") || sb.toString().contains("BLOCK_CHAIN_PLACEHOLDER");
+		if (ret_placeholder) {
+			SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)", signature.getLabel() + "_footer");
+			sb.append("li $ret 0\n");
+		}
+
+		return sb.toString();
 	}
 }
