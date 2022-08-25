@@ -49,7 +49,7 @@ public class ReturnNode implements Node {
 		StringBuilder out = new StringBuilder();
 		out.append("; Begin Return\n");
 		if (exp != null) out.append(exp.codeGeneration(options));
-		out.append("; Set the return register to true");
+		out.append("; Set the return register to true\n");
 		out.append("li $ret 1\n");
 		out.append("jal RETURN_CHAIN_PLACEHOLDER\n"); //TODO: Remove last jal of the function
 		out.append("; End Return\n");

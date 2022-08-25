@@ -153,14 +153,15 @@ public class FunNode implements Node {
 		if (n > 0) sb.append("addi $sp $sp ").append(n).append("\n");
 		else sb.append("; addi $sp $sp ").append(n).append(" (Not needed since value is 0)\n");
 		sb.append("popw $fp\n");
-		sb.append("jr $ra\n");
-		sb.append("; End function\n");
 
 		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER") || sb.toString().contains("BLOCK_CHAIN_PLACEHOLDER");
 		if (ret_placeholder) {
 			SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)", signature.getLabel() + "_footer");
 			sb.append("li $ret 0\n");
 		}
+
+		sb.append("jr $ra\n");
+		sb.append("; End function\n");
 
 		return sb.toString();
 	}
