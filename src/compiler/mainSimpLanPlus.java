@@ -37,8 +37,7 @@ public class mainSimpLanPlus {
 		// Visitor implementation useful for visiting abstract syntax tree in depth-first search.
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		// The depth-first search for the abstract syntax tree starts from the root node, in the
-		// case of the SimpLanPlus grammar.
-		// TODO: Check for final delivery that the root node has remained unchanged in the grammar.
+		// case of the SimpLanPlus grammar the program node.
 		Node ast = visitor.visit(parser.program());
 		// If errors have been identified in the lexical analysis phase, they are printed, a report
 		// file is generated, and the program stops.
@@ -47,7 +46,7 @@ public class mainSimpLanPlus {
 			System.out.println(errHandler);
 			errHandler.dumpToFile(fileName);
 			System.out.println("[ERROR] Program parsing failed.");
-			return;
+			System.exit(1);
 		}
 		System.out.println("[INFO] No lexical error found.");
 		// Semantic verification.
@@ -75,7 +74,7 @@ public class mainSimpLanPlus {
 				ast.typeCheck(null);
 			} catch (SLPUtils.TypeCheckError e) {
 				System.out.println("[ERROR] Error while running type check: " + e.getMessage());
-				System.exit(1);
+				System.exit(2);
 			}
 			System.out.println("[INFO] No type check errors found.");
 		}

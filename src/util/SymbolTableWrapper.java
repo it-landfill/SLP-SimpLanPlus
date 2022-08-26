@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SymbolTableWrapper {
-    // Creazione di una Hash Table (la Symbol Table) avente come chiave una String e un ArrayDeque di STentry
+
+    // Generate a HashMap (Symbol Table) with a String key and an ArrayDeque of STEntry objects.
     private final HashMap<String, ArrayDeque<STentry>> symbolTable;
 
     public SymbolTableWrapper() {
@@ -18,29 +19,28 @@ public class SymbolTableWrapper {
 
     public SymbolTableWrapper(HashMap<String, ArrayDeque<STentry>> st) {
 
-        symbolTable = new HashMap<>();
+        this();
 
         st.forEach((k, v) -> {
             ArrayDeque<STentry> newAl = new ArrayDeque<>();
             v.forEach(el -> newAl.add(el.clone()));
-            symbolTable.put(k,newAl);
+            symbolTable.put(k, newAl);
         });
 
     }
 
     /**
-     * Controlla se l'elemento esiste nella symbol table allo stesso livello, altrimenti lo aggiunge.
+     * Check if the element exists in the symbol table at the specified nesting level.
+     * If it does, return true, otherwise add it to the symbol table and return false.
      *
-     * @param entry La entry da aggiungere alla Symbol Table
-     * @return true in caso di errore, false altrimenti
+     * @param entry Entry to be added to the symbol table.
+     * @return true if the element already exists, false otherwise.
      */
     public boolean addToSymbolTable(STentry entry) {
-        // Ricerca dell'entry in input  nell'Hash Map. In caso di ricerca senza successo ritorno null.
+        // Search for the input entry in the Hash Map. If the search is unsuccessful, it returns null.
         ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(entry.getID(), null);
 
-        // Se l'elemento non esiste, viene creata una entry nella Hash Map contenente l'entry in input.
-        // In questo caso, non devo preoccuparmi di controllare il nesting level di altre entry con medesimo
-        // identificativo.
+        // If the element doesn't exist, an entry is created in the Hash Map containing the input entry.
         if (entryStack == null || entryStack.isEmpty()) {
             entryStack = new ArrayDeque<>();
             entryStack.push(entry);
@@ -48,23 +48,23 @@ public class SymbolTableWrapper {
             return false;
         }
 
-        // Se l'elemento in testa dello stack ha un nesting level diverso dal mio, allora non ho collisioni
+        // If the top element of the stack has a different nesting level than mine, then I have no collisions.
         STentry head = entryStack.peek();
         if (head != null && entry.getNestinglevel() != head.getNestinglevel()) {
-            // Tutte le condizioni sono verificare, posso aggiungere la entry allo stack senza problemi
             entryStack.push(entry);
             return false;
         }
 
-        // Se arrivo qua in fondo qualcosa è andato storto, probabilmente la entry esiste già.
+        // If I reach this return, the addition of the entry was not successful.
         return true;
     }
 
     /**
-     * Dato il nome di una entry, ritorna la prima entry (ovvero quella al livello più basso) della symbol table.
+     * Given an entry name, returns the first entry (the one with the highest nesting level) with the given name in
+     * the symbol table.
      *
-     * @param ID Il nome della entry da cercare.
-     * @return null se non trova la chiave nella HashMap, STentry corrispondente altrimenti.
+     * @param ID ID of the entry.
+     * @return null if the entry does not exist, STentry otherwise.
      */
     public STentry findFirstInSymbolTable(String ID) {
         ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(ID, null);
@@ -76,7 +76,14 @@ public class SymbolTableWrapper {
         return null;
     }
 
-    // TODO: Comment
+    /**
+     * Given an entry name and a nesting level, returns the entry with the given name and nesting level in the symbol
+     * table.
+     *
+     * @param ID ID of the entry.
+     * @param nestingLevel nesting level of the entry.
+     * @return null if the entry does not exist, STentry otherwise.
+     */
     public STentry findInSymbolTable(String ID, int nestingLevel) {
         ArrayDeque<STentry> entryStack = symbolTable.getOrDefault(ID, null);
 
@@ -91,39 +98,62 @@ public class SymbolTableWrapper {
 
 
     /**
-     * Rimuove tutte le entry da un determinato livello dalla Symbol Table.
+     * Removes all the entries from the symbol table at a specified nesting level.
      *
-     * @param lev Il livello a cui eliminare le entry.
+     * @param lev Nesting level to remove.
      */
     public void removeLevelFromSymbolTable(int lev) {
-        // Arraylist in cui salvo le chiavi vuote da eliminare
+        // Save the keys that have no value to be deleted later.
         ArrayList<String> emptyList = new ArrayList<>();
 
-        // Scorro la Symbol Table e, per ogni elemento, se la testa ha il livello che cerco la rimuovo.
+        // For each entry in the symbol table, remove the head if it has the requested nesting level.
         symbolTable.forEach((k, v) -> {
             if (v != null && !v.isEmpty() && v.peek().getNestinglevel() == lev) {
                 v.pop();
 
-                // Se la lista diventa vuota, aggiungo la chiave alla lista di chiavi da rimuovere
+                // If after the removal, the arraydeque is empty, mark the key for removal.
                 if (v.isEmpty()) emptyList.add(k);
             }
         });
 
-        // Itero la lista di chiavi da rimuovere e le rimuovo dall'arraylist
+        // Remove all the empty keys from the symbol table.
         emptyList.forEach(symbolTable::remove);
     }
 
+    /**
+     *
+     * @return Returns a copy of the symbolTable.
+     */
     public SymbolTableWrapper clone() {
         return new SymbolTableWrapper(symbolTable);
     }
 
+    /**
+     * Adds all the functions in the given symbol table to the current one.
+     * @param st Source symbol table.
+     */
+    public void cloneFunctions(SymbolTableWrapper st){
+        st.symbolTable.forEach((k,v) -> {
+            for (STentry e : v){
+                if (e.getType() instanceof FunctionSingatureType) {
+                    addToSymbolTable(e);
+                }
+            }
+        });
+    }
 
-    // Usata per aggiornare l'ambiente negli ITE
+    /**
+     * Merges the effects of the given symbol table in the current one.
+     * This function is used to update effects after an ITE with both true and false branch.
+     * @param st Source symbol table
+     */
     public void merge(SymbolTableWrapper st) {
         symbolTable.forEach((k,v) -> {
             STentry e1 = findFirstInSymbolTable(k);
             STentry e2 = st.findInSymbolTable(k, e1.getNestinglevel());
-            // Aggiorno l'effetto solo nei seguenti casi: _xD -> D, IxU | UxI -> U
+            // Update the effects only in these cases: _xD -> D, IxU | UxI -> U
+            // Since the two symbol tables are always the product of a clone, I don't have to consider the case
+            // where e2 is null.
             if (e1.getEffect().compareTo(e2.getEffect())!=0) {
                 if (e2.getEffect() == STentry.Effects.DECLARED) e1.setEffect(STentry.Effects.DECLARED); // _xD -> D
                 else if ((e1.getEffect() == STentry.Effects.INITIALIZED && e2.getEffect() == STentry.Effects.USED) || (e1.getEffect() == STentry.Effects.USED && e2.getEffect() == STentry.Effects.INITIALIZED)) e1.setEffect(STentry.Effects.USED); // IxU | UxI -> U
@@ -131,7 +161,12 @@ public class SymbolTableWrapper {
         });
     }
 
-    // Usata per aggiornare l'ambiente nei blocchi
+    /**
+     * Compares the effects of the given symbol table to the ones in the current one
+     * and updates the current ones if they are lower.
+     *
+     * @param st Source symbol table
+     */
     public void update(SymbolTableWrapper st) {
         symbolTable.forEach((k,v) -> {
             STentry e1 = findFirstInSymbolTable(k);
@@ -144,6 +179,11 @@ public class SymbolTableWrapper {
         });
     }
 
+    /**
+     * Evaluates the amount of bytes needed in order to allocate memory for a specific nesting level.
+     * @param nl The nesting level to allocate.
+     * @return The number of bytes to allocate.
+     */
     public int nestingLevelRequiredBytes(int nl) {
         AtomicInteger bytes = new AtomicInteger();
         symbolTable.forEach((k,v) -> {
@@ -156,6 +196,11 @@ public class SymbolTableWrapper {
         return bytes.get();
     }
 
+    /**
+     * For each element in the symbolTable at a specific nesting level, adds a warning if the element has not been used yet.
+     * @param nestinglevel The specified nesting level.
+     * @return String containing all the unused warnings.
+     */
     public String findUnused(int nestinglevel) {
         StringBuilder  sb = new StringBuilder();
         symbolTable.forEach((k,v) -> {
@@ -165,16 +210,6 @@ public class SymbolTableWrapper {
             }
         });
         return sb.toString();
-    }
-
-    public void cloneFunctions(SymbolTableWrapper st){
-        st.symbolTable.forEach((k,v) -> {
-            for (STentry e : v){
-                if (e.getType() instanceof FunctionSingatureType) {
-                    addToSymbolTable(e);
-                }
-            }
-        });
     }
 
 }
