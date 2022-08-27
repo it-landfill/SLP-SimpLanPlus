@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 public class runVM {
 	public static void main(String[] args) throws Exception {
+		// TODO: Delete this file
 		// Relative path to the file WITHOUT EXTENSION
 		String fileName = "src/TestSimpLanPlus/prova";
 

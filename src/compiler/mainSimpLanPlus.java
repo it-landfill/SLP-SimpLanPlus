@@ -80,7 +80,7 @@ public class mainSimpLanPlus {
 		}
 
 		if (runCodegen) {
-			// CODE GENERATION
+			// Code Generation
 			String code = ast.codeGeneration(null);
 			BufferedWriter out = new BufferedWriter(new FileWriter(fileName + ".asm"));
 			out.write(code);
@@ -88,7 +88,7 @@ public class mainSimpLanPlus {
 			System.out.println("[SUCCESS] Code generated! Assembling and running generated code.");
 
 			if (runVM) {
-				// CODE PARSING
+				// Code Parser
 				// File loading.
 				CharStream svmInputFile = CharStreams.fromFileName(fileName + ".asm");
 
@@ -108,8 +108,10 @@ public class mainSimpLanPlus {
 
 
 				System.out.println("[INFO] Starting Virtual Machine...");
+				// Initialize the Virtual Machine
 				ExecuteVM vm = new ExecuteVM(svmVisitor.code);
 				System.out.println("\n[INFO] Program Output:");
+				// Run the virtual machine
 				vm.evaluate();
 			}
 		}
