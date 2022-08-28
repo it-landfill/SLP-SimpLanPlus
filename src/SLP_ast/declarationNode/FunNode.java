@@ -159,7 +159,7 @@ public class FunNode implements Node {
 		else sb.append("; addi $sp $sp ").append(n).append(" (Not needed since value is 0)\n");
 		sb.append("popw $fp\n");
 
-		// Return chain. See documentaion chapter 5.3.2
+		// Return chain. See documentation chapter 5.3.2
 		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER") || sb.toString().contains("BLOCK_CHAIN_PLACEHOLDER");
 		if (ret_placeholder) {
 			SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)", signature.getLabel() + "_footer");
