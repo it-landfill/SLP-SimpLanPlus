@@ -38,22 +38,22 @@ public class ITENode implements Node {
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		// Controllo che la condizione dell'if sia bool
+		// Evaluate ITE condition
 		TypeNode conditionType = condition.typeCheck(symbolTable);
 		if (!SLPUtils.checkBoolType(conditionType)) {
 			throw new SLPUtils.TypeCheckError("Bool expression expected in if-condition. Got " + conditionType + ".");
 		}
 		SymbolTableWrapper symbolTableElse = symbolTable.clone();
 
-		// Calcolo il tipo del branch then
+		// Evaluate then branch type
 		TypeNode thenType = ifTrue.typeCheck(symbolTable);
 
 
-		// Se esiste else, calcolo tipo dell'else
+		// if there is an else block, evaluate it
 		if (ifFalse != null) {
 			TypeNode elseType = ifFalse.typeCheck(symbolTableElse);
-			// Se il tipo dell'else è diverso dal tipo del then, controllo se è void.
-			// Se lo è, il type check ritornerà void, altrimenti errore.
+
+			// Explained in documentation.
 			if (!SLPUtils.checkTypes(thenType, elseType)) {
 				if (SLPUtils.checkVoidType(thenType)) thenType = new VoidableTypeNode(elseType);
 				else if (SLPUtils.checkVoidType(elseType)) thenType = new VoidableTypeNode(thenType);
@@ -75,8 +75,8 @@ public class ITENode implements Node {
 		String endLabel = SLPUtils.newLabel("ifEnd");
 
 		sb.append("; Begin ITE\n");
-		// Controllo condizione
-		sb.append(condition.codeGeneration(options)); // La codegen di una exp booleana salva in $t0 il risultato
+		// Evaluate the condition.
+		sb.append(condition.codeGeneration(options));  // $t0 = condition value
 		sb.append("li $t1 0\n");
 		sb.append("beq $t0 $t1 ").append(ifFalse != null ? elseLabel : endLabel).append("\n");
 

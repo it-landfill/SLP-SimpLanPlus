@@ -18,16 +18,15 @@ public class PrintNode implements Node {
 		this.exp = exp;
 	}
 
+	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return exp.checkSemantics(env, symbolTable);
+	}
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		type = exp.typeCheck(symbolTable);
 		return new VoidTypeNode();
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		return exp.checkSemantics(env, symbolTable);
 	}
 
 	@Override

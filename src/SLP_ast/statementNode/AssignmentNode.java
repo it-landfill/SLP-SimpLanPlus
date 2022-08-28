@@ -16,18 +16,20 @@ public class AssignmentNode implements Node {
 	private final String ID;
 	private final Node exp;
 	private STentry entry;
-	private int nestinglevel;
-	private int stOccupiedBytes;
+	private int nestingLevel;
+	private int[] stOccupiedBytes;
 
 	public AssignmentNode(String ID, Node exp) {
 		this.ID = ID;
 		this.exp = exp;
 	}
+
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
-		nestinglevel = Environment.getNestingLevel();
+		nestingLevel = Environment.getNestingLevel();
 		entry = symbolTable.findFirstInSymbolTable(ID);
+
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} else if (entry.getType() instanceof FunctionSingatureType) {
@@ -36,14 +38,26 @@ public class AssignmentNode implements Node {
 
 		errors.addAll(exp.checkSemantics(env, symbolTable));
 
-		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
+		// If the nesting levels are different, the variable is not in the same scope.
+		if (entry != null && nestingLevel != entry.getNestinglevel()) {
+			// Evaluate the difference between the two nesting levels.
+			int nEnvs = nestingLevel - entry.getNestinglevel();
+
+			stOccupiedBytes = new int[nEnvs];
+
+			// For each environment between the two nesting levels, get the number of bytes occupied by the variables.
+			for (int i = 0; i < nEnvs; i++) {
+				stOccupiedBytes[i] = symbolTable.nestingLevelRequiredBytes(nestingLevel - i);
+			}
+
+		}
 
 		return errors;
 	}
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel()); // Mi serve perchè copio le symbolTable
+		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel());
 		if (entry == null) {
 			throw new SLPUtils.TypeCheckError("Variable not declared: " + ID + ".");
 		}
@@ -66,7 +80,14 @@ public class AssignmentNode implements Node {
 		out.append(exp.codeGeneration(options));
 
 		out.append("mov $t1 $fp\n");
-		out.append(("lw $t1 " + (stOccupiedBytes + 1) + "($t1)\n").repeat(nestinglevel - entry.getNestinglevel()));
+
+		// If the nesting levels are different, the variable is not in the same scope.
+		if (entry != null && nestingLevel != entry.getNestinglevel()) {
+			// For each environment between the two nesting levels, use the number of occupied bytes to jump to the previous environment.
+			for (int stOccupiedByte : stOccupiedBytes) {
+				out.append("lw $t1 ").append(stOccupiedByte + 1).append("($t1)\n");
+			}
+		}
 
 		if (entry.isReference()) {
 			out.append("lw $t1 ").append(entry.getOffset()).append("($t1)\n");

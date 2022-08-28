@@ -43,14 +43,14 @@ public class CallNode implements Node {
 		if (entry == null) {
 			errors.add(new SemanticError("Fun " + funcName + " does not exist in scope."));
 		} else {
-			// Se il numero di args è -1, la entry è una variabile, non una funzione
+			// If the type is not function signature type, then entry is a variable.
 			if (!(entry.getType() instanceof FunctionSingatureType)) {
 				errors.add(new SemanticError("Fun " + funcName + " is not a function."));
 				return errors;
 			}
 
 			signature = (FunctionSingatureType) entry.getType();
-			// Controllo il numero di parametri attuali rispetto a quelli formali
+
 			ArrayList<ArgNode> formalParams = signature.getArguments();
 
 			if (actualParams != null) {
@@ -64,7 +64,6 @@ public class CallNode implements Node {
 			}
 		}
 
-		// Se ci sono parametri controllo gli errori su questi
 		if (actualParams != null) {
 			for (Node n : actualParams) {
 				errors.addAll(n.checkSemantics(env, symbolTable));
