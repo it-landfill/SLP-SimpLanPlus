@@ -84,7 +84,7 @@ public class FunNode implements Node {
 				STentry tmp = new STentry(Environment.getNestingLevel(), a.getType(), localEnv.getOffset(), a.getArgName(), STentry.Effects.INITIALIZED, a.isByReference());
 
 				// Increase the offset in the env based on the arg type.
-				if (SLPUtils.checkIntType(a.getType())) localEnv.offsetAddInt();
+				if (SLPUtils.checkIntType(a.getType()) || a.isByReference()) localEnv.offsetAddInt();
 				else localEnv.offsetAddBool();
 
 				// Add the arg to the symbol table.
