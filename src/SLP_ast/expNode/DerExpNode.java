@@ -44,7 +44,7 @@ public class DerExpNode implements Node {
 
 			// For each environment between the two nesting levels, get the number of bytes occupied by the variables.
 			for (int i = 0; i < nEnvs; i++) {
-				stOccupiedBytes[i] = symbolTable.nestingLevelRequiredBytes(nestingLevel-i);
+				stOccupiedBytes[i] = symbolTable.nestingLevelRequiredBytes(nestingLevel - i);
 			}
 
 		}
@@ -78,23 +78,31 @@ public class DerExpNode implements Node {
 		// If the nesting levels are different, the variable is not in the same scope.
 		if (entry != null && nestingLevel != entry.getNestinglevel()) {
 			// For each environment between the two nesting levels, use the number of occupied bytes to jump to the previous environment.
-			for (int i = 0; i < stOccupiedBytes.length; i++) {
-				out.append("lw $t1 ").append(stOccupiedBytes[i] + 1).append("($t1)\n");
+			for (int stOccupiedByte : stOccupiedBytes) {
+				out.append("lw $t1 ").append(stOccupiedByte + 1).append("($t1)\n");
 			}
 		}
 
 		if (options != null && options.equalsIgnoreCase("getAddress")) {
-			// Se la variabile in esame (entry) è già un puntatore, allora carico in $t0 l'indirizzo a cui punta il puntatore attuale
+			// This branch handles the need to return an address.
+
+			// If the entry is a pointer (var), load in $t0 the address pointed by the actual entry.
 			if (entry.isReference()) out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
-				// Altrimenti calcolo l'indirizzo a cui deve puntare e lo salvo in $t0
+			// If entry is not a pointer (var), load in $t0 the address of the entry.
 			else out.append("addi $t0 $t1 ").append(entry.getOffset()).append("\n");
+
 		} else {
+			// This branch handles the need to return a value.
+
 			if (entry.isReference()) {
-				// Se la variabile in esame (entry) è un puntatore, carico in $t0 l'indirizzo a cui punta e, in seguito carico il valore contenuto nella cella puntata.
+				// If the entry is a pointer (var), load in $t0 the address pointed by the actual entry and load the entry value using $t0 as address.
 				out.append("lw $t0 ").append(entry.getOffset()).append("($t1)\n");
 				out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 0($t0)\n");
-			} else
+			} else {
+				// If entry is not a pointer (var), load the entry value using $fp and the offset.
 				out.append(SLPUtils.checkIntType(entry.getType()) ? "lw" : "lb").append(" $t0 ").append(entry.getOffset()).append("($t1)\n");
+			}
+
 		}
 
 		out.append("; End load variable ").append(ID).append("\n");
