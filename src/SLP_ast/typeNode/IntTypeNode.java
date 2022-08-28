@@ -10,11 +10,6 @@ import java.util.ArrayList;
 public class IntTypeNode extends TypeNode {
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "type: integer";
-	}
-
-	@Override
 	public String toString() {
 		return "int";
 	}

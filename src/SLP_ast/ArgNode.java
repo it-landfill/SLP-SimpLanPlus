@@ -27,11 +27,6 @@ public class ArgNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "arg: " + type.toPrint(indent) + " " + argName + " by reference: " + byReference;
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		return type.checkSemantics(env, symbolTable);
 	}

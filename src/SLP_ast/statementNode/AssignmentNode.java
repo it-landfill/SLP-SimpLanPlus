@@ -23,12 +23,6 @@ public class AssignmentNode implements Node {
 		this.ID = ID;
 		this.exp = exp;
 	}
-
-	@Override
-	public String toPrint(String indent) {
-		return indent + "assignment: " + ID + " " + exp.toPrint(indent);
-	}
-
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();

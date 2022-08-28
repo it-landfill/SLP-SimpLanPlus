@@ -9,6 +9,9 @@ import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
+/**
+ * BaseExpNode represents a set of parenthesis
+ */
 public class BaseExpNode implements Node {
 	private final Node exp;
 
@@ -17,8 +20,8 @@ public class BaseExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + " exp: " + exp.toString();
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return exp.checkSemantics(env, symbolTable);
 	}
 
 	@Override
@@ -29,10 +32,5 @@ public class BaseExpNode implements Node {
 	@Override
 	public String codeGeneration(String options) {
 		return exp.codeGeneration(options);
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		return exp.checkSemantics(env, symbolTable);
 	}
 }

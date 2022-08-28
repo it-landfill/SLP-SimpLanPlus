@@ -22,11 +22,6 @@ public class ArithmExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "AritmExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent) + "\n";
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
@@ -51,17 +46,20 @@ public class ArithmExpNode implements Node {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(left.codeGeneration(options));
+		// Push left value to stack.
 		sb.append("pushw $t0\n");
+		// Generate right value and save to $t0.
 		sb.append(right.codeGeneration(options));
+		// Pop right value from stack in $t1.
 		sb.append("popw $t1\n");
 		switch (op) {
 			case "+" -> sb.append("add");
 			case "-" -> sb.append("sub");
 			case "*" -> sb.append("mult");
 			case "/" -> sb.append("div");
-			case "%" -> sb.append("mod"); //TODO: VA AGGIUNTO A DOCUMENTAZIONE TYPE CHECK
+			case "%" -> sb.append("mod");
 		}
-		// Inserisco priuma t1 e poi t0 perchè questo è l'ordine in cui sono stati definiti
+		// Insert $t1 first because it contains left value.
 		sb.append(" $t0 $t1 $t0\n");
 
 		return sb.toString();

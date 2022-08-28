@@ -35,22 +35,6 @@ public class CallNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		StringBuilder out = new StringBuilder();
-
-		out.append(indent).append("call").append(funcName);
-
-		if (actualParams != null && !actualParams.isEmpty()) {
-			out.append(" params ");
-			for (Node n : actualParams) {
-				out.append(n.toPrint(indent));
-			}
-		}
-
-		return out.toString();
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 

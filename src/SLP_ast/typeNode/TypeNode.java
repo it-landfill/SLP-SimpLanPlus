@@ -24,9 +24,4 @@ public abstract class TypeNode implements Node {
 		return new ArrayList<>();
 	}
 
-	@Override
-	public String toPrint(String indent) {
-		return indent + "type: void";
-	}
-
 }

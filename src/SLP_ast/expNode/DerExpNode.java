@@ -22,30 +22,27 @@ public class DerExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + " DER: " + ID;
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 
 		entry = symbolTable.findFirstInSymbolTable(ID);
 		nestingLevel = Environment.getNestingLevel();
+
 		if (entry == null) {
 			errors.add(new SemanticError("Var " + ID + " not declared."));
 		} else if (entry.getType() instanceof FunctionSingatureType) {
 			errors.add(new SemanticError("Var " + ID + " is a function."));
 		}
 
-		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(Environment.getNestingLevel());
+		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(nestingLevel);
 
 		return errors;
 	}
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
-		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel()); // Mi serve perchè copio le symbolTable
+		// Save the STEntry
+		entry = symbolTable.findInSymbolTable(ID, entry.getNestinglevel());
 		if (entry == null) {
 			throw new SLPUtils.TypeCheckError("Variable not declared: " + ID + ".");
 		}

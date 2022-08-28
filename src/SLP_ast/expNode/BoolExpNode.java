@@ -9,6 +9,9 @@ import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
+/**
+ * BoolExpNode represents a boolean constant.
+ */
 public class BoolExpNode implements Node {
 	private final boolean val;
 
@@ -17,8 +20,8 @@ public class BoolExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "val: " + val;
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -31,9 +34,4 @@ public class BoolExpNode implements Node {
 		return "li $t0 " + (val ? "1" : "0") + "\n";
 	}
 
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		// Essendo un exp base, non ho errori semantici
-		return new ArrayList<>();
-	}
 }

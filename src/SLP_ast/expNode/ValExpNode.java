@@ -9,16 +9,14 @@ import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
+/**
+ * ValExpNode represents a integer constant.
+ */
 public class ValExpNode implements Node {
 	private final int val;
 
 	public ValExpNode(int val) {
 		this.val = val;
-	}
-
-	@Override
-	public String toPrint(String indent) {
-		return indent + "val: " + val;
 	}
 
 	@Override

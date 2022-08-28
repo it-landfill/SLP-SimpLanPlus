@@ -26,14 +26,6 @@ public class ITENode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		StringBuilder out = new StringBuilder();
-		out.append(indent).append("IF ").append(condition.toPrint(indent)).append(" THEN ").append(ifTrue.toPrint(indent));
-		if (ifFalse != null) out.append(" ELSE ").append(ifFalse.toPrint(indent));
-		return out.toString();
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 

@@ -22,11 +22,6 @@ public class LogicExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "LogicExp: " + left.toPrint(indent) + " op: " + op + right.toPrint(indent);
-	}
-
-	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode leftType = left.typeCheck(symbolTable);
 		TypeNode rightType = right.typeCheck(symbolTable);

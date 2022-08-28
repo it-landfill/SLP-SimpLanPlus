@@ -10,11 +10,6 @@ import java.util.ArrayList;
 public class BoolTypeNode extends TypeNode {
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "type: boolean";
-	}
-
-	@Override
 	public String toString() {
 		return "bool";
 	}

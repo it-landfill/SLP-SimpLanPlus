@@ -27,21 +27,6 @@ public class BlockNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-
-		StringBuilder declStr = new StringBuilder();
-		StringBuilder statStr = new StringBuilder();
-
-		for (Node dec : declarationList)
-			declStr.append(dec.toPrint(indent + "  "));
-
-		for (Node sta : statementList)
-			statStr.append(sta.toPrint(indent + "  "));
-
-		return indent + "\nBlock\n\t" + declStr + "\t" + statStr + indent + "End Block";
-	}
-
-	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
 		return checkSemantics(env, symbolTable, true);
 	}

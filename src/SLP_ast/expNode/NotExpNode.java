@@ -19,11 +19,6 @@ public class NotExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + " not: " + exp.toString();
-	}
-
-	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode type = exp.typeCheck(symbolTable);
 		if (!SLPUtils.checkBoolType(type)) {

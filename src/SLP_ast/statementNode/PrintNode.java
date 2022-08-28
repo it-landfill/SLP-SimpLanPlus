@@ -18,10 +18,6 @@ public class PrintNode implements Node {
 		this.exp = exp;
 	}
 
-	@Override
-	public String toPrint(String indent) {
-		return indent + "print: " + exp.toPrint(indent);
-	}
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {

@@ -21,13 +21,6 @@ public class ReturnNode implements Node {
 		this.exp = null;
 	}
 
-	@Override
-	public String toPrint(String indent) {
-		StringBuilder out = new StringBuilder();
-		out.append(indent).append("return");
-		if (exp != null) out.append(" ").append(exp.toPrint(indent));
-		return out.toString();
-	}
 
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {

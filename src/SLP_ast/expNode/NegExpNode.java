@@ -19,11 +19,6 @@ public class NegExpNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + " negative: " + exp.toString();
-	}
-
-	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode type = exp.typeCheck(symbolTable);
 		if (!SLPUtils.checkIntType(type)) {
