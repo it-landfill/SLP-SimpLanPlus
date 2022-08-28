@@ -15,10 +15,11 @@ public class DerExpNode implements Node {
 	private final String ID;
 	private STentry entry;
 	private int nestingLevel;
-	private int stOccupiedBytes;
+	private int[] stOccupiedBytes;
 
 	public DerExpNode(String ID) {
 		this.ID = ID;
+		stOccupiedBytes = null;
 	}
 
 	@Override
@@ -34,7 +35,19 @@ public class DerExpNode implements Node {
 			errors.add(new SemanticError("Var " + ID + " is a function."));
 		}
 
-		stOccupiedBytes = symbolTable.nestingLevelRequiredBytes(nestingLevel);
+		// If the nesting levels are different, the variable is not in the same scope.
+		if (entry != null && nestingLevel != entry.getNestinglevel()) {
+			// Evaluate the difference between the two nesting levels.
+			int nEnvs = nestingLevel - entry.getNestinglevel();
+
+			stOccupiedBytes = new int[nEnvs];
+
+			// For each environment between the two nesting levels, get the number of bytes occupied by the variables.
+			for (int i = 0; i < nEnvs; i++) {
+				stOccupiedBytes[i] = symbolTable.nestingLevelRequiredBytes(nestingLevel-i);
+			}
+
+		}
 
 		return errors;
 	}
@@ -60,9 +73,15 @@ public class DerExpNode implements Node {
 
 		out.append("; Begin load variable ").append(ID).append("\n");
 
-		// Parte comune, risalgo la catena di fp
 		out.append("mov $t1 $fp\n");
-		out.append(("lw $t1 " + (stOccupiedBytes + 1) + "($t1)\n").repeat(nestingLevel - entry.getNestinglevel()));
+
+		// If the nesting levels are different, the variable is not in the same scope.
+		if (entry != null && nestingLevel != entry.getNestinglevel()) {
+			// For each environment between the two nesting levels, use the number of occupied bytes to jump to the previous environment.
+			for (int i = 0; i < stOccupiedBytes.length; i++) {
+				out.append("lw $t1 ").append(stOccupiedBytes[i] + 1).append("($t1)\n");
+			}
+		}
 
 		if (options != null && options.equalsIgnoreCase("getAddress")) {
 			// Se la variabile in esame (entry) è già un puntatore, allora carico in $t0 l'indirizzo a cui punta il puntatore attuale
