@@ -23,6 +23,16 @@ public class EqualExpNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		ArrayList<SemanticError> errors = new ArrayList<>();
+
+		errors.addAll(left.checkSemantics(env, symbolTable));
+		errors.addAll(right.checkSemantics(env, symbolTable));
+
+		return errors;
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode leftType = left.typeCheck(symbolTable);
 		TypeNode rightType = right.typeCheck(symbolTable);
@@ -51,13 +61,4 @@ public class EqualExpNode implements Node {
 		return sb.toString();
 	}
 
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		ArrayList<SemanticError> errors = new ArrayList<>();
-
-		errors.addAll(left.checkSemantics(env, symbolTable));
-		errors.addAll(right.checkSemantics(env, symbolTable));
-
-		return errors;
-	}
 }

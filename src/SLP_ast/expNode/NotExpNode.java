@@ -19,6 +19,11 @@ public class NotExpNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return exp.checkSemantics(env, symbolTable);
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError {
 		TypeNode type = exp.typeCheck(symbolTable);
 		if (!SLPUtils.checkBoolType(type)) {
@@ -30,10 +35,5 @@ public class NotExpNode implements Node {
 	@Override
 	public String codeGeneration(String options) {
 		return exp.codeGeneration(options) + "not $t0 $t0\n";
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		return exp.checkSemantics(env, symbolTable);
 	}
 }

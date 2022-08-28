@@ -20,6 +20,11 @@ public class ValExpNode implements Node {
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return new ArrayList<>();
+	}
+
+	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
 		return new IntTypeNode();
 	}
@@ -29,9 +34,5 @@ public class ValExpNode implements Node {
 		return "li $t0 " + val + "\n";
 	}
 
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
-		// Essendo un exp base, non ho errori semantici
-		return new ArrayList<>();
-	}
+
 }
