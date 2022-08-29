@@ -6,14 +6,15 @@ public class STentry {
 
 	// Nesting Level
 	private final int nl;
-	// "sarà utile per l'interprete"
+	// Offset of the var in memory.
 	private final int offset;
-	// Servirà in futuro per la mutua ricorsione
 	private final String ID;
-	// Tipo della variabile
+	// Entry type.
 	private final TypeNode type;
+	// If entry is variable, track if it is by reference
 	private final boolean isReference;
 	private Effects effect;
+
 	public STentry(int n, TypeNode t, int os, String ID, Effects effect, boolean isReference) {
 		nl = n;
 		type = t;

@@ -35,12 +35,14 @@ public class BlockNode implements Node {
 		ArrayList<SemanticError> errors = new ArrayList<>();
 		Environment localEnv;
 
+		// This is necessary to handle the function body (since FunNode already generates a new environment).
 		if (newEnv) {
 			localEnv = new Environment();
 			Environment.incrementNestingLevel();
 		} else {
 			localEnv = env;
 		}
+
 
 		nestingLevel = Environment.getNestingLevel();
 
@@ -54,7 +56,7 @@ public class BlockNode implements Node {
 
 		localSymbolTable = symbolTable.clone();
 
-		symbolTable.removeLevelFromSymbolTable(Environment.getNestingLevel());
+		symbolTable.removeLevelFromSymbolTable(nestingLevel);
 
 		if (newEnv) Environment.decrementNestingLevel();
 
@@ -106,7 +108,7 @@ public class BlockNode implements Node {
 		return (isRoot ? new VoidTypeNode() : retType);
 	}
 
-	// Visita in DFS postfissa (figlio sx - figlio dx - nodo)
+	// DFS Postfix visit (sx child -> dx child -> node)
 	@Override
 	public String codeGeneration(String options) {
 		return codeGeneration(true);
@@ -118,9 +120,6 @@ public class BlockNode implements Node {
 		int occupiedBytes = localSymbolTable.nestingLevelRequiredBytes(nestingLevel);
 		String blockLabel = SLPUtils.newLabel("block");
 
-		// push fp
-		// sp = sp - n (n = byte occupati dalle variabili al livello)
-		// move fp sp
 		if (newEnv) {
 			sb.append("; Begin environment\n");
 			sb.append("pushw $fp\n");
@@ -130,27 +129,31 @@ public class BlockNode implements Node {
 			sb.append("; End environment header\n");
 		}
 
+		// Generate first the code for all the functions in the block.
 		if (declarationList.stream().anyMatch(decl -> decl instanceof FunNode)) {
+			// Jump to after the function code.
 			sb.append("jal ").append(blockLabel).append("\n");
-			// Divido le declaration in function e variable, eseguo prima tutte le codegen delle function e poi tutte le codegen delle variable
 			declarationList.stream().filter(decl -> decl instanceof FunNode).forEach(declaration -> sb.append(declaration.codeGeneration(null)));
 			sb.append(blockLabel).append(":\n");
 		}
+
+		// After the functions, generate code for the declared variables
 		declarationList.stream().filter(decl -> decl instanceof VarNode).forEach(declaration -> sb.append(declaration.codeGeneration(null)));
 
 		statementList.forEach(statement -> sb.append(statement.codeGeneration(null)));
 
-		boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER") || sb.toString().contains("BLOCK_CHAIN_PLACEHOLDER");;
 		if (newEnv) {
+			boolean ret_placeholder = sb.toString().contains("RETURN_CHAIN_PLACEHOLDER") || sb.toString().contains("BLOCK_CHAIN_PLACEHOLDER");
 			sb.append("; Begin environment footer\n");
 			if (ret_placeholder) {
 				sb.append(blockLabel).append("_footer:\n");
-				SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)",blockLabel + "_footer");
+				SLPUtils.SBReplaceAll(sb, "(BLOCK_CHAIN_PLACEHOLDER)|(RETURN_CHAIN_PLACEHOLDER)", blockLabel + "_footer");
 			}
 
 			if (occupiedBytes > 0) sb.append("addi $sp $sp ").append(occupiedBytes).append("\n");
 			else sb.append("; addi $sp $sp ").append(occupiedBytes).append(" (Not needed since value is 0)\n");
 			sb.append("popw $fp\n");
+
 			if (ret_placeholder) {
 				sb.append("li $t1 0\n");
 				sb.append("beq $ret $t1 ").append(blockLabel).append("_ret\n");

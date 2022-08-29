@@ -18,6 +18,10 @@ public class ArgNode implements Node {
 		this.byReference = byReference;
 	}
 
+	public TypeNode getType() {
+		return type;
+	}
+
 	public String getArgName() {
 		return argName;
 	}
@@ -31,10 +35,6 @@ public class ArgNode implements Node {
 		return type.checkSemantics(env, symbolTable);
 	}
 
-	public TypeNode getType() {
-		return type;
-	}
-
 	@Override
 	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
 		return type;
@@ -44,6 +44,5 @@ public class ArgNode implements Node {
 	public String codeGeneration(String options) {
 		return "";
 	}
-
 
 }
