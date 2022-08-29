@@ -8,110 +8,89 @@ import java.util.HashMap;
 
 public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
-	private class Label {
-		public int id;
-		public int pos;
-		private static int nextID = 0;
-
-		public Label(int pos) {
-			this.pos = pos;
-			this.id = nextID++;
-		}
-
-		public Label() {
-			this.pos = -1;
-			this.id = nextID++;
-		}
-	}
-
-	public int[] code = new int[ExecuteVM.CODESIZE];
 	private final HashMap<String, Label> labelHM = new HashMap<>();
+	public int[] code = new int[ExecuteVM.CODESIZE];
 	private int ip = 0;
 
 	/*
-	 * La gestione delle label avviene in due passate.
-	 * L'idea è che in visit non abbiamo ancora le posizioni di tutte le label, di conseguenza mettiamo al posto della
-	 * posizione un id univoco per la label.
-	 * A fine programma, in teoria, le label dovrebbero tutte avere il campo pos aggiornato al valore corretto,
-	 * di conseguenza, si possono sostituire gli id con la posizione effettiva.
-	 *
-	 * In fase di visit avviene la prima passata:
-	 * 1. Si cerca la label in labelHM
-	 * 1a. Se la label non esiste se ne crea una nuova con pos = -1
-	 * 2. Si salva in code l'id della label
-	 *
-	 * La seconda passata, data dalla funzione labelAlign, avviene a seguito dell'istruzione HALT:
-	 * 1. Si scorre il codice fino a trovare una JMP o una BEQ
-	 * 2. Si sostituisce il valore label id salvato in code con la pos corrispondente alla label con id code[i]
-	 */
+	* The main problem with labels is that most of the time the label is needed before it is defined.
+	* The only certain thing is that by the end of the program every label should have been defined.
+	* This is why label handling happens in two steps:
+	*
+	* The first step happens while we parse the program:
+	* Whenever a label is defined:
+	* 1. Generate a label with the current ip
+	* 2. Save the label in the labelHM
+	*
+	* Whenever a label is used:
+	* 1.  Search the label in the labelHM
+	* 1a. If the label is not found, create a new one with pos = -1
+	* 2.  Replace the label with its id in the code.
+	*
+	* The second step happens after the program parsing reaches 'halt':
+	* 1.  Read the code until we find a JMP or a BEQ
+	* 2.  Replace the label id with the label's pos.
+	* 2a. If the label still does not have a valid pos, throw an error.
+	*/
 	private int labelLookup(String labelName) {
 		Label label = labelHM.get(labelName);
 		if (label == null) {
-			System.out.println("[WARNING] Label " + labelName + " not found, generating placeholder");
-			label = new Label();
-			labelHM.put(labelName,label);
+			label = new Label(labelName);
+			System.out.println("[WARNING] Label " + labelName + " not found, generating placeholder with id: " + label.id);
+			labelHM.put(labelName, label);
 		}
 		return label.id;
 	}
 
-	private int labelLookup(int labelID) {
-		for(Label l : labelHM.values()) {
-			if (l.id == labelID) return l.pos;
+	private Label labelLookup(int labelID) {
+		for (Label l : labelHM.values()) {
+			if (l.id == labelID) return l;
 		}
 
-		return -1;
+		return null;
 	}
 
 	/*
 	 * La funzione sostituisce gli id delle label con la loro posizione corretta
+	 * This function replaces the label ids with the correct position
 	 */
 	private void labelAlign() {
 		int i = -1;
-		while (++i<ip){
+		while (++i < ip) {
 			switch (code[i]) {
-				case    SVMParser.PUSHINT,
-						SVMParser.POPINT,
-						SVMParser.TOPINT,
-						SVMParser.PUSHBOOL,
-						SVMParser.POPBOOL,
-						SVMParser.TOPBOOL,
-						SVMParser.JR,
-						SVMParser.PRINTB,
-						SVMParser.PRINTW -> i+=1;
-				case    SVMParser.LI,
-						SVMParser.MOV,
-						SVMParser.NOT,
-						SVMParser.NEG -> i+=2;
-				case    SVMParser.ADD,
-						SVMParser.ADDI,
-						SVMParser.SUB,
-						SVMParser.SUBI,
-						SVMParser.MULT,
-						SVMParser.MULTI,
-						SVMParser.DIV,
-						SVMParser.MOD,
-						SVMParser.MODI,
-						SVMParser.LW,
-						SVMParser.SW,
-						SVMParser.LB,
-						SVMParser.SB,
-						SVMParser.DIVI,
-						SVMParser.LT,
-						SVMParser.LTE,
-						SVMParser.GT,
-						SVMParser.GTE,
-						SVMParser.EQ,
-						SVMParser.AND,
-						SVMParser.OR -> i+=3;
-				case    SVMParser.JAL -> {
-						i++;
-						code[i] = labelLookup(code[i]);
+				case SVMParser.PUSHINT, SVMParser.POPINT, SVMParser.TOPINT, SVMParser.PUSHBOOL, SVMParser.POPBOOL, SVMParser.TOPBOOL, SVMParser.JR, SVMParser.PRINTB, SVMParser.PRINTW ->
+						i += 1;
+				case SVMParser.LI, SVMParser.MOV, SVMParser.NOT, SVMParser.NEG -> i += 2;
+				case SVMParser.ADD, SVMParser.ADDI, SVMParser.SUB, SVMParser.SUBI, SVMParser.MULT, SVMParser.MULTI, SVMParser.DIV, SVMParser.MOD, SVMParser.MODI, SVMParser.LW, SVMParser.SW, SVMParser.LB, SVMParser.SB, SVMParser.DIVI, SVMParser.LT, SVMParser.LTE, SVMParser.GT, SVMParser.GTE, SVMParser.EQ, SVMParser.AND, SVMParser.OR ->
+						i += 3;
+				case SVMParser.JAL -> {
+					i++;
+					Label tmp = labelLookup(code[i]);
+					if (tmp == null) {
+						System.out.println("[ERROR] [labelAlign] Label with id: " + code[i] + "Does not exist. Terminating");
+						System.exit(1);
+					} else if (tmp.pos == -1) {
+						System.out.println("[ERROR] [labelAlign] Label with id: " + tmp.id + " and name: " + tmp.name + " does not have a valid pos. Terminating");
+						System.exit(1);
+					} else {
+						code[i] = tmp.pos;
+					}
 				}
-				case    SVMParser.BEQ -> {
-						i+=3;
-						code[i] = labelLookup(code[i]);
+				case SVMParser.BEQ -> {
+					i += 3;
+					Label tmp = labelLookup(code[i]);
+					if (tmp == null) {
+						System.out.println("[ERROR] [labelAlign] Label with id: " + code[i] + "Does not exist. Terminating");
+						System.exit(1);
+					} else if (tmp.pos == -1) {
+						System.out.println("[ERROR] [labelAlign] Label with id: " + tmp.id + " and name: " + tmp.name + " does not have a valid pos. Terminating");
+						System.exit(1);
+					} else {
+						code[i] = tmp.pos;
+					}
 				}
-				case    SVMParser.HALT -> {}
+				case SVMParser.HALT -> {
+				}
 				default -> {
 					System.out.println("[ERROR] [labelAlign] Not a valid instruction " + code[i] + " at position " + i + ".Terminating");
 					System.exit(1);
@@ -393,7 +372,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitSw(SVMParser.SwContext ctx) {
 		code[ip++] = SVMParser.SW;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
-		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = Integer.parseInt(ctx.offset.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
@@ -402,7 +381,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitLw(SVMParser.LwContext ctx) {
 		code[ip++] = SVMParser.LW;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
-		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = Integer.parseInt(ctx.offset.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
@@ -411,7 +390,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitLb(SVMParser.LbContext ctx) {
 		code[ip++] = SVMParser.LB;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
-		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = Integer.parseInt(ctx.offset.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
@@ -420,7 +399,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 	public Void visitSb(SVMParser.SbContext ctx) {
 		code[ip++] = SVMParser.SB;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
-		code[ip++] =  Integer.parseInt(ctx.offset.getText());
+		code[ip++] = Integer.parseInt(ctx.offset.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
 		return null;
 	}
@@ -431,7 +410,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		String labName = ctx.lab.getText();
 		Label label = labelHM.get(labName);
 		if (label == null) {
-			label = new Label(ip);
+			label = new Label(labName, ip);
 			labelHM.put(labName, label);
 		} else {
 			label.pos = ip;
@@ -458,7 +437,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = 6;
 
-		
+
 		code[ip++] = SVMParser.JAL;
 		code[ip++] = labelLookup(ctx.lab.getText());
 		return null;
@@ -488,5 +467,22 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		code[ip++] = SVMParser.HALT;
 		labelAlign();
 		return null;
+	}
+
+	private class Label {
+		private static int nextID = 0;
+		public int id;
+		public int pos;
+		public String name;
+
+		public Label(String name, int pos) {
+			this.name = name;
+			this.pos = pos;
+			this.id = nextID++;
+		}
+
+		public Label(String name) {
+			this(name, -1);
+		}
 	}
 }

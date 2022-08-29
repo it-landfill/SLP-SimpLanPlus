@@ -2,12 +2,8 @@ grammar SVM;
 
 // Sintassi allineata al più possibile con sintassi MIPS assembly
 
-@header {
-import java.util.HashMap;
-}
-
 @lexer::members {
-public int lexicalErrors=0;
+    public int lexicalErrors=0;
 }
 
 /*------------------------------------------------------------------
