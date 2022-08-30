@@ -1,0 +1,39 @@
+/*
+La congettura di Goldbach afferma che ogni numero intero pari maggiore di 2 pu`o essere scritto come somma di due numeri primi (non necessariamente distinti).
+Scrivere una funzione che dato un numero n ritorni:
+- 0 se n non è un intero pari maggiore di 2
+- il piu` piccolo numero primo p1 tale per cui p2 = n − p1 sia un numero primo
+*/
+
+{
+    bool isPrimeAux(int n, int i){
+        if(n==i || n==1) return true;
+        if(n%i==0 || n<i) return false;
+        return isPrimeAux(n, i+1);
+    }
+
+    bool isPrime(int n){
+        return isPrimeAux(n, 2);
+    }
+
+    int goldbachAux(int n, int i){
+        if (i>=n) return 0;
+        if (isPrime(i)){
+            if(isPrime(n-i)) {
+                return i;
+            }
+        }
+        return goldbachAux(n, i+1);
+    }
+
+    int goldbach(int n){
+        if ((n<=2) || (n%2!=0)) return 0;
+        return goldbachAux(n, 2);
+    }
+
+    int i = 14;
+    int n = goldbach(i);
+
+    print(n);
+    print(i-n);
+}

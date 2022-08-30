@@ -1,5 +1,12 @@
 {
-    print true && true;
-    print !true;
-    print true && !false;
+    void a() {
+        print 1;
+    }
+
+    void b() {
+        print 2;
+        a();
+    }
+
+    b();
 }

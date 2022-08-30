@@ -1,4 +1,4 @@
-// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/parser/SimpLanPlus.g4 by ANTLR 4.9.2
+// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/SLP_parser/SimpLanPlus.g4 by ANTLR 4.10.1
 package SLP_parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -10,6 +10,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * operations with no return type.
  */
 public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
+	/**
+	 * Visit a parse tree produced by {@link SimpLanPlusParser#program}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProgram(SimpLanPlusParser.ProgramContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpLanPlusParser#block}.
 	 * @param ctx the parse tree

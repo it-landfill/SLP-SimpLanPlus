@@ -1,22 +1,19 @@
 package SLP_ast;
 
+import SLP_ast.typeNode.TypeNode;
+import util.Environment;
+import util.SLPUtils;
+import util.SemanticError;
+import util.SymbolTableWrapper;
+
 import java.util.ArrayList;
 
-import util.Environment;
-import util.SemanticError;
-
-// Scheletro base per tutte le classi future.
 public interface Node {
 
-	String toPrint(String indent);
+	TypeNode typeCheck(SymbolTableWrapper symbolTable) throws SLPUtils.TypeCheckError;
 
-	//  fa il type checking e ritorna:
-	//  per una espressione, il suo tipo (oggetto BoolTypeNode o IntTypeNode)
-	//  per una dichiarazione, "null"
-	Node typeCheck();
+	String codeGeneration(String options);
 
-	String codeGeneration();
-
-	ArrayList<SemanticError> checkSemantics(Environment env);
+	ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable);
 
 }  

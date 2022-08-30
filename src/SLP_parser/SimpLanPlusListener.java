@@ -1,4 +1,4 @@
-// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/parser/SimpLanPlus.g4 by ANTLR 4.9.2
+// Generated from /Users/alessandrobenetton/Library/CloudStorage/OneDrive-AlmaMaterStudiorumUniversitàdiBologna/University/I_Anno/II_[81941]-Compilatori_e_Interpreti/Progetto_CEI/src/SLP_parser/SimpLanPlus.g4 by ANTLR 4.10.1
 package SLP_parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -7,6 +7,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link SimpLanPlusParser}.
  */
 public interface SimpLanPlusListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link SimpLanPlusParser#program}.
+	 * @param ctx the parse tree
+	 */
+	void enterProgram(SimpLanPlusParser.ProgramContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpLanPlusParser#program}.
+	 * @param ctx the parse tree
+	 */
+	void exitProgram(SimpLanPlusParser.ProgramContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpLanPlusParser#block}.
 	 * @param ctx the parse tree

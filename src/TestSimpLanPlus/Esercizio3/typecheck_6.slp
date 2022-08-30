@@ -1,0 +1,17 @@
+{
+    int a;
+    int b = 3;
+    int c = 2;
+    bool d;
+    if(c > 1){
+        b = c;
+    } else {
+          a = 4;
+          {
+            int a = 3;
+            print b;
+            print a;
+          }
+          print a;
+    }
+}

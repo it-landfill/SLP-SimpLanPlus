@@ -1,0 +1,25 @@
+{
+    int mcd1(int n1, int n2){
+        // Utilizzo il metodo Euclideo, sostituisco il numero più grande con la differenza tra i due
+        // finchè non ottengo due numeri uguali
+        if (n1 == n2) return n1;
+        if (n1 < n2) return mcd1(n1, n2-n1);
+        else return mcd1(n1-n2, n2);
+    }
+
+    void mcd2(int n1, int n2, var int res){
+        // Utilizzo il metodo Euclideo, sostituisco il numero più grande con la differenza tra i due
+        // finchè non ottengo due numeri uguali
+        if (n1 == n2) {
+            res = n1;
+            return;
+        } else if (n1 < n2) mcd2(n1, n2-n1, res);
+        else mcd2(n1-n2, n2, res);
+    }
+
+    int res = -1;
+
+    print(mcd1(24,30));
+    mcd2(24,31, res);
+    print(res);
+}

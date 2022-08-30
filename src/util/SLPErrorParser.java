@@ -12,10 +12,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class SLPErrorParser extends BaseErrorListener {
-    // Variabile utile alla generazione del nome per il file di output.
+    // DateTime formatter used to generate output filename.
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss");
 
-    // Variabile array list contente gli errori.
+    // String arraylist containing errors.
     private final ArrayList<String> syntaxErrors;
 
     public SLPErrorParser() {
@@ -32,6 +32,13 @@ public class SLPErrorParser extends BaseErrorListener {
     }
 
     /**
+     * Returns the number of errors in the arraylists.
+     *
+     * @return boolean
+     */
+    public int count() {return syntaxErrors.size();}
+
+    /**
      * @param recognizer
      * @param offendingSymbol    Symbol that generated the error
      * @param line               Error line
@@ -45,7 +52,7 @@ public class SLPErrorParser extends BaseErrorListener {
     }
 
     /**
-     * Funzione che ritorna la lista di errori sottoforma di stringa.
+     * Returns the error arraylist as a single string. Errors are \n separated.
      *
      * @return String
      */
@@ -62,9 +69,9 @@ public class SLPErrorParser extends BaseErrorListener {
     }
 
     /**
-     * Stampa su file la stringa rappresentante gli errori presenti nell'arraylist.
+     * Writes to file the error arraylist.
      *
-     * @param filename Nome del file di output
+     * @param filename Output file name
      * @throws IOException
      */
     public void dumpToFile(String filename) throws IOException {

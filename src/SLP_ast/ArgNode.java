@@ -1,22 +1,24 @@
 package SLP_ast;
 
+import SLP_ast.typeNode.TypeNode;
 import util.Environment;
 import util.SemanticError;
+import util.SymbolTableWrapper;
 
 import java.util.ArrayList;
 
 public class ArgNode implements Node {
-	private final Node type;
+	private final TypeNode type;
 	private final String argName;
-	private final boolean byReference; //TODO: Gestire questo caso
+	private final boolean byReference;
 
-	public ArgNode(Node type, String argName, boolean byReference) {
+	public ArgNode(TypeNode type, String argName, boolean byReference) {
 		this.type = type;
 		this.argName = argName;
 		this.byReference = byReference;
 	}
 
-	public Node getType() {
+	public TypeNode getType() {
 		return type;
 	}
 
@@ -29,22 +31,18 @@ public class ArgNode implements Node {
 	}
 
 	@Override
-	public String toPrint(String indent) {
-		return indent + "arg: " + type.toPrint(indent) + argName + " by reference: " + byReference;
+	public ArrayList<SemanticError> checkSemantics(Environment env, SymbolTableWrapper symbolTable) {
+		return type.checkSemantics(env, symbolTable);
 	}
 
 	@Override
-	public Node typeCheck() {
-		return null;
+	public TypeNode typeCheck(SymbolTableWrapper symbolTable) {
+		return type;
 	}
 
 	@Override
-	public String codeGeneration() {
-		return "TODO: Arg";
+	public String codeGeneration(String options) {
+		return "";
 	}
 
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		return type.checkSemantics(env); //TODO: Valutare se veramente necessario
-	}
 }

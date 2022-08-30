@@ -1,0 +1,64 @@
+{
+
+    int fib(int n){
+        if (n<=1) return n;
+        else return fib(n-1) + fib(n-2);
+    }
+
+    int res;
+    int val;
+    int correct;
+    int errorCount = 0;
+
+    // Se i test risultano corretti il programma stampa true, altrimenti stampa:
+    // valore input
+    // valore atteso
+    // valore ottenuto
+
+    val = 5;
+    correct = 5;
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 12;
+    correct = 144;
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 24;
+    correct = 46368;
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    val = 25;
+    correct = 75025;
+    res = fib(val);
+
+    if (res != correct) {
+        print(val);
+        print(correct);
+        print(res);
+        errorCount = errorCount + 1;
+    }
+
+    if (errorCount == 0) print(true);
+    else print(false);
+}
