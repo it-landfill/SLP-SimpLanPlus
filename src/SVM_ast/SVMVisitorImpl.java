@@ -99,6 +99,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 		}
 	}
 
+	// Match a registry string with the corresponding int id.
 	private int regLabelToCode(String label) {
 		if (label.equals("$fp")) return -1;
 		if (label.equals("$sp")) return -2;
@@ -293,7 +294,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitNeq(SVMParser.NeqContext ctx) {
-		// Calcolo una EQ e la nego
+		// Evaluate the value as EQ, then negate it.
 		code[ip++] = SVMParser.EQ;
 		code[ip++] = regLabelToCode(ctx.dest.getText());
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
@@ -406,14 +407,15 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitLabel(SVMParser.LabelContext ctx) {
-		// Vedere funzionamento label spiegato all'inizio
+		// Check initial comment on labels.
 		String labName = ctx.lab.getText();
 		Label label = labelHM.get(labName);
 		if (label == null) {
 			label = new Label(labName, ip);
 			labelHM.put(labName, label);
 		} else {
-			label.pos = ip;
+			if (label.pos == -1) label.pos = ip;
+			else System.out.println("[WARNING] Label " + label.name + " has been declared multiple times.");
 		}
 
 		return null;
@@ -421,17 +423,16 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitJal(SVMParser.JalContext ctx) {
-		// Vedere funzionamento label spiegato all'inizio
+		// Check initial comment on labels.
 
-
-		// Salvo l'indirizzo dell'istruzione attuale
+		// Save in $ra current IP
 		code[ip++] = SVMParser.MOV;
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = regLabelToCode("$ip");
 
-		// Incremento ra dell'offset necessario ad arrivare alla successiva istruzione
-		// +4 per ADDI
-		// +2 per JAL
+		// Increment $ra to reach the instruction after JAL.
+		// +4 for ADDI
+		// +2 for JAL
 		code[ip++] = SVMParser.ADDI;
 		code[ip++] = regLabelToCode("$ra");
 		code[ip++] = regLabelToCode("$ra");
@@ -452,7 +453,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
 	@Override
 	public Void visitBeq(SVMParser.BeqContext ctx) {
-		// Vedere funzionamento label spiegato all'inizio
+		// Check initial comment on labels.
 		code[ip++] = SVMParser.BEQ;
 		code[ip++] = regLabelToCode(ctx.reg1.getText());
 		code[ip++] = regLabelToCode(ctx.reg2.getText());
